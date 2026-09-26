@@ -941,3 +941,316 @@ p {
     min-width: 0;
   }
 }
+
+/* Editorial motion studies: each plays once, for less than five seconds. */
+.motion-figure {
+  margin: 48px 0 0;
+  color: var(--orange);
+}
+.motion-art {
+  width: 100%;
+}
+.motion-art > svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+.motion-figure figcaption {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  min-height: 44px;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid currentColor;
+  font-size: 10px;
+  line-height: 1.6;
+  letter-spacing: 0.25px;
+}
+.motion-figure figcaption > span {
+  max-width: 270px;
+}
+.motion-figure button {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  border: 1px solid transparent;
+  border-radius: 50%;
+  background: transparent;
+  transition:
+    background 0.2s,
+    border-color 0.2s;
+}
+.motion-figure button svg {
+  width: 20px;
+  height: 20px;
+}
+.motion-figure button:hover {
+  border-color: currentColor;
+  background: #22251f08;
+}
+.motion-figure button:active {
+  transform: scale(0.94);
+}
+.question-band {
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  column-gap: clamp(24px, 5vw, 90px);
+  align-items: center;
+}
+.question-band > .eyebrow {
+  grid-column: 1/-1;
+}
+.question-band > h2 {
+  font-size: clamp(50px, 7vw, 110px);
+}
+.question-band .motion-together {
+  color: var(--paper);
+  align-self: end;
+  margin: 10px 0 0;
+  min-width: 0;
+}
+.perspective circle:first-child {
+  stroke: currentColor;
+  stroke-width: 1;
+  fill: var(--paper);
+  fill-opacity: 0.045;
+}
+.art-guide {
+  opacity: 0.18;
+}
+.art-point {
+  fill: currentColor;
+}
+.art-label {
+  font:
+    12px Manrope,
+    sans-serif;
+  fill: currentColor;
+  letter-spacing: 0.8px;
+}
+.shared-spark {
+  transform-origin: 260px 239px;
+}
+.motion-started .perspective-one {
+  animation: perspective-one 3.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.motion-started .perspective-two {
+  animation: perspective-two 3.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.motion-started .perspective-three {
+  animation: perspective-three 3.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.motion-started .shared-spark {
+  animation: shared-spark 4.2s ease both;
+}
+.network-path {
+  stroke: currentColor;
+  stroke-width: 1;
+  stroke-dasharray: 600;
+}
+.seed-disc {
+  fill: currentColor;
+}
+.seed-halo {
+  stroke: currentColor;
+  stroke-opacity: 0.25;
+  transform-origin: 60px 135px;
+}
+.network-node {
+  fill: var(--paper);
+  stroke: currentColor;
+  stroke-width: 1;
+}
+.node-center {
+  fill: currentColor;
+  stroke: none;
+}
+.motion-started .path-one {
+  animation: share-line 2s ease both;
+}
+.motion-started .path-two {
+  animation: share-line 2s 1.4s ease both;
+}
+.motion-started .node-middle {
+  animation: share-node 2s ease both;
+}
+.motion-started .node-end {
+  animation: share-node 2s 1.4s ease both;
+}
+.motion-started .seed-halo {
+  animation: seed-pulse 3.5s ease both;
+}
+.motion-dialogue {
+  color: var(--ink);
+}
+.dialogue-label {
+  fill: currentColor;
+  font:
+    italic 28px Georgia,
+    serif;
+}
+.conversation-thread {
+  stroke-width: 1.5;
+  stroke-dasharray: 600;
+}
+.thread-one {
+  stroke: var(--ink);
+}
+.thread-two {
+  stroke: #ae421f;
+}
+.thread-dot {
+  fill: currentColor;
+}
+.conversation-result {
+  transform-origin: 402px 150px;
+}
+.conversation-result circle {
+  fill: var(--ink);
+}
+.conversation-result text {
+  fill: var(--paper);
+  font:
+    italic 32px Georgia,
+    serif;
+}
+.motion-started .conversation-thread {
+  animation: share-line 3s ease both;
+}
+.motion-started .thread-two {
+  animation-delay: 0.25s;
+}
+.motion-started .conversation-result {
+  animation: shared-spark 4.2s ease both;
+}
+.closing .lab-intro {
+  font-family: Georgia, serif;
+  font-size: clamp(24px, 2.5vw, 34px);
+  line-height: 1.35;
+  letter-spacing: -0.6px;
+  margin-bottom: 30px;
+}
+@keyframes perspective-one {
+  0%,
+  10% {
+    transform: translate(-55px, -24px);
+  }
+  100% {
+    transform: translate(0, 0);
+  }
+}
+@keyframes perspective-two {
+  0%,
+  10% {
+    transform: translate(55px, -24px);
+  }
+  100% {
+    transform: translate(0, 0);
+  }
+}
+@keyframes perspective-three {
+  0%,
+  10% {
+    transform: translate(0, 24px);
+  }
+  100% {
+    transform: translate(0, 0);
+  }
+}
+@keyframes shared-spark {
+  0%,
+  35% {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+  75%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+@keyframes share-line {
+  from {
+    stroke-dashoffset: 600;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes share-node {
+  0%,
+  35% {
+    opacity: 0.2;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@keyframes seed-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.7;
+  }
+  40% {
+    transform: scale(1.3);
+    opacity: 0.2;
+  }
+}
+@media (max-width: 1000px) {
+  .question-band {
+    grid-template-columns: 1fr 1fr;
+    column-gap: 24px;
+  }
+  .question-band > h2 {
+    font-size: 7.2vw;
+    letter-spacing: -3px;
+  }
+  .question-band h2 em {
+    letter-spacing: -3px;
+  }
+}
+@media (max-width: 680px) {
+  .question-band {
+    display: block;
+  }
+  .question-band > h2 {
+    font-size: 14vw;
+  }
+  .question-band .motion-together {
+    margin: 38px auto 0;
+    max-width: 400px;
+  }
+  .motion-figure {
+    margin-top: 30px;
+    max-width: 450px;
+  }
+  .motion-figure figcaption {
+    margin-top: 6px;
+    font-size: 10px;
+  }
+  .motion-sharing {
+    margin-bottom: 8px;
+  }
+  .motion-dialogue {
+    max-width: 390px;
+  }
+  .closing h2 {
+    font-size: clamp(35px, 9.5vw, 56px);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .motion-figure * {
+    animation: none !important;
+    transition: none !important;
+  }
+  .motion-figure button {
+    display: none;
+  }
+}
+.motion-sharing figcaption { color: #a63a18; border-color: #d9ad9d; }

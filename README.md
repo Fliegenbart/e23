@@ -1,6 +1,6 @@
 # E23 — Mehr möglich. Miteinander.
 
-Password-protected editorial microsite for the E23 manifesto. Next.js App Router, React, TypeScript. Full original manifesto content is in `lib/manifest.json`; rendered only on the server after authentication.
+Password-protected editorial microsite for the E23 manifesto. Next.js App Router, React, TypeScript. Manifesto content (including the approved updated closing headline) is in `lib/manifest.json`; rendered only on the server after authentication.
 
 ## Local development
 
@@ -29,4 +29,4 @@ Vercel project `e23`, team `davids-projects-f2bdba89`. Set `SITE_PASSWORD` and `
 
 The login is a shared-password gate, with signed HttpOnly/Secure/SameSite cookies. It is not an individual identity system; failed requests have a delay, not a distributed rate limit. The gate protects website delivery, not access to the source repository.
 
-No analytics, third-party embeds or external font calls. The image is an AI-generated material study, not a photograph of the actual office. Manrope is self-hosted under the SIL Open Font License (see `public/fonts/OFL.txt`). The original copy is preserved, with chapter navigation and additional editorial labels.
+No analytics, third-party embeds or external font calls. The image is an AI-generated material study, not a photograph of the actual office. Manrope is self-hosted under the SIL Open Font License (see `public/fonts/OFL.txt`). The original body copy is preserved, with the user-requested laboratory headline and introductory sentence in the closing chapter. Three inline SVG studies animate once on viewport entry, can be replayed, and respect reduced-motion preferences.

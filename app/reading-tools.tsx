@@ -7,7 +7,7 @@ const labels = [
   "Das Gespräch",
   "Gute Werkzeuge",
   "Verantwortung",
-  "Unser Versuch",
+  "Unser Labor",
 ];
 export function ReadingTools() {
   const [progress, setProgress] = useState(0);

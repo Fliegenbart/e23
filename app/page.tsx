@@ -1,6 +1,7 @@
 import { authenticated } from "@/lib/auth";
 import manifest from "@/lib/manifest.json";
 import { ReadingTools } from "./reading-tools";
+import { TogetherArt, SharingArt, DialogueArt } from "./collaboration-art";
 export const dynamic = "force-dynamic";
 function Arrow({ diagonal = false }: { diagonal?: boolean }) {
   return (
@@ -179,7 +180,7 @@ export default async function Page({
             <br />
             entstehen?
           </h2>
-          <Circles />
+          <TogetherArt />
         </section>
         {manifest.chapters.slice(0, 5).map((chapter, i) => (
           <section
@@ -206,18 +207,8 @@ export default async function Page({
             <div className="chapter-layout">
               <div className="chapter-heading">
                 <h2>{chapter.title}</h2>
-                {i === 1 && (
-                  <div className="plus-art" aria-hidden="true">
-                    +
-                  </div>
-                )}
-                {i === 2 && (
-                  <div className="dialogue-art" aria-hidden="true">
-                    <span>Ich.</span>
-                    <span>Du.</span>
-                    <em>Wir.</em>
-                  </div>
-                )}
+                {i === 1 && <SharingArt />}
+                {i === 2 && <DialogueArt />}
                 {i === 4 && (
                   <span className="chapter-footnote">
                     Was wir empfangen haben,
@@ -251,15 +242,18 @@ export default async function Page({
           data-chapter="6"
         >
           <div className="section-kicker">
-            <span>06 / Unser Versuch</span>
+            <span>06 / Unser Labor</span>
             <span>Esplanade 23</span>
           </div>
           <h2>
-            E23 ist unser Versuch,
+            E23 ist unser Labor
             <br />
-            <em>so zu arbeiten.</em>
+            <em>für eine neue Art zu arbeiten.</em>
           </h2>
           <div className="closing-intro">
+            <p className="lab-intro">
+              Hier geben wir einem neuen Paradigma der Arbeit Raum.
+            </p>
             {manifest.chapters[5].paragraphs.slice(0, 2).map((p) => (
               <p key={p}>{p}</p>
             ))}
