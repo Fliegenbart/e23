@@ -224,6 +224,7 @@ export default async function Page({
                     className={
                       (i === 0 && j === 1) ||
                       (i === 1 && j === 1) ||
+                      (i === 2 && j === 2) ||
                       (i === 3 && j === 3)
                         ? "emphasis"
                         : ""

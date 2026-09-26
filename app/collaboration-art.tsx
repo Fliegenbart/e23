@@ -102,7 +102,7 @@ export function DialogueArt() {
   return (
     <MotionFigure
       variant="dialogue"
-      caption="Zwei Gedanken. Eine dritte Möglichkeit."
+      caption="Im Gespräch entsteht etwas Neues."
     >
       <svg viewBox="0 0 480 300" fill="none">
         <text x="30" y="43" className="dialogue-label">
@@ -122,7 +122,7 @@ export function DialogueArt() {
         <g className="conversation-result">
           <circle cx="402" cy="150" r="54" />
           <text x="402" y="160" textAnchor="middle">
-            Wir.
+            Neues.
           </text>
         </g>
         <circle cx="80" cy="40" r="4" className="thread-dot" />
