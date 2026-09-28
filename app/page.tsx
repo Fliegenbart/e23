@@ -4,7 +4,7 @@ import { ReadingTools } from "./reading-tools";
 import { TogetherArt, SharingArt, DialogueArt } from "./collaboration-art";
 import { MotionDirector } from "./motion-director";
 import { GateMotion } from "./gate-motion";
-import { Words, Line, Overlap, count, vars } from "./typography";
+import { Words, Line, Overlap, More, count, vars } from "./typography";
 export const dynamic = "force-dynamic";
 function Arrow({ diagonal = false }: { diagonal?: boolean }) {
   return (
@@ -112,7 +112,13 @@ export default async function Page({
     "Gute Werkzeuge",
     "Verantwortung",
   ];
+  // The one sentence per chapter shown before "Weiterlesen".
   const emphasis = [1, 1, 2, 3, -1];
+  const kernels = chapters.map((chapter, i) =>
+    emphasis[i] >= 0
+      ? chapter.paragraphs[emphasis[i]]
+      : "Was wir empfangen haben, können wir weitergeben.",
+  );
   const final = manifest.chapters[5].paragraphs[3];
   return (
     <>
@@ -128,7 +134,6 @@ export default async function Page({
         <a href="#" aria-label="E23 – zum Anfang">
           <Mark />
         </a>
-        <span className="header-caption">Ein Ort. Viele Möglichkeiten.</span>
         <nav className="manifest-nav" aria-label="Hauptnavigation">
           <a className="header-link" href="#anfang">
             Das Manifest <Arrow diagonal />
@@ -148,14 +153,6 @@ export default async function Page({
               </Line>
             </h1>
             <Overlap variant="hero" track={false} />
-            <div className="hero-aside">
-              <span>
-                Ein gemeinsamer Ort.
-                <br />
-                Eine gemeinsame Haltung.
-              </span>
-              <span>Esplanade 23</span>
-            </div>
           </div>
           <div className="hero-image">
             <img
@@ -173,15 +170,11 @@ export default async function Page({
               <Arrow />
             </a>
           </div>
-          <div className="image-caption">
-            <span>Esplanade 23 — Ein gemeinsamer Anfang</span>
-            <span>Unser Manifest ↓</span>
-          </div>
         </section>
         <section className="intro section-pad" id="anfang" data-chapter="0">
           <div className="section-kicker" data-reveal>
             <span>00 / Der Anfang</span>
-            <span>Eine Einladung zum Miteinander</span>
+            <span className="little-line" />
           </div>
           <div className="intro-layout">
             <h2 data-reveal>
@@ -193,9 +186,12 @@ export default async function Page({
               </Line>
             </h2>
             <div className="prose" data-reveal>
-              {manifest.intro.slice(0, 3).map((p) => (
-                <p key={p}>{p}</p>
-              ))}
+              <p>{manifest.intro[0]}</p>
+              <More>
+                {manifest.intro.slice(1, 3).map((p) => (
+                  <p key={p}>{p}</p>
+                ))}
+              </More>
               <p className="quiet">{manifest.intro[3]}</p>
             </div>
           </div>
@@ -237,31 +233,23 @@ export default async function Page({
                 {i === 1 && <SharingArt />}
                 {i === 2 && <DialogueArt />}
                 {i === 3 && <Overlap variant="tools" />}
-                {i === 4 && (
-                  <span className="chapter-footnote" data-reveal>
-                    Was wir empfangen haben,
-                    <br />
-                    können wir weitergeben.
-                  </span>
-                )}
+
               </div>
               <div className="prose">
-                {chapter.paragraphs.map((p, j) =>
-                  j === emphasis[i] ? (
-                    <p
-                      key={p}
-                      className="emphasis fill"
-                      data-scroll
-                      style={vars({ n: count(p) })}
-                    >
-                      <Words text={p} />
-                    </p>
-                  ) : (
-                    <p key={p} data-reveal>
-                      {p}
-                    </p>
-                  ),
-                )}
+                <p
+                  className="emphasis fill"
+                  data-scroll
+                  style={vars({ n: count(kernels[i]) })}
+                >
+                  <Words text={kernels[i]} />
+                </p>
+                <More>
+                  {chapter.paragraphs
+                    .filter((_, j) => j !== emphasis[i])
+                    .map((p) => (
+                      <p key={p}>{p}</p>
+                    ))}
+                </More>
               </div>
             </div>
           </section>
@@ -274,7 +262,7 @@ export default async function Page({
         >
           <div className="section-kicker">
             <span>06 / Unser Labor</span>
-            <span>Esplanade 23</span>
+            <span className="little-line" />
           </div>
           <h2 data-reveal>
             <Line index={0}>E23 ist unser Labor</Line>

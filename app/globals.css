@@ -1900,3 +1900,121 @@ html.lenis body {
 .lenis.lenis-stopped {
   overflow: clip;
 }
+
+/* Two reading layers: the core sentence first, the full text on request. */
+:root {
+  interpolate-size: allow-keywords;
+}
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.motion-figure figcaption {
+  border-top: 0;
+  justify-content: flex-end;
+  min-height: 0;
+  margin-top: 0;
+  padding-top: 0;
+}
+.more {
+  margin-top: 28px;
+}
+.prose .more + p {
+  margin-top: 28px;
+}
+.more summary {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  list-style: none;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1.6px;
+  text-transform: uppercase;
+  padding: 12px 18px 12px 20px;
+  border: 1px solid currentColor;
+  border-radius: 999px;
+  transition:
+    background 0.3s,
+    color 0.3s,
+    border-color 0.3s;
+}
+.more summary::-webkit-details-marker {
+  display: none;
+}
+.more summary:hover {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--paper);
+}
+.chapter-4 .more summary:hover {
+  background: var(--paper);
+  border-color: var(--paper);
+  color: var(--ink);
+}
+.more[open] summary span:first-child {
+  font-size: 0;
+  letter-spacing: 0;
+}
+.more[open] summary span:first-child::after {
+  letter-spacing: 1.6px;
+}
+.more[open] summary span:first-child::after {
+  content: "Weniger";
+  font-size: 11px;
+}
+.more-icon {
+  position: relative;
+  width: 10px;
+  height: 10px;
+  transition: rotate 0.5s var(--ease-out);
+}
+.more-icon::before,
+.more-icon::after {
+  content: "";
+  position: absolute;
+  inset: 4.5px 0 auto;
+  height: 1px;
+  background: currentColor;
+}
+.more-icon::after {
+  rotate: 90deg;
+}
+.more[open] .more-icon {
+  rotate: 135deg;
+}
+.more::details-content {
+  block-size: 0;
+  overflow: clip;
+  transition:
+    block-size 0.8s var(--ease-out),
+    content-visibility 0.8s allow-discrete;
+}
+.more[open]::details-content {
+  block-size: auto;
+}
+.more-body {
+  padding-top: 28px;
+}
+.more-body p + p {
+  margin-top: 25px;
+}
+.more[open] .more-body p {
+  animation: fade-up 0.9s var(--ease-out) both;
+}
+.more[open] .more-body p:nth-child(2) {
+  animation-delay: 0.08s;
+}
+.more[open] .more-body p:nth-child(3) {
+  animation-delay: 0.16s;
+}
+.more[open] .more-body p:nth-child(n + 4) {
+  animation-delay: 0.24s;
+}
+.chapter .prose .emphasis.fill {
+  padding-top: 0;
+}

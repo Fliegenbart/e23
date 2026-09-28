@@ -78,3 +78,16 @@ export function Overlap({
     </div>
   );
 }
+
+/** The second reading layer: the full text, one click away. */
+export function More({ children }: { children: ReactNode }) {
+  return (
+    <details className="more">
+      <summary>
+        <span>Weiterlesen</span>
+        <span className="more-icon" aria-hidden="true" />
+      </summary>
+      <div className="more-body">{children}</div>
+    </details>
+  );
+}

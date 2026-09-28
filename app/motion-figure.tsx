@@ -46,7 +46,7 @@ export function MotionFigure({
           {children}
         </div>
         <figcaption>
-          <span>{caption}</span>
+          <span className="sr-only">{caption}</span>
         </figcaption>
       </figure>
     );
@@ -59,7 +59,7 @@ export function MotionFigure({
         {children}
       </div>
       <figcaption>
-        <span>{caption}</span>
+        <span className="sr-only">{caption}</span>
         {!reduced && (
           <button
             type="button"
