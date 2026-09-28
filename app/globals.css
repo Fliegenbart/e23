@@ -1254,3 +1254,6 @@ p {
   }
 }
 .motion-sharing figcaption { color: #a63a18; border-color: #d9ad9d; }
+
+.manifest-nav{display:flex;gap:24px;align-items:center}
+@media(max-width:680px){.manifest-nav{gap:14px}.manifest-nav .header-link{font-size:10px}.manifest-nav .header-link .arrow{display:none}}

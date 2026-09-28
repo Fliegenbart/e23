@@ -15,9 +15,20 @@ export async function POST(request: NextRequest) {
     !equal(password, expected)
   ) {
     await new Promise((resolve) => setTimeout(resolve, 800));
-    return NextResponse.redirect(new URL("/?error=1", origin), 303);
+    return NextResponse.redirect(
+      new URL(
+        form.get("next") === "projekte"
+          ? "/?error=1&next=projekte"
+          : "/?error=1",
+        origin,
+      ),
+      303,
+    );
   }
-  const response = NextResponse.redirect(new URL("/", origin), 303);
+  const response = NextResponse.redirect(
+    new URL(form.get("next") === "projekte" ? "/projekte" : "/", origin),
+    303,
+  );
   response.cookies.set(SESSION_COOKIE, createSession(), {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",

@@ -34,11 +34,12 @@ function Circles() {
 export default async function Page({
   searchParams,
 }: {
-  searchParams: Promise<{ error?: string }>;
+  searchParams: Promise<{ error?: string; next?: string }>;
 }) {
   const access = await authenticated();
   if (!access) {
-    const error = (await searchParams).error;
+    const query = await searchParams;
+    const error = query.error;
     return (
       <main className="gate">
         <header className="gate-header">
@@ -62,6 +63,9 @@ export default async function Page({
             Unser Manifest für eine gemeinsame Haltung zur Arbeit.
           </p>
           <form action="/api/login" method="post">
+            {query.next === "projekte" && (
+              <input type="hidden" name="next" value="projekte" />
+            )}
             <label htmlFor="password">Passwort</label>
             <div className="password-row">
               <input
@@ -106,9 +110,14 @@ export default async function Page({
           <Mark />
         </a>
         <span className="header-caption">Ein Ort. Viele Möglichkeiten.</span>
-        <a className="header-link" href="#anfang">
-          Das Manifest <Arrow diagonal />
-        </a>
+        <nav className="manifest-nav" aria-label="Hauptnavigation">
+          <a className="header-link" href="#anfang">
+            Das Manifest <Arrow diagonal />
+          </a>
+          <a className="header-link" href="/projekte">
+            Projekte & Ideen <Arrow diagonal />
+          </a>
+        </nav>
       </header>
       <main>
         <section className="hero" aria-labelledby="hero-title">
