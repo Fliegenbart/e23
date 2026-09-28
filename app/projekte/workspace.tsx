@@ -30,6 +30,7 @@ import {
   Search,
   Check,
   Sparkles,
+  FolderOpen,
 } from "lucide-react";
 import type { WorkItem, Detail, Task, TaskStatus } from "@/lib/workspace/types";
 
@@ -326,6 +327,20 @@ export default function Workspace() {
               </button>
             ))}
           </div>
+          <a
+            className="ws-drive"
+            href="https://drive.google.com/drive/folders/1jB27W1BnTGtVDW7hqcY6e-zIKUKQwMoY?usp=share_link"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Dateien & Dokumente – gemeinsamer Google-Drive-Ordner (öffnet in neuem Tab)"
+          >
+            <FolderOpen size={22} aria-hidden="true" />
+            <span>
+              <strong>Dateien & Dokumente</strong>
+              <span>Unser gemeinsamer Ordner in Google Drive</span>
+            </span>
+            <ArrowUpRight size={16} aria-hidden="true" />
+          </a>
           <div className="ws-sidebar-note">
             <Sparkles size={25} />
             <p>

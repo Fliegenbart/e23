@@ -129,6 +129,27 @@
 .ws-filters button:hover {
   background: #ebece4;
 }
+.ws-drive {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-top: 26px;
+  padding: 16px 12px;
+  border: 1px solid var(--ws-border);
+  border-radius: 5px;
+  background: #e9ecdf;
+  color: #43563b;
+}
+.ws-drive:hover { background: #dfe5d3; border-color: #aab79b; }
+.ws-drive > svg { flex-shrink: 0; }
+.ws-drive > span { min-width: 0; }
+.ws-drive strong { display: block; font-size: 12px; line-height: 1.5; font-weight: 600; }
+.ws-drive span > span { display: block; margin-top: 6px; font-size: 10px; line-height: 1.6; color: var(--ws-muted); }
+@media (max-width: 900px) {
+  .ws-drive { margin-top: 12px; align-items: center; padding: 12px 14px; }
+  .ws-drive > svg:last-child { margin-left: auto; }
+  .ws-drive span > span { margin-top: 2px; }
+}
 .ws-sidebar-note {
   margin: 70px 16px 50px;
 }
