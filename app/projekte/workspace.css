@@ -159,7 +159,7 @@
 }
 .ws-sidebar-note p {
   font:
-    italic 24px/1.2 Georgia,
+    italic 24px/1.2 "Instrument Serif", Georgia,
     serif;
   letter-spacing: -0.5px;
 }
@@ -269,7 +269,7 @@
 .ws-idea-invite > span {
   text-align: left;
   font:
-    italic 18px/1.2 Georgia,
+    italic 18px/1.2 "Instrument Serif", Georgia,
     serif;
 }
 .ws-idea-invite:hover {

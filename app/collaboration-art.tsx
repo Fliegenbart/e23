@@ -102,6 +102,7 @@ export function DialogueArt() {
   return (
     <MotionFigure
       variant="dialogue"
+      scrub
       caption="Im Gespräch entsteht etwas Neues."
     >
       <svg viewBox="0 0 480 300" fill="none">

@@ -1,36 +1,22 @@
 @font-face {
   font-family: Manrope;
-  src: url("/fonts/manrope-400.ttf") format("truetype");
+  src: url("/fonts/manrope-latin-wght-normal.woff2") format("woff2");
+  font-weight: 200 800;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Instrument Serif";
+  src: url("/fonts/instrument-serif-latin-400-normal.woff2") format("woff2");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
-  font-family: Manrope;
-  src: url("/fonts/manrope-500.ttf") format("truetype");
-  font-weight: 500;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: Manrope;
-  src: url("/fonts/manrope-600.ttf") format("truetype");
-  font-weight: 600;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: Manrope;
-  src: url("/fonts/manrope-700.ttf") format("truetype");
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: Manrope;
-  src: url("/fonts/manrope-800.ttf") format("truetype");
-  font-weight: 800;
-  font-style: normal;
+  font-family: "Instrument Serif";
+  src: url("/fonts/instrument-serif-latin-400-italic.woff2") format("woff2");
+  font-weight: 400;
+  font-style: italic;
   font-display: swap;
 }
 :root {
@@ -40,6 +26,8 @@
   --line: #d3d1c8;
   --muted: #62655c;
   --gutter: clamp(24px, 4vw, 72px);
+  --serif: "Instrument Serif", Georgia, serif;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
 }
 * {
   box-sizing: border-box;
@@ -85,7 +73,7 @@ button {
   color: inherit;
 }
 em {
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: var(--serif);
   font-weight: 400;
 }
 h1,
@@ -116,7 +104,7 @@ p {
   padding: 24px var(--gutter) 38px;
 }
 .header-caption {
-  font-family: Georgia, serif;
+  font-family: var(--serif);
   font-size: 17px;
 }
 .header-link {
@@ -144,7 +132,7 @@ p {
   line-height: 0.99;
   letter-spacing: -0.075em;
 }
-.hero h1 span {
+.hero-accent {
   color: var(--orange);
 }
 .hero-aside {
@@ -235,7 +223,7 @@ p {
 }
 .prose .quiet {
   color: var(--muted);
-  font-family: Georgia, serif;
+  font-family: var(--serif);
   font-style: italic;
   font-size: 20px;
 }
@@ -314,7 +302,7 @@ p {
   position: relative;
 }
 .prose .emphasis {
-  font-family: Georgia, serif;
+  font-family: var(--serif);
   font-size: 27px;
   line-height: 1.4;
   letter-spacing: -0.4px;
@@ -373,7 +361,7 @@ p {
 .chapter-footnote {
   display: block;
   margin-top: 60px;
-  font-family: Georgia, serif;
+  font-family: var(--serif);
   font-style: italic;
   font-size: 24px;
   line-height: 1.4;
@@ -403,7 +391,7 @@ p {
   padding-top: 50px;
 }
 .closing-statement > p:first-child {
-  font-family: Georgia, serif;
+  font-family: var(--serif);
   font-size: clamp(19px, 2.2vw, 30px);
   margin-bottom: 35px;
 }
@@ -1091,8 +1079,8 @@ p {
 .dialogue-label {
   fill: currentColor;
   font:
-    italic 28px Georgia,
-    serif;
+    italic 34px "Instrument Serif",
+    Georgia, serif;
 }
 .conversation-thread {
   stroke-width: 1.5;
@@ -1116,8 +1104,8 @@ p {
 .conversation-result text {
   fill: var(--paper);
   font:
-    italic 32px Georgia,
-    serif;
+    italic 38px "Instrument Serif",
+    Georgia, serif;
 }
 .motion-started .conversation-thread {
   animation: share-line 3s ease both;
@@ -1129,7 +1117,7 @@ p {
   animation: shared-spark 4.2s ease both;
 }
 .closing .lab-intro {
-  font-family: Georgia, serif;
+  font-family: var(--serif);
   font-size: clamp(24px, 2.5vw, 34px);
   line-height: 1.35;
   letter-spacing: -0.6px;
@@ -1257,3 +1245,658 @@ p {
 
 .manifest-nav{display:flex;gap:24px;align-items:center}
 @media(max-width:680px){.manifest-nav{gap:14px}.manifest-nav .header-link{font-size:10px}.manifest-nav .header-link .arrow{display:none}}
+
+/* ───────── Art direction & motion (2026) ───────── */
+
+/* Paper grain over everything, including the orange fields. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  pointer-events: none;
+  opacity: 0.22;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .45 0 0 0 0 .42 0 0 0 0 .36 0 0 0 .55 0'/></filter><rect width='180' height='180' filter='url(%23n)'/></svg>");
+}
+em {
+  font-family: var(--serif);
+  font-style: italic;
+  letter-spacing: -0.01em;
+}
+
+/* Arrival curtain: continues the orange wipe from the gate. */
+.curtain {
+  position: fixed;
+  inset: 0;
+  z-index: 150;
+  display: grid;
+  place-items: center;
+  background: var(--orange);
+  color: var(--paper);
+  pointer-events: none;
+  animation: curtain-lift 1.15s 0.35s var(--ease-out) forwards;
+}
+.curtain .wordmark {
+  font-size: clamp(56px, 9vw, 120px);
+  letter-spacing: -0.08em;
+  animation: curtain-mark 0.9s var(--ease-out) both;
+}
+.curtain .wordmark span {
+  color: var(--ink);
+}
+@keyframes curtain-lift {
+  from {
+    clip-path: inset(0 0 0 0);
+  }
+  to {
+    clip-path: inset(0 0 100% 0);
+    visibility: hidden;
+  }
+}
+@keyframes curtain-mark {
+  from {
+    opacity: 0;
+    transform: translateY(30%);
+  }
+}
+
+/* Masked lines rise from below their own baseline. */
+.mask-line {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.14em;
+  margin-bottom: -0.14em;
+}
+.mask-line > span {
+  display: block;
+  transition: transform 1.1s var(--ease-out);
+  transition-delay: calc(var(--l, 0) * 0.1s);
+}
+.hero h1 .mask-line > span,
+.gate h1 .mask-line > span {
+  animation: rise 1.25s calc(0.75s + var(--l) * 0.12s) var(--ease-out) both;
+}
+.gate h1 .mask-line > span {
+  animation-delay: calc(0.25s + var(--l) * 0.12s);
+}
+.motion-ready [data-reveal]:not(.is-in) .mask-line > span {
+  transform: translateY(108%);
+}
+@keyframes rise {
+  from {
+    transform: translateY(108%);
+  }
+}
+
+/* Everything else marked for reveal glides in once. */
+.motion-ready [data-reveal]:not(:has(.mask-line)) {
+  transition:
+    opacity 1s var(--ease-out),
+    transform 1s var(--ease-out),
+    clip-path 1.2s var(--ease-out);
+}
+.motion-ready [data-reveal]:not(:has(.mask-line)):not(.is-in) {
+  opacity: 0;
+  transform: translateY(32px);
+}
+.motion-ready .chapter h2[data-reveal]:not(.is-in) {
+  clip-path: inset(0 0 100% 0);
+  transform: translateY(60px);
+}
+.motion-ready .chapter h2[data-reveal] {
+  clip-path: inset(-10% -10% -20% -10%);
+}
+
+/* Hero: image opens like an aperture, then drifts with the scroll. */
+.hero-heading {
+  position: relative;
+}
+.hero h1 {
+  position: relative;
+  z-index: 1;
+}
+.hero-image {
+  animation: aperture 1.6s 0.55s var(--ease-out) both;
+}
+.hero-image img {
+  animation: none;
+  transform: scale(calc(1.2 - var(--p, 0.4) * 0.3))
+    translateY(calc(var(--p, 0.4) * 5%));
+  will-change: transform;
+}
+.hero-scroll {
+  animation: fade-up 0.9s 1.8s var(--ease-out) both;
+}
+.hero-scroll::after {
+  content: "";
+  position: absolute;
+  inset: -7px;
+  border: 1px solid var(--paper);
+  border-radius: 50%;
+  animation: halo 2.6s 2.4s ease-out infinite;
+}
+.hero-aside,
+.image-caption,
+.site-header {
+  animation: fade-up 1s 1.3s var(--ease-out) both;
+}
+@keyframes aperture {
+  from {
+    clip-path: inset(22% 18% 0 18%);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+}
+@keyframes halo {
+  from {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  to {
+    transform: scale(1.5);
+    opacity: 0;
+  }
+}
+
+/* Leitmotif: three translucent discs – their overlap is the third thing. */
+.overlap {
+  position: relative;
+  aspect-ratio: 1;
+  pointer-events: none;
+  --s: calc(1 - var(--t, 1));
+}
+.overlap i {
+  position: absolute;
+  width: 62%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  mix-blend-mode: multiply;
+  transition: translate 0.25s linear;
+}
+.overlap i:nth-child(1) {
+  left: 0;
+  top: 0;
+  background: var(--orange);
+  translate: calc(var(--s) * -45%) calc(var(--s) * -20%);
+}
+.overlap i:nth-child(2) {
+  right: 0;
+  top: 0;
+  background: #f3b49b;
+  translate: calc(var(--s) * 45%) calc(var(--s) * -20%);
+}
+.overlap i:nth-child(3) {
+  left: 19%;
+  bottom: 0;
+  background: #aebca4;
+  translate: 0 calc(var(--s) * 45%);
+}
+.overlap-hero {
+  position: absolute;
+  z-index: 0;
+  right: 14.5vw;
+  top: -10px;
+  width: clamp(140px, 17vw, 280px);
+  --t: clamp(0, calc(1 - (var(--p, 0.4) - 0.5) * 4), 1);
+  animation: orbit 70s linear infinite;
+}
+.overlap-hero i {
+  animation: disc-in 1.4s var(--ease-out) both;
+}
+.overlap-hero i:nth-child(1) {
+  animation-delay: 1s;
+}
+.overlap-hero i:nth-child(2) {
+  animation-delay: 1.15s;
+}
+.overlap-hero i:nth-child(3) {
+  animation-delay: 1.3s;
+}
+.overlap-core {
+  width: min(400px, 78%);
+  margin-top: 70px;
+  --t: clamp(0, calc((var(--p, 0.75) - 0.12) * 2.6), 1);
+}
+.overlap-tools {
+  width: clamp(180px, 24vw, 380px);
+  flex-shrink: 0;
+  --t: clamp(0, calc((var(--p, 0.75) - 0.1) * 2.6), 1);
+}
+.overlap-tools i {
+  mix-blend-mode: screen;
+}
+.overlap-tools i:nth-child(2) {
+  background: #7d4a36;
+}
+.overlap-tools i:nth-child(3) {
+  background: #56604f;
+}
+@keyframes orbit {
+  to {
+    rotate: 360deg;
+  }
+}
+@keyframes disc-in {
+  from {
+    scale: 0;
+    opacity: 0;
+  }
+}
+
+/* Chapters: giant outline numerals travelling against the scroll. */
+.chapter {
+  position: relative;
+  overflow: clip;
+}
+.chapter > :not(.chapter-number) {
+  position: relative;
+  z-index: 1;
+}
+.chapter-number {
+  position: absolute;
+  z-index: 0;
+  top: 20px;
+  right: -1vw;
+  font-size: clamp(170px, 30vw, 500px);
+  font-weight: 800;
+  line-height: 0.8;
+  letter-spacing: -0.07em;
+  color: transparent;
+  -webkit-text-stroke: 1px currentColor;
+  opacity: 0.13;
+  pointer-events: none;
+  user-select: none;
+  translate: calc((0.5 - var(--p, 0.5)) * 36vw) 0;
+}
+.chapter-2 .chapter-number,
+.chapter-4 .chapter-number {
+  right: auto;
+  left: -1vw;
+  translate: calc((var(--p, 0.5) - 0.5) * 36vw) 0;
+}
+.chapter-3 .chapter-number {
+  -webkit-text-stroke-color: var(--orange);
+  opacity: 0.35;
+}
+.chapter-4 .chapter-number {
+  opacity: 0.2;
+  top: auto;
+  bottom: -30px;
+}
+
+/* Emphasised sentences fill word by word as you read. */
+.prose .emphasis.fill {
+  font-family: var(--serif);
+  font-size: clamp(28px, 2.5vw, 38px);
+  line-height: 1.22;
+  letter-spacing: -0.01em;
+  padding: 18px 0;
+}
+.fill .w {
+  opacity: clamp(
+    0.16,
+    calc((var(--p, 0.75) - 0.18) * var(--n) / 0.3 - var(--i)),
+    1
+  );
+  transition: opacity 0.2s linear;
+}
+.chapter-3 .prose .emphasis.fill {
+  font-size: clamp(34px, 3.6vw, 58px);
+  line-height: 1.12;
+  color: var(--ink);
+  margin: 20px 0;
+}
+
+/* A different rhythm per chapter. */
+.chapter-1 .chapter-heading,
+.chapter-5 .chapter-heading {
+  position: sticky;
+  top: 90px;
+  align-self: start;
+}
+.chapter-2 .chapter-layout {
+  grid-template-columns: 1fr 1.15fr;
+}
+.chapter-2 .chapter-heading {
+  order: 2;
+}
+.chapter-3 .chapter-layout {
+  grid-template-columns: 1fr;
+  gap: 50px;
+}
+.chapter-3 .chapter-heading {
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  gap: clamp(30px, 6vw, 110px);
+  align-items: end;
+}
+.chapter-3 h2 {
+  font-size: clamp(52px, 7.4vw, 124px);
+  line-height: 0.98;
+  letter-spacing: -0.055em;
+  max-width: none;
+}
+.chapter-3 .motion-figure {
+  margin: 0;
+}
+.chapter-3 .prose {
+  max-width: 780px;
+  margin-left: auto;
+  margin-right: clamp(0px, 6vw, 110px);
+}
+.chapter-4 .chapter-layout {
+  grid-template-columns: 1fr;
+  gap: 60px;
+}
+.chapter-4 .chapter-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 40px;
+}
+.chapter-4 h2 {
+  font-size: clamp(50px, 7vw, 118px);
+  line-height: 0.98;
+  letter-spacing: -0.055em;
+  max-width: 11ch;
+}
+.chapter-4 .prose {
+  margin-left: 46%;
+}
+.chapter-5 .chapter-layout {
+  grid-template-columns: 1fr 1.2fr;
+}
+
+/* Chapter 03: the conversation follows the reader's scroll. */
+.motion-scrub {
+  --t: clamp(0, calc((var(--p, 0.75) - 0.12) / 0.42), 1);
+}
+.motion-scrub .conversation-thread {
+  animation: none;
+  stroke-dashoffset: calc(600px * (1 - var(--t)));
+}
+.motion-scrub .conversation-result {
+  animation: none;
+  scale: calc(0.3 + var(--t) * 0.7);
+  opacity: clamp(0, calc(var(--t) * 4 - 3), 1);
+}
+.motion-scrub .conversation-result circle {
+  fill: var(--orange);
+}
+.motion-scrub .thread-dot {
+  opacity: calc(0.3 + var(--t) * 0.7);
+}
+
+/* Closing: orange floods in from the top, the final sentence assembles. */
+.closing {
+  position: relative;
+  isolation: isolate;
+  overflow: clip;
+  background: var(--paper);
+}
+.closing::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--orange);
+  clip-path: circle(calc(var(--q, 1) * 160%) at 50% 0%);
+}
+.closing-statement {
+  position: relative;
+  --m: clamp(0, calc((var(--p, 0.75) - 0.3) / 0.3), 1);
+}
+.closing-statement .build {
+  max-width: min(11.5em, calc(100% - clamp(200px, 27vw, 430px)));
+  font-size: clamp(44px, 7.5vw, 120px);
+  letter-spacing: -0.065em;
+  line-height: 1.06;
+  font-weight: 700;
+}
+.build .w {
+  display: inline-block;
+  --k: clamp(0, calc((var(--p, 0.75) - 0.08) * var(--n) / 0.3 - var(--i)), 1);
+  opacity: var(--k);
+  translate: 0 calc((1 - var(--k)) * 0.45em);
+  filter: blur(calc((1 - var(--k)) * 10px));
+}
+.build .w-accent {
+  color: var(--paper);
+}
+.closing-mark {
+  position: absolute;
+  right: 0;
+  top: 90px;
+  width: clamp(200px, 27vw, 430px);
+  overflow: visible;
+}
+.closing-mark circle {
+  stroke: var(--paper);
+  stroke-width: 1.2;
+  stroke-dasharray: 692;
+  stroke-dashoffset: calc(692px * (1 - var(--m)));
+  fill: var(--paper);
+  fill-opacity: calc(var(--m) * 0.07);
+}
+.closing-mark .c1 {
+  translate: calc((1 - var(--m)) * -70px) 0;
+}
+.closing-mark .c2 {
+  translate: calc((1 - var(--m)) * 70px) 0;
+}
+.closing-mark .c3 {
+  translate: 0 calc((1 - var(--m)) * 70px);
+}
+.closing-mark .spark {
+  stroke: var(--ink);
+  stroke-width: 2;
+  transform-origin: 200px 168px;
+  opacity: clamp(0, calc(var(--m) * 5 - 4), 1);
+  scale: clamp(0.2, calc(var(--m) * 5 - 4), 1);
+}
+
+/* Gate: breathing circles that lean toward the pointer, and an exit wipe. */
+.gate-art .circles span {
+  background: #f3f0e80a;
+  translate: calc(var(--mx, 0) * var(--d)) calc(var(--my, 0) * var(--d));
+  transition: translate 0.9s var(--ease-out);
+  animation: breathe 8s ease-in-out infinite alternate;
+}
+.gate-art .circles span:nth-child(1) {
+  --d: -46px;
+}
+.gate-art .circles span:nth-child(2) {
+  --d: 18px;
+  animation-delay: -3s;
+}
+.gate-art .circles span:nth-child(3) {
+  --d: 60px;
+  animation-delay: -5s;
+}
+.gate-art {
+  animation: aperture 1.4s 0.1s var(--ease-out) both;
+}
+.gate-art-word {
+  animation: fade-up 1s 0.9s var(--ease-out) both;
+}
+.gate-content > :not(h1) {
+  animation: fade-up 1s var(--ease-out) both;
+  animation-delay: 0.6s;
+}
+.gate-content > form {
+  animation-delay: 0.75s;
+}
+.gate-wipe {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: var(--orange);
+  clip-path: inset(100% 0 0 0);
+  pointer-events: none;
+  transition: clip-path 0.62s cubic-bezier(0.7, 0, 0.2, 1);
+}
+.gate.is-leaving .gate-wipe {
+  clip-path: inset(0 0 0 0);
+}
+@keyframes breathe {
+  from {
+    transform: scale(0.96) rotate(-4deg);
+  }
+  to {
+    transform: scale(1.05) rotate(6deg);
+  }
+}
+
+/* Links draw their underline. */
+.header-link {
+  background: linear-gradient(currentColor, currentColor) 0 100% / 0 1px
+    no-repeat;
+  padding-bottom: 4px;
+  transition:
+    background-size 0.45s var(--ease-out),
+    color 0.2s;
+}
+.header-link:hover {
+  background-size: 100% 1px;
+}
+
+/* Custom cursor (fine pointers only, added by script). */
+.has-cursor,
+.has-cursor * {
+  cursor: none;
+}
+.has-cursor input {
+  cursor: text;
+}
+.cursor-dot,
+.cursor-ring {
+  position: fixed;
+  left: 0;
+  top: 0;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 200;
+}
+.cursor-dot {
+  width: 6px;
+  height: 6px;
+  margin: -3px 0 0 -3px;
+  background: var(--orange);
+  box-shadow: 0 0 0 1px #f3f0e899;
+}
+.cursor-ring {
+  width: 36px;
+  height: 36px;
+  margin: -18px 0 0 -18px;
+  border: 1px solid #22251f88;
+  box-shadow: 0 0 0 1px #f3f0e855;
+  transition:
+    scale 0.35s var(--ease-out),
+    background 0.3s,
+    opacity 0.3s;
+}
+.cursor-ring.is-hot {
+  scale: 1.8;
+  background: #ed592f1f;
+  border-color: var(--orange);
+}
+.cursor-ring.is-text {
+  scale: 0.5;
+}
+.cursor-ring.is-away {
+  opacity: 0;
+}
+
+@media (max-width: 1000px) {
+  .chapter-4 .prose {
+    margin-left: 30%;
+  }
+  .overlap-hero {
+    right: 6vw;
+  }
+}
+@media (max-width: 680px) {
+  .overlap-hero {
+    top: auto;
+    bottom: -118px;
+    z-index: 2;
+    right: -8px;
+    width: 116px;
+  }
+  .chapter-number {
+    font-size: 52vw;
+    top: 30px;
+  }
+  .chapter-1 .chapter-heading,
+  .chapter-5 .chapter-heading {
+    position: static;
+  }
+  .chapter-2 .chapter-layout,
+  .chapter-5 .chapter-layout {
+    grid-template-columns: 1fr;
+  }
+  .chapter-2 .chapter-heading {
+    order: 0;
+  }
+  .chapter-3 .chapter-heading,
+  .chapter-4 .chapter-heading {
+    display: block;
+  }
+  .chapter-3 h2,
+  .chapter-4 h2 {
+    font-size: clamp(40px, 12vw, 56px);
+  }
+  .chapter-3 .prose,
+  .chapter-4 .prose {
+    margin: 0;
+  }
+  .chapter-3 .motion-figure {
+    margin-top: 30px;
+  }
+  .overlap-core {
+    width: 200px;
+    margin-top: 36px;
+  }
+  .overlap-tools {
+    width: 190px;
+    margin-top: 36px;
+  }
+  .prose .emphasis.fill,
+  .chapter-3 .prose .emphasis.fill {
+    font-size: 30px;
+  }
+  .closing-statement .build {
+    font-size: 11.6vw;
+    max-width: none;
+  }
+  .closing-mark {
+    position: static;
+    display: block;
+    width: 62%;
+    margin: 36px 0 0 auto;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .curtain,
+  .gate-wipe {
+    display: none;
+  }
+}
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-stopped {
+  overflow: clip;
+}

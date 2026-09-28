@@ -7,10 +7,13 @@ export function MotionFigure({
   children,
   caption,
   variant,
+  scrub = false,
 }: {
   children: ReactNode;
   caption: string;
   variant: "together" | "sharing" | "dialogue";
+  /** Tie the animation to scroll position instead of playing once. */
+  scrub?: boolean;
 }) {
   const ref = useRef<HTMLElement>(null);
   const [visible, setVisible] = useState(false);
@@ -36,6 +39,17 @@ export function MotionFigure({
       preference.removeEventListener("change", sync);
     };
   }, []);
+  if (scrub)
+    return (
+      <figure className={`motion-figure motion-scrub motion-${variant}`} data-scroll>
+        <div className="motion-art" aria-hidden="true">
+          {children}
+        </div>
+        <figcaption>
+          <span>{caption}</span>
+        </figcaption>
+      </figure>
+    );
   return (
     <figure
       ref={ref}
