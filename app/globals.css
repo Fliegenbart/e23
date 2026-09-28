@@ -2018,3 +2018,136 @@ html.lenis body {
 .chapter .prose .emphasis.fill {
   padding-top: 0;
 }
+
+/* Hero stage: the leitmotif at full scale instead of a photograph. */
+.hero-stage {
+  height: clamp(340px, 40vw, 640px);
+  background: transparent;
+  overflow: visible;
+  animation: none;
+  container-type: size;
+}
+.hero {
+  overflow-x: clip;
+  --s: clamp(0, calc((var(--p, 0.44) - 0.56) * 3), 1);
+}
+.stage-discs {
+  position: absolute;
+  inset: 0;
+}
+.stage-discs > * {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  border-radius: 50%;
+  translate: calc(var(--ox) + var(--s) * var(--sx) + var(--mx, 0) * var(--d))
+    calc(var(--oy) + var(--s) * var(--sy) + var(--my, 0) * var(--d));
+  transition: translate 1.2s var(--ease-out);
+}
+.stage-discs i {
+  width: 72cqh;
+  height: 72cqh;
+  margin: -36cqh 0 0 -36cqh;
+  mix-blend-mode: multiply;
+  animation:
+    disc-in 1.6s var(--ease-out) both,
+    drift 11s ease-in-out infinite alternate;
+}
+.stage-discs i:nth-child(1) {
+  background: var(--orange);
+  --ox: -23cqh;
+  --oy: -12cqh;
+  --sx: -40cqh;
+  --sy: -10cqh;
+  --d: -46px;
+  animation-delay: 0.9s, 0s;
+}
+.stage-discs i:nth-child(2) {
+  background: #f3b49b;
+  --ox: 23cqh;
+  --oy: -12cqh;
+  --sx: 40cqh;
+  --sy: -10cqh;
+  --d: 34px;
+  animation-delay: 1.05s, -4s;
+}
+.stage-discs i:nth-child(3) {
+  background: #aebca4;
+  --ox: 0cqh;
+  --oy: 16cqh;
+  --sx: 0cqh;
+  --sy: 30cqh;
+  --d: 70px;
+  animation-delay: 1.2s, -7s;
+}
+.stage-discs b {
+  width: 104cqh;
+  height: 104cqh;
+  margin: -52cqh 0 0 -52cqh;
+  border: 1px solid #22251f33;
+  animation:
+    disc-in 2s var(--ease-out) both,
+    orbit 90s linear infinite;
+}
+.stage-discs b:nth-of-type(1) {
+  --ox: -62cqh;
+  --oy: 8cqh;
+  --sx: -30cqh;
+  --sy: 0cqh;
+  --d: -20px;
+  animation-delay: 1.4s, 0s;
+}
+.stage-discs b:nth-of-type(2) {
+  --ox: 64cqh;
+  --oy: -10cqh;
+  --sx: 30cqh;
+  --sy: 0cqh;
+  --d: 20px;
+  animation-delay: 1.5s, 0s;
+}
+.stage-discs b:nth-of-type(3) {
+  width: 150cqh;
+  height: 150cqh;
+  margin: -75cqh 0 0 -75cqh;
+  border-style: dashed;
+  border-color: #22251f22;
+  --ox: 0cqh;
+  --oy: 4cqh;
+  --sx: 0cqh;
+  --sy: 20cqh;
+  --d: 10px;
+  animation-delay: 1.6s, 0s;
+}
+@keyframes drift {
+  from {
+    transform: translate(-2.5cqh, 1.5cqh) scale(0.97);
+  }
+  to {
+    transform: translate(2.5cqh, -2cqh) scale(1.03);
+  }
+}
+.hero-stage .hero-scroll {
+  background: var(--ink);
+  color: var(--paper);
+}
+@media (max-width: 680px) {
+  .hero-stage {
+    height: 320px;
+  }
+  .stage-discs i {
+    width: 56cqh;
+    height: 56cqh;
+    margin: -28cqh 0 0 -28cqh;
+  }
+  .stage-discs i:nth-child(1) {
+    --ox: -16cqh;
+    --oy: -10cqh;
+  }
+  .stage-discs i:nth-child(2) {
+    --ox: 16cqh;
+    --oy: -10cqh;
+  }
+  .stage-discs i:nth-child(3) {
+    --oy: 13cqh;
+  }
+}

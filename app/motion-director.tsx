@@ -92,6 +92,8 @@ export function MotionDirector() {
       const move = (e: PointerEvent) => {
         x = e.clientX;
         y = e.clientY;
+        root.style.setProperty("--mx", (x / window.innerWidth - 0.5).toFixed(3));
+        root.style.setProperty("--my", (y / window.innerHeight - 0.5).toFixed(3));
         const target = e.target as Element | null;
         const hot = target?.closest("a, button, label, input");
         ring.classList.toggle("is-hot", !!hot);

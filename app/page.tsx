@@ -152,16 +152,16 @@ export default async function Page({
                 Miteinander.
               </Line>
             </h1>
-            <Overlap variant="hero" track={false} />
           </div>
-          <div className="hero-image">
-            <img
-              src="/miteinander.webp"
-              alt="Orange transparente Flächen überlagern sich im Sonnenlicht und lassen gemeinsame Farbräume entstehen."
-              width="1536"
-              height="512"
-              fetchPriority="high"
-            />
+          <div className="hero-image hero-stage">
+            <div className="stage-discs" aria-hidden="true">
+              <i />
+              <i />
+              <i />
+              <b />
+              <b />
+              <b />
+            </div>
             <a
               className="hero-scroll"
               href="#anfang"
