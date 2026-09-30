@@ -1,30 +1,13 @@
 import { authenticated } from "@/lib/auth";
 import manifest from "@/lib/manifest.json";
 import { ReadingTools } from "./reading-tools";
+import { Arrow, Mark } from "./marks";
+import { safeNext } from "@/lib/next-path";
 import { TogetherArt, SharingArt, DialogueArt } from "./collaboration-art";
 import { MotionDirector } from "./motion-director";
 import { GateMotion } from "./gate-motion";
 import { Words, Line, Overlap, More, count, vars } from "./typography";
 export const dynamic = "force-dynamic";
-function Arrow({ diagonal = false }: { diagonal?: boolean }) {
-  return (
-    <svg
-      aria-hidden="true"
-      viewBox="0 0 24 24"
-      fill="none"
-      className={diagonal ? "arrow diagonal" : "arrow"}
-    >
-      <path d="M4 12h15m-6-6 6 6-6 6" stroke="currentColor" strokeWidth="1.5" />
-    </svg>
-  );
-}
-function Mark() {
-  return (
-    <span className="wordmark">
-      E23<span>.</span>
-    </span>
-  );
-}
 function Circles() {
   return (
     <div className="circles" aria-hidden="true">
@@ -43,6 +26,7 @@ export default async function Page({
   if (!access) {
     const query = await searchParams;
     const error = query.error;
+    const next = safeNext(query.next);
     return (
       <main className="gate">
         <GateMotion />
@@ -68,9 +52,7 @@ export default async function Page({
             Unser Manifest für eine gemeinsame Haltung zur Arbeit.
           </p>
           <form action="/api/login" method="post">
-            {query.next === "projekte" && (
-              <input type="hidden" name="next" value="projekte" />
-            )}
+            {next && <input type="hidden" name="next" value={next} />}
             <label htmlFor="password">Passwort</label>
             <div className="password-row">
               <input
@@ -140,6 +122,9 @@ export default async function Page({
           </a>
           <a className="header-link" href="/projekte">
             Projekte & Ideen <Arrow diagonal />
+          </a>
+          <a className="header-link" href="/blog">
+            Blog <Arrow diagonal />
           </a>
         </nav>
       </header>
