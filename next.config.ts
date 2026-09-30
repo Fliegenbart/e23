@@ -1,6 +1,11 @@
 import type { NextConfig } from "next";
 const config: NextConfig = {
   poweredByHeader: false,
+  // Blog posts are read from disk at request time.
+  outputFileTracingIncludes: {
+    "/blog": ["./content/blog/**/*"],
+    "/blog/*": ["./content/blog/**/*"],
+  },
   async headers() {
     return [
       {

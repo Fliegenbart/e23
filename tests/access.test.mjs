@@ -69,3 +69,42 @@ test("manifest never appears in client JavaScript", () => {
       !readFileSync(`.next/static/chunks/${file}`, "utf8").includes(phrase),
     );
 });
+test("blog is protected and returns to the requested post after sign-in", async () => {
+  const slug = "wenn-intelligenz-zur-commodity-wird";
+  const article = "Reproduzierbare Intelligenz verliert ihren Knappheitswert";
+  for (const path of ["/blog", `/blog/${slug}`]) {
+    const r = await fetch(`${base}${path}`, { redirect: "manual" });
+    assert.notEqual(r.status, 200);
+    assert(!(await r.text()).includes(article));
+  }
+  const login = await fetch(`${base}/api/login`, {
+    method: "POST",
+    headers: {
+      Origin: base,
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
+    body: new URLSearchParams({
+      password: process.env.SITE_PASSWORD,
+      next: `blog/${slug}`,
+    }),
+    redirect: "manual",
+  });
+  assert.equal(new URL(login.headers.get("location")).pathname, `/blog/${slug}`);
+  const cookie = login.headers.get("set-cookie").split(";")[0];
+  const page = await fetch(`${base}/blog/${slug}`, { headers: { Cookie: cookie } });
+  assert((await page.text()).includes(article));
+  const evil = await post("/api/login", process.env.SITE_PASSWORD);
+  assert.equal(new URL(evil.headers.get("location")).pathname, "/");
+});
+test("login ignores next targets outside the site", async () => {
+  const r = await fetch(`${base}/api/login`, {
+    method: "POST",
+    headers: {
+      Origin: base,
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
+    body: new URLSearchParams({ password: "wrong", next: "//example.com" }),
+    redirect: "manual",
+  });
+  assert.equal(r.headers.get("location").includes("example.com"), false);
+});

@@ -38,3 +38,20 @@ No analytics, third-party embeds or external font calls. The image is an AI-gene
 Data lives in Neon Postgres (resource `e23-projekte`, Frankfurt, free plan), accessed only by authenticated server routes. Add the sensitive `DATABASE_URL` to each deployed environment that needs the workspace. Production and development are connected; preview needs its own configuration. No project content is stored solely in the browser. Only the last comment display name is remembered locally.
 
 Provision an empty database once with `node scripts/setup-workspace.mjs`. The script creates tables/indexes without seeding content. For integration verification, run `TEST_BASE_URL=http://127.0.0.1:3010 node --test tests/*.test.mjs` against a running production build. The workspace test creates its own record and deletes only that UUID in a finally block. It checks auth, origin restrictions, validation, persistence, task progress, comments, stale-write conflicts and archive/restore.
+
+## Blog
+
+Interner Blog unter `/blog`, geschützt wie der Rest der Seite. Jeder Beitrag ist eine Markdown-Datei in `content/blog/<slug>.md`:
+
+```markdown
+---
+title: Titel des Beitrags
+dek: Unterzeile, erscheint unter dem Titel und in der Übersicht
+date: 2026-09-30
+---
+
+Absätze, `## Zwischenüberschriften`, `> Zitate` und **fett**.
+Ein Absatz, der komplett fett ist, wird als großer Kernsatz gesetzt.
+```
+
+Der Dateiname ergibt die URL (`/blog/<slug>`, nur Kleinbuchstaben, Ziffern und Bindestriche). Neue Beiträge erscheinen nach dem nächsten Deployment.
