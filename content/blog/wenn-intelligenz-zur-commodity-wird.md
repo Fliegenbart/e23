@@ -192,7 +192,7 @@ Eine Welt, in der Intelligenz reichlich vorhanden ist.
 
 Und in der deshalb etwas anderes knapp wird:
 
-Urteilskraft. Vertrauen. Verantwortung. Beziehungen. Zugang. Eigentum. gute Prozesse. Und die Fähigkeit, aus nahezu unbegrenzter Intelligenz etwas Sinnvolles zu machen.
+Urteilskraft. Vertrauen. Verantwortung. Beziehungen. Zugang. Eigentum. Gute Prozesse. Und die Fähigkeit, aus nahezu unbegrenzter Intelligenz etwas Sinnvolles zu machen.
 
 Das wäre ziemlich hegelianisch.
 
