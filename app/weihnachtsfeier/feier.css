@@ -1,6 +1,9 @@
 /* ───────── Weihnachtsfeier ───────── */
 .feier {
-  padding: 0 var(--gutter) 120px;
+  padding: 0 var(--gutter);
+}
+.feier-list {
+  padding-bottom: 120px;
 }
 .feier-hero {
   position: relative;
@@ -77,8 +80,7 @@
   grid-template-columns: repeat(3, 1fr);
   gap: 30px clamp(30px, 5vw, 90px);
   margin: 0;
-  padding: 54px 0;
-  border-bottom: 1px solid var(--line);
+  padding: 54px 0 0;
 }
 .feier-facts .eyebrow {
   color: var(--orange);
@@ -118,6 +120,7 @@
 }
 .feier-footer {
   padding: 34px var(--gutter);
+  border-top: 1px solid #3a3d36;
   background: var(--ink);
   color: var(--paper);
   font-size: 13px;
@@ -134,52 +137,44 @@
   color: var(--orange);
 }
 .feier-about {
-  display: grid;
-  grid-template-columns: 1fr 1.2fr;
-  gap: 40px clamp(30px, 6vw, 110px);
-  padding: clamp(54px, 7vw, 100px) 0 0;
-}
-.feier-about .eyebrow {
-  color: var(--orange);
+  margin: clamp(54px, 7vw, 100px) calc(var(--gutter) * -1) 0;
+  padding: clamp(50px, 7vw, 110px) var(--gutter);
+  background: var(--orange);
+  color: var(--paper);
 }
 .feier-about h2 {
-  margin: 14px 0 24px;
-  font-size: clamp(34px, 4.4vw, 68px);
-  font-weight: 700;
-  line-height: 1.02;
-  letter-spacing: -0.05em;
-}
-.feier-about p {
-  max-width: 520px;
-  margin: 0;
-  font-size: 17px;
-  line-height: 1.7;
+  margin: 22px 0 clamp(40px, 6vw, 90px);
+  font-size: clamp(44px, 9vw, 150px);
+  font-weight: 800;
+  line-height: 0.96;
+  letter-spacing: -0.06em;
 }
 .feier-about ol {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px clamp(24px, 4vw, 70px);
   list-style: none;
   margin: 0;
   padding: 0;
-  border-top: 1px solid var(--line);
 }
 .feier-about li {
-  display: grid;
-  grid-template-columns: 60px 1fr;
-  gap: 16px;
-  padding: 26px 0;
-  border-bottom: 1px solid var(--line);
+  padding-top: 20px;
+  border-top: 1px solid rgb(243 240 232 / 0.55);
   font-family: var(--serif);
-  font-size: clamp(24px, 2.5vw, 36px);
-  line-height: 1.15;
+  font-size: clamp(26px, 2.7vw, 42px);
+  line-height: 1.1;
 }
 .feier-about li span {
-  color: var(--orange);
+  display: block;
+  margin-bottom: 18px;
+  font-family: Manrope, Arial, sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
 }
 @media (max-width: 760px) {
-  .feier-about {
+  .feier-about ol {
     grid-template-columns: 1fr;
-  }
-  .feier-about li {
-    grid-template-columns: 40px 1fr;
   }
   .feier-facts {
     grid-template-columns: 1fr;
@@ -219,8 +214,8 @@
   display: grid;
   grid-template-columns: 1fr 1.2fr;
   gap: 40px clamp(30px, 6vw, 110px);
-  margin-top: clamp(54px, 7vw, 100px);
-  padding: clamp(30px, 5vw, 70px);
+  margin: 0 calc(var(--gutter) * -1);
+  padding: clamp(50px, 7vw, 110px) var(--gutter);
   background: var(--ink);
   color: var(--paper);
   scroll-margin-top: 20px;
