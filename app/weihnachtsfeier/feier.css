@@ -373,6 +373,46 @@
 .feier-table a:hover {
   color: var(--orange);
 }
+.feier-list-lead {
+  max-width: 640px;
+  font-size: 17px;
+  line-height: 1.7;
+}
+.feier-list-lead a {
+  border-bottom: 1px solid var(--orange);
+}
+.feier-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px clamp(30px, 5vw, 80px);
+  margin: 40px 0 10px;
+}
+.feier-stats dd {
+  margin: 0;
+  font-family: var(--serif);
+  font-size: clamp(48px, 6vw, 88px);
+  line-height: 1;
+  color: var(--orange);
+}
+.feier-stats dt {
+  margin-top: 6px;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.feier-table input[type="checkbox"] {
+  width: 22px;
+  height: 22px;
+  accent-color: var(--orange);
+  cursor: pointer;
+}
+.feier-table tr.is-there td:nth-child(2) {
+  font-weight: 700;
+}
+.feier-list-error {
+  color: var(--orange);
+}
 @media (max-width: 760px) {
   .feier-signup {
     grid-template-columns: 1fr;

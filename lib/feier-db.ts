@@ -9,6 +9,7 @@ export type Anmeldung = {
   guests: number;
   note: string;
   lang: string;
+  attended: boolean;
   created_at: string;
   updated_at: string;
 };
@@ -20,7 +21,7 @@ let ready: Promise<unknown> | null = null;
 /** The table is created on first use; no separate setup step is needed. */
 function schema() {
   const sql = db();
-  ready ??= sql`CREATE TABLE IF NOT EXISTS e23_feier_anmeldungen (id uuid PRIMARY KEY, name varchar(80) NOT NULL, email varchar(200) NOT NULL UNIQUE, guests integer NOT NULL CHECK(guests BETWEEN 1 AND 5), note varchar(500) NOT NULL DEFAULT '', lang text NOT NULL DEFAULT 'de', created_at timestamptz NOT NULL DEFAULT now(), updated_at timestamptz NOT NULL DEFAULT now())`.catch(
+  ready ??= sql`CREATE TABLE IF NOT EXISTS e23_feier_anmeldungen (id uuid PRIMARY KEY, name varchar(80) NOT NULL, email varchar(200) NOT NULL UNIQUE, guests integer NOT NULL CHECK(guests BETWEEN 1 AND 5), note varchar(500) NOT NULL DEFAULT '', lang text NOT NULL DEFAULT 'de', attended boolean NOT NULL DEFAULT false, created_at timestamptz NOT NULL DEFAULT now(), updated_at timestamptz NOT NULL DEFAULT now())`.catch(
     (error) => {
       ready = null;
       throw error;
@@ -47,4 +48,12 @@ export async function listAnmeldungen(): Promise<Anmeldung[]> {
   await schema();
   const sql = db();
   return (await sql`SELECT * FROM e23_feier_anmeldungen ORDER BY created_at`) as Anmeldung[];
+}
+
+/** Tick off who actually came. Returns false if the entry no longer exists. */
+export async function setAttended(id: string, attended: boolean) {
+  await schema();
+  const sql = db();
+  const rows = await sql`UPDATE e23_feier_anmeldungen SET attended=${attended} WHERE id=${id} RETURNING id`;
+  return rows.length > 0;
 }
