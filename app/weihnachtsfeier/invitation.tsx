@@ -15,20 +15,18 @@ const copy = {
     eyebrow: "Einladung · Advent 2026",
     title: "Weihnachtsfeier.",
     accent: "Miteinander.",
-    lead: "Ein Nachmittag für Austausch und Begegnung – an der Esplanade 23. Feiern, kennenlernen, gemeinsam weiterdenken.",
-    aboutEyebrow: "Worum es geht",
+    lead: "Ein Nachmittag für Austausch und Begegnung.",
+    aboutEyebrow: "Austausch · Netzwerken · Weiterdenken",
     aboutTitle: "Wie wollen wir arbeiten?",
-    about:
-      "KI stellt gerade vieles infrage: unsere Arbeit, unser Selbstbild, was wir für selbstverständlich hielten. Darüber wollen wir nicht allein nachdenken, sondern miteinander. Dafür nehmen wir uns Zeit: für Gespräche, Austausch und neue Kontakte.",
     questions: [
-      "Wie verändert KI unser Arbeiten – und unser Bild von uns selbst?",
-      "Wie wollen wir arbeiten, wenn alles hinterfragt wird?",
-      "Bekommen wir mehr Zeit für das Wesentliche: den Austausch?",
+      "Was macht KI mit unserer Arbeit – und mit uns?",
+      "Wie arbeiten, wenn alles hinterfragt wird?",
+      "Mehr Zeit fürs Wesentliche: Austausch?",
     ],
     footer: "Esplanade 23 · 14.12.2026 · ab 16:00 Uhr",
     signupEyebrow: "Anmeldung",
     signupTitle: "Bist du dabei?",
-    signupLead: "Sag kurz Bescheid, damit wir planen können.",
+    signupLead: "Sag kurz Bescheid.",
     signup: {
       name: "Name",
       email: "E-Mail",
@@ -37,9 +35,9 @@ const copy = {
       notePlaceholder: "Etwas, das wir wissen sollten?",
       submit: "Anmelden",
       sending: "Wird gesendet …",
-      privacy: "Wir nutzen deine Angaben nur für die Planung der Feier.",
+      privacy: "Deine Angaben nutzen wir nur für die Feier.",
       doneTitle: "Danke, du bist angemeldet.",
-      done: "Wir freuen uns auf dich. Wenn sich etwas ändert, melde dich einfach noch einmal mit derselben E-Mail-Adresse an.",
+      done: "Wir freuen uns auf dich.",
       errors: {
         invalid: "Bitte prüfe deine Angaben.",
         full: "Die Anmeldung ist geschlossen. Melde dich bitte direkt bei uns.",
@@ -65,20 +63,18 @@ const copy = {
     eyebrow: "Invitation · Advent 2026",
     title: "Christmas party.",
     accent: "Together.",
-    lead: "An afternoon for conversation and new connections – at Esplanade 23. Celebrate, meet people, think ahead together.",
-    aboutEyebrow: "What it is about",
+    lead: "An afternoon for conversation and new connections.",
+    aboutEyebrow: "Exchange · Networking · Thinking ahead",
     aboutTitle: "How do we want to work?",
-    about:
-      "AI is calling a lot into question: our work, how we see ourselves, things we took for granted. We would rather think that through together than alone. That is what this afternoon is for: conversations, exchange and new contacts.",
     questions: [
-      "How is AI changing the way we work – and the way we see ourselves?",
-      "How do we want to work when everything is being questioned?",
-      "Will we gain more time for what matters most: talking to each other?",
+      "What is AI doing to our work – and to us?",
+      "How do we work when everything is in question?",
+      "More time for what matters: each other?",
     ],
     footer: "Esplanade 23 · 14 December 2026 · from 4 pm",
     signupEyebrow: "Sign up",
     signupTitle: "Will you join us?",
-    signupLead: "Let us know briefly so we can plan.",
+    signupLead: "Just let us know.",
     signup: {
       name: "Name",
       email: "Email",
@@ -87,9 +83,9 @@ const copy = {
       notePlaceholder: "Anything we should know?",
       submit: "Sign up",
       sending: "Sending …",
-      privacy: "We only use your details to plan the party.",
+      privacy: "We use your details for the party only.",
       doneTitle: "Thank you, you are signed up.",
-      done: "We look forward to seeing you. If anything changes, just sign up again with the same email address.",
+      done: "We look forward to seeing you.",
       errors: {
         invalid: "Please check your details.",
         full: "Sign-up is closed. Please get in touch with us directly.",
@@ -163,11 +159,8 @@ export function Invitation({ lang }: { lang: Lang }) {
           </div>
         </dl>
         <section className="feier-about" data-reveal>
-          <div>
-            <span className="eyebrow">{t.aboutEyebrow}</span>
-            <h2>{t.aboutTitle}</h2>
-            <p>{t.about}</p>
-          </div>
+          <span className="eyebrow">{t.aboutEyebrow}</span>
+          <h2>{t.aboutTitle}</h2>
           <ol>
             {t.questions.map((q, i) => (
               <li key={q}>
