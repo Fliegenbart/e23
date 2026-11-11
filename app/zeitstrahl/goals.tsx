@@ -43,6 +43,8 @@ export function Goals({
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
   const [active, setActive] = useState<string | null>(null);
+  const [carried, setCarried] = useState<string | null>(null);
+  const [dropOn, setDropOn] = useState<string | null>(null);
   const dialog = useRef<HTMLDialogElement>(null);
 
   const vision = goals.find((g) => g.kind === "vision");
@@ -101,6 +103,38 @@ export function Goals({
       setBusy(false);
     }
   }
+  /** Moves steps to another date, one after the other, then reloads once. */
+  async function reschedule(moving: Goal[], due: string) {
+    setBusy(true);
+    try {
+      for (const step of moving) {
+        if (step.due === due) continue;
+        const r = await fetch("/api/goals", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            action: "update",
+            id: step.id,
+            version: step.version,
+            due,
+            body: step.body,
+            owner: step.owner,
+          }),
+        });
+        if (!r.ok)
+          throw new Error((await r.json().catch(() => ({}))).error || "");
+      }
+    } catch (e) {
+      window.alert(
+        e instanceof Error && e.message
+          ? e.message
+          : "Verschieben fehlgeschlagen.",
+      );
+    } finally {
+      setBusy(false);
+      await reload();
+    }
+  }
   function save(ev: React.FormEvent) {
     ev.preventDefault();
     if (!draft) return;
@@ -149,6 +183,11 @@ export function Goals({
         </div>
       </div>
 
+      <div className="goal-scroll">
+        <div
+          className="goal-wide"
+          style={{ "--cards": stages.length + 1 } as React.CSSProperties}
+        >
       {journey && (
         <div className="goal-journey">
           <svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
@@ -221,7 +260,20 @@ export function Goals({
               key={stage.due}
               id={`etappe-${stage.due}`}
               onMouseEnter={() => setActive(stage.due)}
-              className={`goal-stage${complete ? " is-complete" : ""}${late ? " is-late" : ""}${active === stage.due ? " is-active" : ""}`}
+              onDragOver={(e) => {
+                if (!carried) return;
+                e.preventDefault();
+                setDropOn(stage.due);
+              }}
+              onDragLeave={() => setDropOn((d) => (d === stage.due ? null : d))}
+              onDrop={(e) => {
+                e.preventDefault();
+                const step = steps.find((s) => s.id === carried);
+                setCarried(null);
+                setDropOn(null);
+                if (step) reschedule([step], stage.due);
+              }}
+              className={`goal-stage${complete ? " is-complete" : ""}${late ? " is-late" : ""}${active === stage.due ? " is-active" : ""}${dropOn === stage.due ? " is-drop" : ""}`}
             >
               <header>
                 <span className="goal-node" aria-hidden="true">
@@ -234,11 +286,43 @@ export function Goals({
                 <span className="goal-count">
                   {late ? "überfällig · " : ""}
                   {done}/{stage.steps.length}
+                  <label className="goal-move">
+                    Verschieben
+                    <input
+                      type="date"
+                      value={stage.due}
+                      disabled={busy}
+                      aria-label={`Etappe ${i + 1} auf ein anderes Datum verschieben`}
+                      onClick={(e) => {
+                        try {
+                          e.currentTarget.showPicker();
+                        } catch {
+                          // Older browsers: the field itself still works.
+                        }
+                      }}
+                      onChange={(e) => {
+                        if (e.target.value) reschedule(stage.steps, e.target.value);
+                      }}
+                    />
+                  </label>
                 </span>
               </header>
               <ul>
                 {stage.steps.map((step) => (
-                  <li key={step.id} className={step.done ? "is-done" : ""}>
+                  <li
+                    key={step.id}
+                    className={`${step.done ? "is-done" : ""}${carried === step.id ? " is-carried" : ""}`}
+                    draggable={!busy}
+                    onDragStart={(e) => {
+                      e.dataTransfer.effectAllowed = "move";
+                      e.dataTransfer.setData("text/plain", step.body);
+                      setCarried(step.id);
+                    }}
+                    onDragEnd={() => {
+                      setCarried(null);
+                      setDropOn(null);
+                    }}
+                  >
                     <input
                       type="checkbox"
                       checked={step.done}
@@ -297,6 +381,12 @@ export function Goals({
           </button>
         </li>
       </ol>
+        </div>
+      </div>
+      <p className="goal-tip">
+        Schritte lassen sich in eine andere Etappe ziehen. Das Datum einer
+        ganzen Etappe ändert sich über „Verschieben“.
+      </p>
 
       <dialog
         ref={dialog}

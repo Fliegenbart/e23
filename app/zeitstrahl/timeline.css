@@ -1375,3 +1375,71 @@
     transition: none;
   }
 }
+
+/* Target picture scrolls sideways once there are more stages than fit. */
+.goal-scroll {
+  overflow-x: auto;
+  margin: 0 calc(var(--gutter) * -1);
+  padding: 0 var(--gutter) 12px;
+  scrollbar-color: #ffffff55 transparent;
+}
+.goal-wide {
+  min-width: calc(var(--cards) * 300px);
+}
+.goal-path {
+  overflow: visible;
+}
+.goal-tip {
+  margin-top: 18px;
+  font-size: 12px;
+  opacity: 0.55;
+}
+.goal-stage ul li[draggable="true"] {
+  cursor: grab;
+}
+.goal-stage ul li.is-carried {
+  opacity: 0.35;
+}
+.goal-stage.is-drop {
+  border-color: var(--orange);
+  background: #ed592f1f;
+}
+.goal-count {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+.goal-move {
+  position: relative;
+  padding: 4px 10px;
+  border: 1px solid #ffffff44;
+  border-radius: 999px;
+  color: var(--paper);
+  cursor: pointer;
+  opacity: 0.9;
+}
+.goal-move:hover {
+  border-color: var(--paper);
+}
+.goal-move input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  opacity: 0;
+  cursor: pointer;
+  color-scheme: dark;
+}
+@media (max-width: 760px) {
+  .goal-scroll {
+    overflow: visible;
+    margin: 0;
+    padding: 0;
+  }
+  .goal-wide {
+    min-width: 0;
+  }
+  .goal-tip {
+    display: none;
+  }
+}
