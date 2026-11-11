@@ -1,20 +1,15 @@
-import { redirect } from "next/navigation";
-import { authenticated } from "@/lib/auth";
 import { feier } from "@/lib/feier";
-import { BlogFooter } from "../blog/blog-chrome";
-import { Arrow } from "../marks";
+import { Arrow, Mark } from "../marks";
 import { MotionDirector } from "../motion-director";
-import { SiteHeader } from "../site-header";
-import { Line, vars } from "../typography";
+import { Line } from "../typography";
 import { Countdown } from "./countdown";
-import "../blog/blog.css";
+import { Network } from "./network";
 import "./feier.css";
 
 export type Lang = "de" | "en";
 
 const copy = {
   de: {
-    path: "weihnachtsfeier",
     other: { href: "/weihnachtsfeier/en", label: "English", lang: "en" },
     eyebrow: "Einladung · Advent 2026",
     title: "Weihnachtsfeier.",
@@ -29,6 +24,7 @@ const copy = {
       "Wie wollen wir arbeiten, wenn alles hinterfragt wird?",
       "Bekommen wir mehr Zeit für das Wesentliche: den Austausch?",
     ],
+    footer: "Esplanade 23 · 14.12.2026 · ab 16:00 Uhr",
     when: "Wann",
     date: "Montag, 14. Dezember 2026",
     time: "ab 16:00 Uhr",
@@ -44,7 +40,6 @@ const copy = {
     },
   },
   en: {
-    path: "weihnachtsfeier/en",
     other: { href: "/weihnachtsfeier", label: "Deutsch", lang: "de" },
     eyebrow: "Invitation · Advent 2026",
     title: "Christmas party.",
@@ -59,6 +54,7 @@ const copy = {
       "How do we want to work when everything is being questioned?",
       "Will we gain more time for what matters most: talking to each other?",
     ],
+    footer: "Esplanade 23 · 14 December 2026 · from 4 pm",
     when: "When",
     date: "Monday, 14 December 2026",
     time: "from 4 pm",
@@ -75,44 +71,22 @@ const copy = {
   },
 };
 
-/** Fixed positions, so the snowfall is identical on server and client. */
-const flakes = Array.from({ length: 28 }, (_, i) => ({
-  x: (i * 37) % 100,
-  size: 3 + ((i * 7) % 6),
-  time: 11 + ((i * 5) % 10),
-  delay: -((i * 13) % 20),
-  sway: ((i * 11) % 9) - 4,
-}));
-
-export async function Invitation({ lang }: { lang: Lang }) {
+/** Public microsite: no session check, and no links into the protected site. */
+export function Invitation({ lang }: { lang: Lang }) {
   const t = copy[lang];
-  if (!(await authenticated())) redirect(`/?next=${t.path}`);
   return (
     <>
       <MotionDirector />
-      <SiteHeader current="/weihnachtsfeier" />
+      <header className="feier-header">
+        <Mark />
+        <a className="feier-lang" href={t.other.href} lang={t.other.lang} hrefLang={t.other.lang}>
+          {t.other.label} <Arrow diagonal />
+        </a>
+      </header>
       <main className="feier" lang={lang}>
         <section className="feier-hero">
-          <div className="feier-snow" aria-hidden="true">
-            {flakes.map((f, i) => (
-              <i
-                key={i}
-                style={vars({
-                  x: `${f.x}%`,
-                  s: `${f.size}px`,
-                  t: `${f.time}s`,
-                  d: `${f.delay}s`,
-                  w: `${f.sway}vw`,
-                })}
-              />
-            ))}
-          </div>
-          <div className="feier-top">
-            <span className="eyebrow">{t.eyebrow}</span>
-            <a className="feier-lang" href={t.other.href} lang={t.other.lang} hrefLang={t.other.lang}>
-              {t.other.label} <Arrow diagonal />
-            </a>
-          </div>
+          <Network />
+          <span className="eyebrow">{t.eyebrow}</span>
           <h1>
             <Line index={0}>{t.title}</Line>
             <Line index={1}>
@@ -160,7 +134,10 @@ export async function Invitation({ lang }: { lang: Lang }) {
           </ol>
         </section>
       </main>
-      <BlogFooter />
+      <footer className="feier-footer">
+        <Mark />
+        <span>{t.footer}</span>
+      </footer>
     </>
   );
 }

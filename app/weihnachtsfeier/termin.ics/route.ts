@@ -1,14 +1,9 @@
 import { NextResponse } from "next/server";
-import { authenticated } from "@/lib/auth";
 import { feier } from "@/lib/feier";
-
-export const dynamic = "force-dynamic";
 
 const stamp = (iso: string) => iso.replace(/[-:]/g, "").replace(/\.\d+/, "");
 
-export async function GET() {
-  if (!(await authenticated()))
-    return new NextResponse("Unauthorized", { status: 401 });
+export function GET() {
   const ics = [
     "BEGIN:VCALENDAR",
     "VERSION:2.0",
@@ -28,7 +23,6 @@ export async function GET() {
     headers: {
       "Content-Type": "text/calendar; charset=utf-8",
       "Content-Disposition": 'attachment; filename="e23-weihnachtsfeier.ics"',
-      "Cache-Control": "private, no-store",
-    },
+          },
   });
 }

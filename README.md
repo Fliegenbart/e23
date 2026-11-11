@@ -58,4 +58,4 @@ Der Dateiname ergibt die URL (`/blog/<slug>`, nur Kleinbuchstaben, Ziffern und B
 
 ## Weihnachtsfeier
 
-Einladung unter `/weihnachtsfeier` (englisch: `/weihnachtsfeier/en`), geschützt wie der Rest der Seite. Datum, Ort und Kalendereintrag (`/weihnachtsfeier/termin.ics`) kommen aus `lib/feier.ts`, die Texte beider Sprachen aus `app/weihnachtsfeier/invitation.tsx`. Ein Ende der Feier ist nicht festgelegt; der Kalendereintrag blockt bis 22:00 Uhr.
+Öffentliche Microsite unter `/weihnachtsfeier` (englisch: `/weihnachtsfeier/en`) – bewusst **ohne Passwort** und ohne Links in den geschützten Bereich. Sie ist auch aus der internen Navigation nicht verlinkt. Datum, Ort und Kalendereintrag (`/weihnachtsfeier/termin.ics`) kommen aus `lib/feier.ts`, die Texte beider Sprachen aus `app/weihnachtsfeier/invitation.tsx`. Ein Ende der Feier ist nicht festgelegt; der Kalendereintrag blockt bis 22:00 Uhr. Im Hero treibt Schnee, dessen Flocken sich zu einem Netz verbinden (`network.tsx`, Canvas, respektiert `prefers-reduced-motion`).

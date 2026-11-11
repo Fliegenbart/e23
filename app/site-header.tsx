@@ -7,7 +7,6 @@ const links = [
   { href: "/projekte", label: "Projekte & Ideen" },
   { href: "/zeitstrahl", label: "Zeitstrahl" },
   { href: "/blog", label: "Blog" },
-  { href: "/weihnachtsfeier", label: "Weihnachtsfeier" },
 ];
 
 /** Header for the pages behind the manifest; marks the current section. */
