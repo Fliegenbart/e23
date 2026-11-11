@@ -3,6 +3,7 @@ import { Arrow, Mark } from "../marks";
 import { MotionDirector } from "../motion-director";
 import { Line } from "../typography";
 import { Countdown } from "./countdown";
+import { LegalLinks } from "./legal";
 import { Network } from "./network";
 import { Signup } from "./signup";
 import "./feier.css";
@@ -36,6 +37,8 @@ const copy = {
       submit: "Anmelden",
       sending: "Wird gesendet …",
       privacy: "Deine Angaben nutzen wir nur für die Feier.",
+      privacyLink: "Datenschutz",
+      privacyHref: "/weihnachtsfeier/datenschutz",
       doneTitle: "Danke, du bist angemeldet.",
       done: "Wir freuen uns auf dich.",
       errors: {
@@ -84,6 +87,8 @@ const copy = {
       submit: "Sign up",
       sending: "Sending …",
       privacy: "We use your details for the party only.",
+      privacyLink: "Privacy",
+      privacyHref: "/weihnachtsfeier/en/datenschutz",
       doneTitle: "Thank you, you are signed up.",
       done: "We look forward to seeing you.",
       errors: {
@@ -182,6 +187,7 @@ export function Invitation({ lang }: { lang: Lang }) {
       <footer className="feier-footer">
         <Mark />
         <span>{t.footer}</span>
+        <LegalLinks lang={lang} />
       </footer>
     </>
   );
