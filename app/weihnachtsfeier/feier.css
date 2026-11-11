@@ -1,0 +1,199 @@
+/* ───────── Weihnachtsfeier ───────── */
+.feier {
+  padding: 0 var(--gutter) 120px;
+}
+.feier-hero {
+  position: relative;
+  overflow: clip;
+  padding: clamp(50px, 8vw, 120px) clamp(24px, 5vw, 80px);
+  background: var(--ink);
+  color: var(--paper);
+}
+.feier-hero > :not(.feier-network) {
+  position: relative;
+  z-index: 1;
+}
+.feier-hero .eyebrow {
+  color: #f59574;
+}
+.feier-hero h1 {
+  margin: 26px 0 30px;
+  font-size: clamp(30px, 8.4vw, 140px);
+  font-weight: 800;
+  line-height: 0.98;
+  letter-spacing: -0.065em;
+}
+.feier-hero h1 em {
+  color: var(--orange);
+  font-weight: 400;
+  letter-spacing: -0.03em;
+}
+.feier-hero h1 .mask-line > span {
+  animation: rise 1.2s calc(0.2s + var(--l) * 0.12s) var(--ease-out) both;
+}
+.feier-hero p {
+  max-width: 640px;
+  margin: 0;
+  font-family: var(--serif);
+  font-size: clamp(22px, 2vw, 30px);
+  line-height: 1.3;
+  color: #c9c7bd;
+}
+.feier-network {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+.feier-countdown {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px clamp(24px, 4vw, 64px);
+  margin: clamp(44px, 6vw, 80px) 0 0;
+}
+.feier-countdown dd {
+  margin: 0;
+  font-family: var(--serif);
+  font-size: clamp(48px, 7vw, 104px);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+.feier-countdown dt {
+  margin-top: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #c9c7bd;
+}
+.feier-hero .feier-now {
+  margin-top: clamp(44px, 6vw, 80px);
+  font-size: clamp(34px, 4.4vw, 64px);
+  color: var(--orange);
+}
+.feier-facts {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px clamp(30px, 5vw, 90px);
+  margin: 0;
+  padding: 54px 0;
+  border-bottom: 1px solid var(--line);
+}
+.feier-facts .eyebrow {
+  color: var(--orange);
+}
+.feier-facts dd {
+  margin: 14px 0 0;
+  font-size: clamp(24px, 2.4vw, 36px);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.035em;
+}
+.feier-facts .feier-sub {
+  margin-top: 6px;
+  font-family: var(--serif);
+  font-size: 22px;
+  font-weight: 400;
+  letter-spacing: 0;
+  color: var(--muted);
+}
+.feier-cal {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  border-bottom: 2px solid var(--orange);
+  padding-bottom: 4px;
+}
+.feier-cal:hover {
+  color: var(--orange);
+}
+.feier-header,
+.feier-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  padding: 24px var(--gutter) 38px;
+}
+.feier-footer {
+  padding: 34px var(--gutter);
+  background: var(--ink);
+  color: var(--paper);
+  font-size: 13px;
+}
+.feier-lang {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  border-bottom: 1px solid currentColor;
+  padding-bottom: 3px;
+}
+.feier-lang:hover {
+  color: var(--orange);
+}
+.feier-about {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 40px clamp(30px, 6vw, 110px);
+  padding: clamp(54px, 7vw, 100px) 0 0;
+}
+.feier-about .eyebrow {
+  color: var(--orange);
+}
+.feier-about h2 {
+  margin: 14px 0 24px;
+  font-size: clamp(34px, 4.4vw, 68px);
+  font-weight: 700;
+  line-height: 1.02;
+  letter-spacing: -0.05em;
+}
+.feier-about p {
+  max-width: 520px;
+  margin: 0;
+  font-size: 17px;
+  line-height: 1.7;
+}
+.feier-about ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--line);
+}
+.feier-about li {
+  display: grid;
+  grid-template-columns: 60px 1fr;
+  gap: 16px;
+  padding: 26px 0;
+  border-bottom: 1px solid var(--line);
+  font-family: var(--serif);
+  font-size: clamp(24px, 2.5vw, 36px);
+  line-height: 1.15;
+}
+.feier-about li span {
+  color: var(--orange);
+}
+@media (max-width: 760px) {
+  .feier-about {
+    grid-template-columns: 1fr;
+  }
+  .feier-about li {
+    grid-template-columns: 40px 1fr;
+  }
+  .feier-facts {
+    grid-template-columns: 1fr;
+    padding: 36px 0;
+  }
+  .feier-countdown {
+    gap: 16px;
+    justify-content: space-between;
+  }
+  .feier-countdown dd {
+    font-size: 40px;
+  }
+  .feier-countdown dt {
+    font-size: 9px;
+    letter-spacing: 0.1em;
+  }
+}
