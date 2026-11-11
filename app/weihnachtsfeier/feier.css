@@ -482,3 +482,15 @@
     flex-basis: 100%;
   }
 }
+.feier-delete {
+  padding: 0 0 2px;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  background: none;
+  font-size: 13px;
+  color: var(--muted);
+}
+.feier-delete:hover {
+  border-bottom-color: var(--orange);
+  color: var(--orange);
+}

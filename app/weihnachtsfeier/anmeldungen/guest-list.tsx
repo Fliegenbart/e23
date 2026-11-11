@@ -42,6 +42,27 @@ export function GuestList({ initial }: { initial: Guest[] }) {
     setError("Das Häkchen wurde nicht gespeichert. Bitte versuche es erneut.");
   }
 
+  async function remove(row: Guest) {
+    if (!window.confirm(`Anmeldung von ${row.name} endgültig löschen?`)) return;
+    setError("");
+    try {
+      const response = await fetch("/api/anmeldung", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: row.id }),
+      });
+      if (response.ok) {
+        setRows((list) => list.filter((entry) => entry.id !== row.id));
+        return;
+      }
+      if (response.status === 401) {
+        window.location.href = "/?next=weihnachtsfeier/anmeldungen";
+        return;
+      }
+    } catch {}
+    setError("Die Anmeldung wurde nicht gelöscht. Bitte versuche es erneut.");
+  }
+
   const people = rows.reduce((sum, row) => sum + row.guests, 0);
   const came = rows.filter((row) => row.attended);
   return (
@@ -75,6 +96,7 @@ export function GuestList({ initial }: { initial: Guest[] }) {
               <th>Personen</th>
               <th>Nachricht</th>
               <th>Angemeldet</th>
+              <th aria-label="Löschen" />
             </tr>
           </thead>
           <tbody>
@@ -95,6 +117,16 @@ export function GuestList({ initial }: { initial: Guest[] }) {
                 <td>{plural(row.guests, "Person", "Personen")}</td>
                 <td>{row.note}</td>
                 <td>{row.when}</td>
+                <td>
+                  <button
+                    type="button"
+                    className="feier-delete"
+                    onClick={() => remove(row)}
+                    aria-label={`Anmeldung von ${row.name} löschen`}
+                  >
+                    Löschen
+                  </button>
+                </td>
               </tr>
             ))}
           </tbody>
