@@ -6,6 +6,7 @@ const labels = [
   "Großzügigkeit",
   "Das Gespräch",
   "Gute Werkzeuge",
+  "Begleitung",
   "Verantwortung",
   "Unser Labor",
 ];

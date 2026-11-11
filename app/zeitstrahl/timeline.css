@@ -5,6 +5,7 @@
   --produkte: var(--ink);
   --formate: #e9946f;
   --intern: #8fa287;
+  --begleitung: #c9a45c;
 }
 .tl-intro {
   position: relative;
@@ -198,6 +199,9 @@
 .tl-dot.is-formate {
   background: var(--formate);
 }
+.tl-dot.is-begleitung {
+  background: var(--begleitung);
+}
 .tl-dot.is-intern {
   background: var(--intern);
 }
@@ -280,7 +284,7 @@
 }
 .tl-now {
   grid-column: 2;
-  grid-row: 1 / span 5;
+  grid-row: 1 / span 6;
   position: relative;
   pointer-events: none;
   z-index: 2;
@@ -391,6 +395,9 @@
 .is-formate .tl-item {
   --c: var(--formate);
 }
+.is-begleitung .tl-item {
+  --c: var(--begleitung);
+}
 .is-intern .tl-item {
   --c: var(--intern);
 }
@@ -403,6 +410,7 @@
   color: var(--paper);
 }
 .is-formate .tl-item.is-fix,
+.is-begleitung .tl-item.is-fix,
 .is-intern .tl-item.is-fix {
   color: var(--ink);
 }

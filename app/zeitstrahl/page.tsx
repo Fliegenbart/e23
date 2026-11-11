@@ -25,7 +25,7 @@ export default async function TimelinePage() {
             </Line>
           </h1>
           <p>
-            Kunden, Produkte, Formate, Intern. Was wir vorhaben, wer es trägt –
+            Kunden, Produkte, Formate, Begleitung, Intern. Was wir vorhaben, wer es trägt –
             und wann es auf die Straße kommt.
           </p>
           <Overlap variant="tl" track={false} />

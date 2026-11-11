@@ -145,3 +145,9 @@ test("timeline rejects invalid entries before touching the database", async () =
   assert.equal((await send({ ...valid, lane: "unbekannt" })).status, 400);
   assert.equal((await send({ ...valid, title: " " })).status, 400);
 });
+test("team page stays switched off until it is released", async () => {
+  const login = await post("/api/login", process.env.SITE_PASSWORD);
+  const cookie = login.headers.get("set-cookie").split(";")[0];
+  const r = await fetch(`${base}/wir`, { headers: { Cookie: cookie } });
+  assert.equal(r.status, 404);
+});

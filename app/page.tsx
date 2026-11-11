@@ -3,6 +3,7 @@ import manifest from "@/lib/manifest.json";
 import { ReadingTools } from "./reading-tools";
 import { Arrow, Mark } from "./marks";
 import { safeNext } from "@/lib/next-path";
+import { teamPageLive } from "@/lib/site";
 import { TogetherArt, SharingArt, DialogueArt } from "./collaboration-art";
 import { MotionDirector } from "./motion-director";
 import { GateMotion } from "./gate-motion";
@@ -86,22 +87,25 @@ export default async function Page({
       </main>
     );
   }
-  const chapters = manifest.chapters.slice(0, 5);
+  const chapters = manifest.chapters.slice(0, 6);
   const kickers = [
     "Menschlicher Kern",
     "Großzügigkeit",
     "Das Gespräch",
     "Gute Werkzeuge",
+    "Begleitung",
     "Verantwortung",
   ];
   // The one sentence per chapter shown before "Weiterlesen".
-  const emphasis = [1, 1, 2, 3, -1];
+  const emphasis = [1, 1, 2, 3, 2, -1];
+  // Layout classes are tied to the design, not to the chapter number.
+  const layouts = ["1", "2", "3", "4", "care", "5"];
   const kernels = chapters.map((chapter, i) =>
     emphasis[i] >= 0
       ? chapter.paragraphs[emphasis[i]]
       : "Was wir empfangen haben, können wir weitergeben.",
   );
-  const final = manifest.chapters[5].paragraphs[3];
+  const final = manifest.chapters[6].paragraphs[3];
   return (
     <>
       <div className="curtain" aria-hidden="true">
@@ -123,6 +127,11 @@ export default async function Page({
           <a className="header-link" href="/projekte">
             Projekte & Ideen <Arrow diagonal />
           </a>
+          {teamPageLive && (
+            <a className="header-link" href="/wir">
+              Wer wir sind <Arrow diagonal />
+            </a>
+          )}
           <a className="header-link" href="/zeitstrahl">
             Zeitstrahl <Arrow diagonal />
           </a>
@@ -201,7 +210,7 @@ export default async function Page({
             id={`kapitel-${i + 1}`}
             data-chapter={i + 1}
             data-scroll
-            className={`chapter section-pad chapter-${i + 1}`}
+            className={`chapter section-pad chapter-${layouts[i]}`}
           >
             <span className="chapter-number" aria-hidden="true">
               0{i + 1}
@@ -221,6 +230,7 @@ export default async function Page({
                 {i === 1 && <SharingArt />}
                 {i === 2 && <DialogueArt />}
                 {i === 3 && <Overlap variant="tools" />}
+                {i === 4 && <Overlap variant="care" />}
 
               </div>
               <div className="prose">
@@ -244,12 +254,12 @@ export default async function Page({
         ))}
         <section
           className="closing section-pad"
-          id="kapitel-6"
-          data-chapter="6"
+          id="kapitel-7"
+          data-chapter="7"
           data-scroll
         >
           <div className="section-kicker">
-            <span>06 / Unser Labor</span>
+            <span>07 / Unser Labor</span>
             <span className="little-line" />
           </div>
           <h2 data-reveal>
@@ -262,7 +272,7 @@ export default async function Page({
             <p className="lab-intro">
               Hier geben wir einem neuen Paradigma der Arbeit Raum.
             </p>
-            {manifest.chapters[5].paragraphs.slice(0, 2).map((p) => (
+            {manifest.chapters[6].paragraphs.slice(0, 2).map((p) => (
               <p key={p}>{p}</p>
             ))}
           </div>
@@ -271,7 +281,7 @@ export default async function Page({
             data-scroll
             style={vars({ n: count(final) })}
           >
-            <p data-reveal>{manifest.chapters[5].paragraphs[2]}</p>
+            <p data-reveal>{manifest.chapters[6].paragraphs[2]}</p>
             <p className="build">
               <Words text={final} accent={(i) => i >= 4} />
             </p>

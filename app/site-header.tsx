@@ -1,7 +1,9 @@
+import { teamPageLive } from "@/lib/site";
 import { Arrow, Mark } from "./marks";
 
 const links = [
   { href: "/", label: "Das Manifest" },
+  ...(teamPageLive ? [{ href: "/wir", label: "Wer wir sind" }] : []),
   { href: "/projekte", label: "Projekte & Ideen" },
   { href: "/zeitstrahl", label: "Zeitstrahl" },
   { href: "/blog", label: "Blog" },
