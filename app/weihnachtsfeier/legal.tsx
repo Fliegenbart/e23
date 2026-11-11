@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import { legal } from "@/lib/feier";
 import { Arrow, Mark } from "../marks";
 import type { Lang } from "./invitation";
+import { Logos } from "./logos";
 import "./feier.css";
 
 export type Kind = "impressum" | "datenschutz";
@@ -248,7 +249,7 @@ export function Legal({ lang, kind }: { lang: Lang; kind: Kind }) {
     <>
       <header className="feier-header">
         <a href={base[lang]} aria-label={lang === "de" ? "Zur Einladung" : "To the invitation"}>
-          <Mark />
+          <Logos />
         </a>
         <a className="feier-lang" href={`${base[other]}/${kind}`} lang={other} hrefLang={other}>
           {other === "en" ? "English" : "Deutsch"} <Arrow diagonal />

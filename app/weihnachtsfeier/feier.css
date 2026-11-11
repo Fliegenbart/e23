@@ -368,11 +368,27 @@
   text-transform: uppercase;
   color: #f59574;
 }
+.feier-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 28px;
+  margin-top: clamp(14px, 3vh, 34px);
+}
+.feier-more {
+  padding: 0 0 3px;
+  border: 0;
+  border-bottom: 1px solid currentColor;
+  background: none;
+  font-weight: 600;
+}
+.feier-more:hover {
+  color: #f59574;
+}
 .feier-cta {
   display: inline-flex;
   align-items: center;
   gap: 14px;
-  margin-top: clamp(14px, 3vh, 34px);
   padding: clamp(11px, 1.9vh, 16px) 26px;
   border: 0;
   background: var(--orange);
@@ -446,4 +462,80 @@
     height: auto;
     min-height: 100dvh;
   }
+}
+
+/* ───────── Logo bar and "Wer ist wir?" ───────── */
+.feier-logos {
+  display: flex;
+  align-items: center;
+  gap: clamp(12px, 2.6vw, 40px);
+  min-width: 0;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.feier-logos li {
+  display: flex;
+}
+/* Optical sizes: the three marks differ a lot in shape. */
+.feier-logo-practical {
+  height: clamp(14px, min(2.5vh, 4vw), 26px);
+}
+.feier-logo-ins-wandeln-kommen {
+  height: clamp(40px, min(6.2vh, 9.6vw), 60px);
+}
+.feier-logo-tyrn-on {
+  height: clamp(9px, min(1.6vh, 2.6vw), 16px);
+}
+.feier-who > p {
+  margin: -12px 0 26px;
+  font-size: 17px;
+  color: #c9c7bd;
+}
+.feier-who ul {
+  display: grid;
+  gap: 0;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.feier-who li {
+  display: grid;
+  grid-template-columns: 150px 1fr;
+  align-items: center;
+  gap: 24px;
+  padding: 20px 0;
+  border-top: 1px solid #3a3d36;
+  font-size: 16px;
+  line-height: 1.5;
+}
+.feier-who img {
+  display: block;
+  /* The artwork is dark; on the dark dialog it is shown light. */
+  filter: brightness(0) invert(0.94);
+}
+.feier-who a:hover img {
+  opacity: 0.7;
+}
+.feier-who .feier-logo-practical {
+  height: 26px;
+}
+.feier-who .feier-logo-ins-wandeln-kommen {
+  height: 74px;
+}
+.feier-who .feier-logo-tyrn-on {
+  height: 17px;
+}
+@media (max-width: 520px) {
+  .feier-who li {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+}
+.feier-header .feier-lang {
+  flex: none;
+}
+.feier-logos img {
+  display: block;
+  width: auto;
 }
