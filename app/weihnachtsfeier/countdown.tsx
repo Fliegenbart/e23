@@ -1,15 +1,20 @@
 "use client";
 import { useEffect, useState } from "react";
 
-const units = [
-  { label: "Tage", ms: 86_400_000 },
-  { label: "Stunden", ms: 3_600_000 },
-  { label: "Minuten", ms: 60_000 },
-  { label: "Sekunden", ms: 1000 },
-];
+const sizes = [86_400_000, 3_600_000, 60_000, 1000];
+
+type Text = { label: string; units: string[]; running: string; over: string };
 
 /** Counts down to the party; renders only in the browser, so no clock mismatch. */
-export function Countdown({ start, end }: { start: string; end: string }) {
+export function Countdown({
+  start,
+  end,
+  text,
+}: {
+  start: string;
+  end: string;
+  text: Text;
+}) {
   const [now, setNow] = useState<number | null>(null);
   useEffect(() => {
     setNow(Date.now());
@@ -18,22 +23,22 @@ export function Countdown({ start, end }: { start: string; end: string }) {
   }, []);
 
   if (now !== null && now >= Date.parse(end))
-    return <p className="feier-now">Schön war’s. Bis zum nächsten Jahr.</p>;
+    return <p className="feier-now">{text.over}</p>;
   if (now !== null && now >= Date.parse(start))
-    return <p className="feier-now">Es läuft. Komm rein.</p>;
+    return <p className="feier-now">{text.running}</p>;
 
   let rest = now === null ? 0 : Date.parse(start) - now;
   return (
-    <dl className="feier-countdown" aria-label="Zeit bis zur Feier">
-      {units.map((unit) => {
-        const value = Math.floor(rest / unit.ms);
-        rest -= value * unit.ms;
+    <dl className="feier-countdown" aria-label={text.label}>
+      {sizes.map((ms, i) => {
+        const value = Math.floor(rest / ms);
+        rest -= value * ms;
         return (
-          <div key={unit.label}>
+          <div key={ms}>
             <dd suppressHydrationWarning>
               {now === null ? "–" : String(value).padStart(2, "0")}
             </dd>
-            <dt>{unit.label}</dt>
+            <dt>{text.units[i]}</dt>
           </div>
         );
       })}

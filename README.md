@@ -58,4 +58,4 @@ Der Dateiname ergibt die URL (`/blog/<slug>`, nur Kleinbuchstaben, Ziffern und B
 
 ## Weihnachtsfeier
 
-Einladung unter `/weihnachtsfeier`, geschützt wie der Rest der Seite. Datum, Ort und Kalendereintrag (`/weihnachtsfeier/termin.ics`) kommen aus `lib/feier.ts`. Ein Ende der Feier ist nicht festgelegt; der Kalendereintrag blockt bis 22:00 Uhr.
+Einladung unter `/weihnachtsfeier` (englisch: `/weihnachtsfeier/en`), geschützt wie der Rest der Seite. Datum, Ort und Kalendereintrag (`/weihnachtsfeier/termin.ics`) kommen aus `lib/feier.ts`, die Texte beider Sprachen aus `app/weihnachtsfeier/invitation.tsx`. Ein Ende der Feier ist nicht festgelegt; der Kalendereintrag blockt bis 22:00 Uhr.
