@@ -122,13 +122,33 @@ Man muss unseren Glauben nicht teilen, um die Frage zu kennen. Aber wir wollen n
 
 ## Was das für die Esplanade 23 heißt
 
-Wir verstehen E23 als Versuch einer Antwort, und zwar in dieser Reihenfolge.
+Wir verstehen E23 als Versuch einer Antwort, und zwar in dieser Reihenfolge. Manches davon gibt es schon, anderes haben wir uns für die nächsten Monate vorgenommen.
 
-Zuerst begleiten. Wer erschüttert ist, braucht keinen Businessplan, sondern jemanden, der zuhört. Deshalb gehören Gespräche und Workshops über Identität und Arbeit zu dem, was wir hier aufbauen.
+**Zuerst begleiten.**
 
-Dann miteinander sprechen. Das Gespräch ist bei uns keine Vorstufe zur eigentlichen Arbeit. Es ist der Ort, an dem das Neue entsteht.
+Stell dir einen Abend an der Esplanade vor. Zwölf Stühle, keine Folien. Das Thema steht auf einem Zettel an der Tür: „Wer bin ich, wenn die KI meine Arbeit kann?“
 
-Und dann gemeinsam beginnen. Mit Werkzeugen, die uns das Arbeiten und einen wachsenden Teil des Herstellens abnehmen. Damit Zeit und Aufmerksamkeit frei werden für das, was nur wir können.
+Ein Entwickler erzählt, wie ein Agent in einer Nacht umgebaut hat, woran er drei Wochen gesessen hatte. Eine Texterin sagt, sie traue sich nicht mehr, ihre Stundensätze zu nennen. Niemand gibt Ratschläge. Niemand verkauft etwas.
+
+Am Ende steht keine Lösung. Aber zwölf Menschen wissen, dass sie damit nicht allein sind. Wer erschüttert ist, braucht keinen Businessplan, sondern jemanden, der zuhört.
+
+Für alle, die tiefer gehen wollen, bauen wir einen Workshop auf, der ausdrücklich christlich ist: ein Tag über die Frage, was einen Menschen ausmacht, wenn seine Leistung es nicht mehr tut.
+
+**Dann miteinander sprechen.**
+
+Ein fester Vormittag in der Woche, an dem wir nichts abarbeiten. Drei, vier Leute an einem Tisch, mit einer Frage, die einer von uns oder ein Kunde mitgebracht hat.
+
+Ein Beispiel: Ein Handwerksbetrieb kommt und will einen Chatbot für seine Website. Nach einer Stunde Gespräch ist klar, dass das Problem woanders liegt. Die Angebote dauern zu lange, und deshalb gehen Aufträge verloren. Auf den Chatbot wäre niemand von uns allein gekommen, auf das eigentliche Problem auch nicht.
+
+Die KI sitzt dabei mit am Tisch, aber sie führt nicht das Wort. Sie schreibt mit, sucht heraus, was wir brauchen, und rechnet nach, während wir reden. Das Gespräch ist bei uns keine Vorstufe zur eigentlichen Arbeit. Es ist der Ort, an dem das Neue entsteht.
+
+**Und dann gemeinsam beginnen.**
+
+Am selben Nachmittag bauen wir mit Agenten einen ersten Entwurf: ein Werkzeug, das aus Aufmaß und Fotos ein Angebot vorbereitet. Am Freitag probiert der Betrieb es aus. Was früher ein Projekt von drei Monaten gewesen wäre, ist jetzt ein Versuch von drei Tagen.
+
+Daniel begleitet den Betrieb durch die Veränderung, die so ein Werkzeug auslöst. Stefan fragt, wie der Kunde des Kunden das erlebt. David baut. Und wir halten fest, wer was beigetragen hat, damit am Ende fair geteilt wird.
+
+So stellen wir uns das vor: Werkzeuge, die uns das Arbeiten und einen wachsenden Teil des Herstellens abnehmen. Damit Zeit und Aufmerksamkeit frei werden für das, was nur wir können.
 
 ## 2030
 
