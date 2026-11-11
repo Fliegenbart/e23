@@ -70,7 +70,15 @@ export async function POST(req: NextRequest) {
     const sql = db();
     if (d.action === "create") {
       const id = randomUUID();
-      await sql`INSERT INTO e23_work_items(id,title,description,kind,owner,due) VALUES(${id},${d.title},${d.description},${d.kind},${d.owner},${d.due})`;
+      // Item and its first steps are stored together; the offset keeps the
+      // steps in the given order, since tasks are sorted by created_at.
+      await sql.transaction([
+        sql`INSERT INTO e23_work_items(id,title,description,kind,owner,due) VALUES(${id},${d.title},${d.description},${d.kind},${d.owner},${d.due})`,
+        ...d.tasks.map(
+          (task, index) =>
+            sql`INSERT INTO e23_tasks(id,item_id,title,created_at) VALUES(${randomUUID()},${id},${task},now() + ${index} * interval '1 millisecond')`,
+        ),
+      ]);
       return json({ id }, 201);
     }
     if (d.action === "update") {
