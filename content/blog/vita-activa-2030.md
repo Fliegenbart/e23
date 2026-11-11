@@ -16,6 +16,12 @@ Sie lautet:
 
 **Wer bin ich, wenn meine Arbeit mich nicht mehr braucht?**
 
+Wenn Computer meine Kernkompetenzen besser erledigen, schneller und rund um die Uhr.
+
+Das, woraus ich einen Großteil meiner beruflichen Bestätigung gezogen habe – weg. Das, worauf ich stolz war – weg. Das, womit ich Geld verdient habe – weg.
+
+**Was bleibt mir noch von mir?**
+
 ## „Wie ein Freund, der gestorben ist“
 
 Man kann diese Frage gerade öffentlich mitlesen.
