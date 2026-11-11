@@ -59,3 +59,7 @@ Der Dateiname ergibt die URL (`/blog/<slug>`, nur Kleinbuchstaben, Ziffern und B
 ## Weihnachtsfeier
 
 Öffentliche Microsite unter `/weihnachtsfeier` (englisch: `/weihnachtsfeier/en`) – bewusst **ohne Passwort** und ohne Links in den geschützten Bereich. Sie ist auch aus der internen Navigation nicht verlinkt. Datum, Ort und Kalendereintrag (`/weihnachtsfeier/termin.ics`) kommen aus `lib/feier.ts`, die Texte beider Sprachen aus `app/weihnachtsfeier/invitation.tsx`. Ein Ende der Feier ist nicht festgelegt; der Kalendereintrag blockt bis 22:00 Uhr. Im Hero treibt Schnee, dessen Flocken sich zu einem Netz verbinden (`network.tsx`, Canvas, respektiert `prefers-reduced-motion`).
+
+Eigene Adresse: `e23-weihnachtsfeier.vercel.app`. Dort zeigt `/` die Einladung und `/en` die englische Fassung; die geschützten Bereiche leiten auf dieser Adresse zurück zur Einladung (`next.config.ts`).
+
+Anmeldung: Das Formular auf der Einladung schreibt über `POST /api/anmeldung` in die Tabelle `e23_feier_anmeldungen` (dieselbe Neon-Datenbank wie der Arbeitsbereich, `DATABASE_URL`). Die Tabelle wird beim ersten Zugriff angelegt. Pro E-Mail-Adresse gibt es einen Eintrag; wer sich erneut anmeldet, aktualisiert ihn. Schutz gegen Missbrauch: Honeypot-Feld, Längen- und Formatprüfung, höchstens 400 Einträge. Die Liste der Anmeldungen steht passwortgeschützt unter `/weihnachtsfeier/anmeldungen` und ist in der internen Navigation als „Weihnachtsfeier“ verlinkt. Dort lässt sich pro Anmeldung abhaken, wer wirklich da war (`PATCH /api/anmeldung`, nur mit Sitzung).
