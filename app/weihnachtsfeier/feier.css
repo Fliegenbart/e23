@@ -494,3 +494,45 @@
   border-bottom-color: var(--orange);
   color: var(--orange);
 }
+.feier-hosts {
+  padding: clamp(54px, 7vw, 110px) 0;
+}
+.feier-hosts .eyebrow {
+  color: var(--orange);
+}
+.feier-hosts h2 {
+  margin: 16px 0 clamp(30px, 4vw, 60px);
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(38px, 4.6vw, 70px);
+  line-height: 1.02;
+}
+.feier-hosts ul {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 40px clamp(24px, 4vw, 70px);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.feier-hosts li {
+  display: grid;
+  gap: 18px;
+}
+.feier-portrait {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+  touch-action: pan-y;
+}
+.feier-hosts strong {
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+  font-size: 22px;
+  letter-spacing: -0.02em;
+}
+@media (max-width: 760px) {
+  .feier-hosts ul {
+    grid-template-columns: 1fr;
+  }
+}

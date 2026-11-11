@@ -1,10 +1,11 @@
-import { feier } from "@/lib/feier";
+import { feier, hosts } from "@/lib/feier";
 import { Arrow, Mark } from "../marks";
 import { MotionDirector } from "../motion-director";
 import { Line } from "../typography";
 import { Countdown } from "./countdown";
 import { LegalLinks } from "./legal";
 import { Network } from "./network";
+import { Portrait } from "./portrait";
 import { Signup } from "./signup";
 import "./feier.css";
 
@@ -25,6 +26,9 @@ const copy = {
       "Mehr Zeit fürs Wesentliche: Austausch?",
     ],
     footer: "Esplanade 23 · 14.12.2026 · ab 16:00 Uhr",
+    hostsEyebrow: "Wer einlädt",
+    hostsTitle: "Deine Gastgeber.",
+    portraitOf: "Portrait von",
     signupEyebrow: "Anmeldung",
     signupTitle: "Bist du dabei?",
     signupLead: "Sag kurz Bescheid.",
@@ -75,6 +79,9 @@ const copy = {
       "More time for what matters: each other?",
     ],
     footer: "Esplanade 23 · 14 December 2026 · from 4 pm",
+    hostsEyebrow: "Who invites you",
+    hostsTitle: "Your hosts.",
+    portraitOf: "Portrait of",
     signupEyebrow: "Sign up",
     signupTitle: "Will you join us?",
     signupLead: "Just let us know.",
@@ -174,6 +181,18 @@ export function Invitation({ lang }: { lang: Lang }) {
               </li>
             ))}
           </ol>
+        </section>
+        <section className="feier-hosts" data-reveal>
+          <span className="eyebrow">{t.hostsEyebrow}</span>
+          <h2>{t.hostsTitle}</h2>
+          <ul>
+            {hosts.map((host) => (
+              <li key={host.portrait}>
+                <Portrait src={host.portrait} label={`${t.portraitOf} ${host.name}`} />
+                <strong>{host.name}</strong>
+              </li>
+            ))}
+          </ul>
         </section>
         <section className="feier-signup" id="anmeldung" data-reveal>
           <div>

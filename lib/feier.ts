@@ -8,6 +8,12 @@ export const feier = {
   end: "2026-12-14T21:00:00Z",
 };
 
+/** Who invites. Each portrait is a dot cloud made by scripts/portrait-points.py. */
+export const hosts = [
+  { name: "", portrait: "/feier/portrait-1.json" },
+  { name: "", portrait: "/feier/portrait-2.json" },
+];
+
 /**
  * Who is legally responsible for the invitation. Shown in Impressum and
  * Datenschutzhinweis; an empty required field is flagged on the page.
