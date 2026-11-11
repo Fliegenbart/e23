@@ -42,6 +42,7 @@ export function Goals({
   const [draft, setDraft] = useState<Draft | null>(null);
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
+  const [active, setActive] = useState<string | null>(null);
   const dialog = useRef<HTMLDialogElement>(null);
 
   const vision = goals.find((g) => g.kind === "vision");
@@ -54,6 +55,25 @@ export function Goals({
   const steps = goals.filter((g) => g.kind === "step");
   const doneCount = steps.filter((g) => g.done).length;
   const today = new Date().toISOString().slice(0, 10);
+
+  // The journey: a curve from the day the target was set to the target date.
+  const journey = useMemo(() => {
+    if (!vision) return null;
+    const t = (d: string) => new Date(`${d}T12:00:00Z`).getTime();
+    const start = Math.min(t(vision.created ?? today), t(today));
+    const end = Math.max(t(vision.due), start + 864e5);
+    const at = (d: string) =>
+      Math.min(1, Math.max(0, (t(d) - start) / (end - start)));
+    // x runs 4..96, y is a slow wave around the middle (both in percent).
+    const point = (f: number) => ({
+      x: 4 + f * 92,
+      y: 50 + 26 * Math.sin(f * Math.PI * 2.4 + 0.6),
+    });
+    const d = Array.from({ length: 81 }, (_, i) => point(i / 80))
+      .map((p, i) => `${i ? "L" : "M"}${p.x.toFixed(2)} ${p.y.toFixed(2)}`)
+      .join(" ");
+    return { d, at, point, now: at(today) };
+  }, [vision, today]);
 
   function open(next: Draft) {
     setDraft(next);
@@ -94,7 +114,13 @@ export function Goals({
       <div className="goal-vision">
         <span className="eyebrow">Zielbild · {monthLabel(vision.due)}</span>
         <h2 id="goal-title">Wo wir dann stehen wollen</h2>
-        <p className="goal-text">{vision.body}</p>
+        <p className="goal-text">
+          {vision.body.split(" ").map((word, i) => (
+            <span key={i} style={{ animationDelay: `${0.15 + i * 0.035}s` }}>
+              {word}{" "}
+            </span>
+          ))}
+        </p>
         {vision.version === 1 && (
           <p className="goal-hint">
             Das ist ein erster Entwurf. Setzt euch zusammen und schreibt ihn
@@ -121,6 +147,68 @@ export function Goals({
         </div>
       </div>
 
+      {journey && (
+        <div className="goal-journey">
+          <svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+            <path className="goal-way" d={journey.d} pathLength={1} />
+            <path
+              className="goal-walked"
+              d={journey.d}
+              pathLength={1}
+              style={{ strokeDasharray: `${journey.now} 1` }}
+            />
+          </svg>
+          {stages.map((stage, i) => {
+            const p = journey.point(journey.at(stage.due));
+            const done = stage.steps.every((s) => s.done);
+            const late = !done && stage.due < today;
+            return (
+              <button
+                key={stage.due}
+                type="button"
+                className={`goal-stop${done ? " is-complete" : ""}${late ? " is-late" : ""}${active === stage.due ? " is-active" : ""}`}
+                style={{ left: `${p.x}%`, top: `${p.y}%` }}
+                onMouseEnter={() => setActive(stage.due)}
+                onFocus={() => setActive(stage.due)}
+                onClick={() => {
+                  setActive(stage.due);
+                  document
+                    .getElementById(`etappe-${stage.due}`)
+                    ?.scrollIntoView({ behavior: "smooth", block: "center", inline: "center" });
+                }}
+              >
+                <span className="goal-stop-dot">{done ? "✓" : i + 1}</span>
+                <span className="goal-stop-label">
+                  {monthLabel(stage.due)}
+                  <small>
+                    {stage.steps.filter((s) => s.done).length}/{stage.steps.length}
+                  </small>
+                </span>
+              </button>
+            );
+          })}
+          <span
+            className="goal-traveler"
+            style={{
+              left: `${journey.point(journey.now).x}%`,
+              top: `${journey.point(journey.now).y}%`,
+            }}
+          >
+            <span>Heute</span>
+          </span>
+          <span
+            className="goal-destination"
+            style={{ left: `${journey.point(1).x}%`, top: `${journey.point(1).y}%` }}
+            aria-hidden="true"
+          >
+            <i />
+            <i />
+            <i />
+            <span>{monthLabel(vision.due)}</span>
+          </span>
+        </div>
+      )}
+
       <ol className="goal-path">
         {stages.map((stage, i) => {
           const done = stage.steps.filter((s) => s.done).length;
@@ -129,7 +217,9 @@ export function Goals({
           return (
             <li
               key={stage.due}
-              className={`goal-stage${complete ? " is-complete" : ""}${late ? " is-late" : ""}`}
+              id={`etappe-${stage.due}`}
+              onMouseEnter={() => setActive(stage.due)}
+              className={`goal-stage${complete ? " is-complete" : ""}${late ? " is-late" : ""}${active === stage.due ? " is-active" : ""}`}
             >
               <header>
                 <span className="goal-node" aria-hidden="true">

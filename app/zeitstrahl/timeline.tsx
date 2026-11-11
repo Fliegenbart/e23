@@ -57,6 +57,20 @@ function formatSpan(e: Entry) {
     ? `${fmt(e.starts)} – ${fmt(e.ends)}`
     : fmt(e.starts);
 }
+/** Shifts an ISO date by whole months, keeping the day where the month allows it. */
+function shiftMonths(date: string, by: number) {
+  const [y, m, d] = date.split("-").map(Number);
+  const first = new Date(y, m - 1 + by, 1);
+  const days = new Date(first.getFullYear(), first.getMonth() + 1, 0).getDate();
+  return `${first.getFullYear()}-${pad(first.getMonth() + 1)}-${pad(Math.min(d, days))}`;
+}
+const zooms = [
+  { months: 6, label: "6 Monate" },
+  { months: 12, label: "12 Monate" },
+  { months: 0, label: "Alles" },
+];
+type Drag = { id: string; dx: number; dy: number; months: number; lane: Lane };
+
 const statusLabel = (s: Status) =>
   statuses.find((x) => x.id === s)?.label ?? s;
 
@@ -68,6 +82,13 @@ export function Timeline() {
   const [formError, setFormError] = useState("");
   const [saving, setSaving] = useState(false);
   const dialog = useRef<HTMLDialogElement>(null);
+  const [zoom, setZoom] = useState(12);
+  const [hidden, setHidden] = useState<Lane[]>([]);
+  const [drag, setDrag] = useState<Drag | null>(null);
+  const board = useRef<HTMLDivElement>(null);
+  const tracks = useRef(new Map<Lane, HTMLDivElement>());
+  const suppressClick = useRef(false);
+  const gesture = useRef<{ x: number; y: number; col: number; moved: boolean } | null>(null);
 
   const origin = useMemo(() => {
     const now = new Date();
@@ -187,6 +208,98 @@ export function Timeline() {
     send({ action: "delete", id: draft.id, version: draft.version });
   }
 
+  /** Moves an entry by whole months and/or to another lane; shown at once, then saved. */
+  async function move(entry: Entry, by: number, lane: Lane) {
+    if (!by && lane === entry.lane) return;
+    const next = {
+      ...entry,
+      lane,
+      starts: shiftMonths(entry.starts, by),
+      ends: entry.ends ? shiftMonths(entry.ends, by) : null,
+    };
+    setEntries((list) => list?.map((e) => (e.id === entry.id ? next : e)) ?? list);
+    try {
+      const r = await fetch("/api/timeline", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          action: "update",
+          id: entry.id,
+          version: entry.version,
+          title: entry.title,
+          lane: next.lane,
+          status: entry.status,
+          starts: next.starts,
+          ends: next.ends ?? "",
+          owner: entry.owner,
+          note: entry.note,
+        }),
+      });
+      if (!r.ok) throw new Error((await r.json().catch(() => ({}))).error);
+    } catch (e) {
+      setError(
+        e instanceof Error && e.message
+          ? e.message
+          : "Verschieben fehlgeschlagen.",
+      );
+    }
+    await load();
+  }
+  function laneAt(y: number, fallback: Lane) {
+    for (const [lane, el] of tracks.current) {
+      const box = el.getBoundingClientRect();
+      if (y >= box.top && y <= box.bottom) return lane;
+    }
+    return fallback;
+  }
+  function dragStart(e: React.PointerEvent<HTMLButtonElement>, entry: Entry) {
+    if (e.button !== 0) return;
+    const track = tracks.current.get(entry.lane);
+    if (!track) return;
+    gesture.current = {
+      x: e.clientX,
+      y: e.clientY,
+      col: track.getBoundingClientRect().width / span,
+      moved: false,
+    };
+    e.currentTarget.setPointerCapture(e.pointerId);
+  }
+  function dragMove(e: React.PointerEvent<HTMLButtonElement>, entry: Entry) {
+    const g = gesture.current;
+    if (!g) return;
+    const dx = e.clientX - g.x;
+    const dy = e.clientY - g.y;
+    if (!g.moved && Math.hypot(dx, dy) < 6) return;
+    g.moved = true;
+    setDrag({
+      id: entry.id,
+      dx,
+      dy,
+      months: Math.round(dx / g.col),
+      lane: laneAt(e.clientY, entry.lane),
+    });
+  }
+  function dragEnd(entry: Entry) {
+    const g = gesture.current;
+    gesture.current = null;
+    if (!g?.moved || !drag) {
+      setDrag(null);
+      return;
+    }
+    const { months: by, lane } = drag;
+    setDrag(null);
+    // The click that follows a drag must not open the editor.
+    window.setTimeout(() => (suppressClick.current = false), 0);
+    suppressClick.current = true;
+    move(entry, by, lane);
+  }
+  function scrollToToday() {
+    const el = board.current;
+    if (!el) return;
+    const width = el.scrollWidth - 170;
+    el.scrollTo({ left: Math.max(0, (today / 100) * width - 80), behavior: "smooth" });
+  }
+
   // Stage deadlines and the target date as flags on the calendar.
   const marks = useMemo(() => {
     const dates = new Map<string, boolean>();
@@ -302,8 +415,70 @@ export function Timeline() {
             )}
           </section>
 
-          <div className="tl-board" role="region" aria-label="Zeitstrahl, 18 Monate" tabIndex={0}>
-            <div className="tl-grid" style={{ "--months": span } as React.CSSProperties}>
+          <div className="tl-controls">
+            <div className="tl-filters" role="group" aria-label="Bereiche ein- und ausblenden">
+              {lanes.map((lane) => {
+                const on = !hidden.includes(lane.id);
+                const n = (entries ?? []).filter((e) => e.lane === lane.id).length;
+                return (
+                  <button
+                    key={lane.id}
+                    type="button"
+                    aria-pressed={on}
+                    className={`tl-chip${on ? " is-on" : ""}`}
+                    onClick={() =>
+                      setHidden((h) =>
+                        on ? [...h, lane.id] : h.filter((x) => x !== lane.id),
+                      )
+                    }
+                  >
+                    <span className={`tl-dot is-${lane.id}`} />
+                    {lane.label}
+                    <small>{n}</small>
+                  </button>
+                );
+              })}
+            </div>
+            <div className="tl-view">
+              <button type="button" className="tl-jump" onClick={scrollToToday}>
+                Heute
+              </button>
+              <div className="tl-zoom" role="group" aria-label="Zeitraum">
+                {zooms.map((z) => (
+                  <button
+                    key={z.label}
+                    type="button"
+                    aria-pressed={zoom === z.months}
+                    className={zoom === z.months ? "is-on" : ""}
+                    onClick={() => setZoom(z.months)}
+                  >
+                    {z.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+          <p className="tl-tip">
+            Einträge lassen sich ziehen: seitlich in einen anderen Monat, nach
+            oben oder unten in einen anderen Bereich. Mit Tastatur: Alt + Pfeiltasten.
+          </p>
+
+          <div
+            ref={board}
+            className={`tl-board${drag ? " is-dragging" : ""}`}
+            role="region"
+            aria-label={`Zeitstrahl, ${span} Monate`}
+            tabIndex={0}
+          >
+            <div
+              className="tl-grid"
+              style={
+                {
+                  "--months": span,
+                  "--zoom": Math.min(span, zoom || span),
+                } as React.CSSProperties
+              }
+            >
               <div className="tl-corner" />
               <div className="tl-months">
                 {months.map((m, i) => (
@@ -332,13 +507,25 @@ export function Timeline() {
                   </span>
                 ))}
               </div>
-              {lanes.map((lane, row) => (
-                <div className={`tl-lane is-${lane.id}`} key={lane.id}>
+              {lanes
+                .filter((lane) => !hidden.includes(lane.id))
+                .map((lane, row) => (
+                <div
+                  className={`tl-lane is-${lane.id}${drag?.lane === lane.id ? " is-target" : ""}`}
+                  key={lane.id}
+                >
                   <div className="tl-lane-label" style={{ gridRow: row + 2 }}>
                     <span className={`tl-dot is-${lane.id}`} />
                     {lane.label}
                   </div>
-                  <div className="tl-track" style={{ gridRow: row + 2 }}>
+                  <div
+                    className="tl-track"
+                    style={{ gridRow: row + 2 }}
+                    ref={(el) => {
+                      if (el) tracks.current.set(lane.id, el);
+                      else tracks.current.delete(lane.id);
+                    }}
+                  >
                     <div className="tl-slots">
                       {months.map((m, i) => (
                         <button
@@ -351,24 +538,74 @@ export function Timeline() {
                         />
                       ))}
                     </div>
-                    {placed.get(lane.id)?.map(({ entry, from, to }) => (
-                      <button
-                        key={entry.id}
-                        type="button"
-                        className={`tl-item is-${entry.status}${
-                          !entry.ends || entry.ends === entry.starts ? " is-point" : ""
-                        }`}
-                        style={{ gridColumn: `${from + 1} / ${to + 2}` }}
-                        onClick={() => edit(entry)}
-                        title={`${entry.title} · ${formatSpan(entry)}`}
-                      >
-                        <span className="tl-item-title">{entry.title}</span>
-                        <span className="tl-item-meta">
-                          {formatSpan(entry)}
-                          {entry.owner ? ` · ${entry.owner}` : ""}
-                        </span>
-                      </button>
-                    ))}
+                    {placed.get(lane.id)?.map(({ entry, from, to }, n) => {
+                      const dragging = drag?.id === entry.id;
+                      return (
+                        <button
+                          key={entry.id}
+                          type="button"
+                          className={`tl-item is-${entry.status}${dragging ? " is-dragged" : ""}`}
+                          style={
+                            {
+                              gridColumn: `${from + 1} / ${to + 2}`,
+                              "--n": n,
+                              ...(dragging
+                                ? { translate: `${drag.dx}px ${drag.dy}px` }
+                                : {}),
+                            } as React.CSSProperties
+                          }
+                          onPointerDown={(e) => dragStart(e, entry)}
+                          onPointerMove={(e) => dragMove(e, entry)}
+                          onPointerUp={() => dragEnd(entry)}
+                          onPointerCancel={() => {
+                            gesture.current = null;
+                            setDrag(null);
+                          }}
+                          onClick={() => {
+                            if (!suppressClick.current) edit(entry);
+                          }}
+                          onKeyDown={(e) => {
+                            if (!e.altKey) return;
+                            const order = lanes.map((l) => l.id);
+                            const at = order.indexOf(entry.lane);
+                            const step: Record<string, [number, number]> = {
+                              ArrowLeft: [-1, 0],
+                              ArrowRight: [1, 0],
+                              ArrowUp: [0, -1],
+                              ArrowDown: [0, 1],
+                            };
+                            const s = step[e.key];
+                            if (!s) return;
+                            e.preventDefault();
+                            move(
+                              entry,
+                              s[0],
+                              order[Math.min(order.length - 1, Math.max(0, at + s[1]))],
+                            );
+                          }}
+                        >
+                          <span className="tl-item-title">{entry.title}</span>
+                          <span className="tl-item-meta">
+                            {dragging
+                              ? formatSpan({
+                                  ...entry,
+                                  starts: shiftMonths(entry.starts, drag.months),
+                                  ends: entry.ends
+                                    ? shiftMonths(entry.ends, drag.months)
+                                    : null,
+                                })
+                              : formatSpan(entry)}
+                            {entry.owner ? ` · ${entry.owner}` : ""}
+                          </span>
+                          {entry.note && !dragging && (
+                            <span className="tl-item-note">{entry.note}</span>
+                          )}
+                          <span className={`tl-item-status is-${entry.status}`}>
+                            {statusLabel(entry.status)}
+                          </span>
+                        </button>
+                      );
+                    })}
                   </div>
                 </div>
               ))}

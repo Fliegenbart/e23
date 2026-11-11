@@ -7,4 +7,5 @@ export type Goal = {
   owner: string;
   done: boolean;
   version: number;
+  created: string;
 };
