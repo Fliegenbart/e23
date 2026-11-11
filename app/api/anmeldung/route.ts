@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { authenticated } from "@/lib/auth";
-import { saveAnmeldung, setAttended } from "@/lib/feier-db";
+import { deleteAnmeldung, saveAnmeldung, setAttended } from "@/lib/feier-db";
 
 export const dynamic = "force-dynamic";
 
@@ -76,6 +76,22 @@ export async function PATCH(req: NextRequest) {
     return (await setAttended(parsed.data.id, parsed.data.attended))
       ? json({ ok: true })
       : json({ error: "missing" }, 404);
+  } catch (error) {
+    return failure(error);
+  }
+}
+
+/** Internal: delete one sign-up. Needs the site session. */
+export async function DELETE(req: NextRequest) {
+  if (!(await authenticated())) return json({ error: "unauthorized" }, 401);
+  const { body, refusal } = await read(req);
+  if (refusal) return refusal;
+  const parsed = z.object({ id: z.uuid() }).safeParse(body);
+  if (!parsed.success) return json({ error: "invalid" }, 400);
+  try {
+    // Already gone counts as done: the entry is not there either way.
+    await deleteAnmeldung(parsed.data.id);
+    return json({ ok: true });
   } catch (error) {
     return failure(error);
   }

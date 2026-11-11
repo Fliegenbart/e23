@@ -57,3 +57,11 @@ export async function setAttended(id: string, attended: boolean) {
   const rows = await sql`UPDATE e23_feier_anmeldungen SET attended=${attended} WHERE id=${id} RETURNING id`;
   return rows.length > 0;
 }
+
+/** Remove one sign-up for good. Returns false if it was already gone. */
+export async function deleteAnmeldung(id: string) {
+  await schema();
+  const sql = db();
+  const rows = await sql`DELETE FROM e23_feier_anmeldungen WHERE id=${id} RETURNING id`;
+  return rows.length > 0;
+}
