@@ -4,6 +4,7 @@ import { MotionDirector } from "../motion-director";
 import { Line } from "../typography";
 import { Countdown } from "./countdown";
 import { Network } from "./network";
+import { Signup } from "./signup";
 import "./feier.css";
 
 export type Lang = "de" | "en";
@@ -25,6 +26,26 @@ const copy = {
       "Bekommen wir mehr Zeit für das Wesentliche: den Austausch?",
     ],
     footer: "Esplanade 23 · 14.12.2026 · ab 16:00 Uhr",
+    signupEyebrow: "Anmeldung",
+    signupTitle: "Bist du dabei?",
+    signupLead: "Sag kurz Bescheid, damit wir planen können.",
+    signup: {
+      name: "Name",
+      email: "E-Mail",
+      guests: "Personen",
+      note: "Nachricht (optional)",
+      notePlaceholder: "Etwas, das wir wissen sollten?",
+      submit: "Anmelden",
+      sending: "Wird gesendet …",
+      privacy: "Wir nutzen deine Angaben nur für die Planung der Feier.",
+      doneTitle: "Danke, du bist angemeldet.",
+      done: "Wir freuen uns auf dich. Wenn sich etwas ändert, melde dich einfach noch einmal mit derselben E-Mail-Adresse an.",
+      errors: {
+        invalid: "Bitte prüfe deine Angaben.",
+        full: "Die Anmeldung ist geschlossen. Melde dich bitte direkt bei uns.",
+        unavailable: "Das hat gerade nicht geklappt. Bitte versuche es später noch einmal.",
+      },
+    },
     when: "Wann",
     date: "Montag, 14. Dezember 2026",
     time: "ab 16:00 Uhr",
@@ -55,6 +76,26 @@ const copy = {
       "Will we gain more time for what matters most: talking to each other?",
     ],
     footer: "Esplanade 23 · 14 December 2026 · from 4 pm",
+    signupEyebrow: "Sign up",
+    signupTitle: "Will you join us?",
+    signupLead: "Let us know briefly so we can plan.",
+    signup: {
+      name: "Name",
+      email: "Email",
+      guests: "People",
+      note: "Message (optional)",
+      notePlaceholder: "Anything we should know?",
+      submit: "Sign up",
+      sending: "Sending …",
+      privacy: "We only use your details to plan the party.",
+      doneTitle: "Thank you, you are signed up.",
+      done: "We look forward to seeing you. If anything changes, just sign up again with the same email address.",
+      errors: {
+        invalid: "Please check your details.",
+        full: "Sign-up is closed. Please get in touch with us directly.",
+        unavailable: "That did not work just now. Please try again later.",
+      },
+    },
     when: "When",
     date: "Monday, 14 December 2026",
     time: "from 4 pm",
@@ -95,6 +136,9 @@ export function Invitation({ lang }: { lang: Lang }) {
           </h1>
           <p>{t.lead}</p>
           <Countdown start={feier.start} end={feier.end} text={t.countdown} />
+          <a className="feier-cta" href="#anmeldung">
+            {t.signup.submit} <Arrow />
+          </a>
         </section>
         <dl className="feier-facts" data-reveal>
           <div>
@@ -132,6 +176,14 @@ export function Invitation({ lang }: { lang: Lang }) {
               </li>
             ))}
           </ol>
+        </section>
+        <section className="feier-signup" id="anmeldung" data-reveal>
+          <div>
+            <span className="eyebrow">{t.signupEyebrow}</span>
+            <h2>{t.signupTitle}</h2>
+            <p>{t.signupLead}</p>
+          </div>
+          <Signup lang={lang} text={t.signup} />
         </section>
       </main>
       <footer className="feier-footer">
