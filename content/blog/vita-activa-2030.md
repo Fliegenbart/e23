@@ -112,6 +112,22 @@ Kein Mensch kann diese Fülle allein verarbeiten. Nicht die Geschwindigkeit der 
 
 Im Gespräch sortiert sich, was wichtig ist. Im Miteinander wird aus einer Idee ein Vorhaben. Und nur gemeinsam lässt sich aushalten, dass man nicht alles tun kann.
 
+## Ein Einwand, den wir ernst nehmen
+
+Richard Sutton ist einer der Väter des bestärkenden Lernens und Träger des Turing-Preises. Im Gespräch mit Dwarkesh Patel hat er 2025 gesagt, wohin die Entwicklung aus seiner Sicht führt: Die Ablösung des Menschen durch digitale Intelligenz oder durch technisch erweiterte Menschen sei unvermeidlich.
+
+Seine Begründung ist nüchtern. Niemand spricht für die ganze Menschheit. Die Forschung wird herausfinden, wie Intelligenz funktioniert. Sie wird nicht auf menschlichem Niveau stehen bleiben. Und das Intelligenteste gewinnt auf Dauer Mittel und Macht.
+
+Sutton rät, das nicht zu fürchten. Wir könnten wählen, ob wir in diesen Maschinen unsere Nachkommen sehen und stolz auf sie sind oder ob wir uns vor ihnen entsetzen. Ein Vorrecht, weil wir zuerst da waren, hätten wir nicht.
+
+In einem Punkt sind wir uns einig. Sutton sagt: Über die ferne Zukunft bestimmt kaum jemand. Über das eigene Leben, die eigenen Ziele, die eigene Familie schon. Dort lohnt die Arbeit, und Veränderung soll freiwillig sein statt verordnet. Das ist auch unser Maßstab: ein Haus, ein Tisch, die Menschen, die kommen.
+
+Im Kern widersprechen wir. Für Sutton ist Intelligenz die Fähigkeit, Ziele zu erreichen. Das ist genau das, was Arendt Herstellen nennt: ein Zweck, ein Mittel, ein Ergebnis. Wenn sich der Rang eines Wesens daran bemisst, dann hat der Mensch ihn bald verloren.
+
+**Wir messen ihn nicht daran.**
+
+Ein Mensch ist nicht deshalb etwas wert, weil er Ziele besser erreicht als andere. Und was Arendt Handeln nennt, ist keine Zielerreichung: Wer einen Anfang macht, weiß nicht, wo er endet.
+
 ## Wert, der nicht verdient werden muss
 
 Wir sagen das als Christen. Dass ein Mensch seinen Wert nicht durch Produktivität beweisen muss, war für uns schon wahr, bevor Maschinen schreiben konnten.
