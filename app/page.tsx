@@ -138,6 +138,9 @@ export default async function Page({
           <a className="header-link" href="/blog">
             Blog <Arrow diagonal />
           </a>
+          <a className="header-link" href="/weihnachtsfeier">
+            Weihnachtsfeier <Arrow diagonal />
+          </a>
         </nav>
       </header>
       <main>

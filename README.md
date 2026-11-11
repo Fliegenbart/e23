@@ -55,3 +55,7 @@ Ein Absatz, der komplett fett ist, wird als großer Kernsatz gesetzt.
 ```
 
 Der Dateiname ergibt die URL (`/blog/<slug>`, nur Kleinbuchstaben, Ziffern und Bindestriche). Neue Beiträge erscheinen nach dem nächsten Deployment.
+
+## Weihnachtsfeier
+
+Einladung unter `/weihnachtsfeier`, geschützt wie der Rest der Seite. Datum, Ort und Kalendereintrag (`/weihnachtsfeier/termin.ics`) kommen aus `lib/feier.ts`. Ein Ende der Feier ist nicht festgelegt; der Kalendereintrag blockt bis 22:00 Uhr.
