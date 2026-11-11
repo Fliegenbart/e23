@@ -1,11 +1,10 @@
 import { feier } from "@/lib/feier";
 import { Arrow, Mark } from "../marks";
-import { MotionDirector } from "../motion-director";
 import { Line } from "../typography";
-import { Countdown } from "./countdown";
 import { LegalLinks } from "./legal";
 import { Network } from "./network";
 import { Signup } from "./signup";
+import { SignupDialog } from "./signup-dialog";
 import "./feier.css";
 
 export type Lang = "de" | "en";
@@ -16,18 +15,12 @@ const copy = {
     eyebrow: "Einladung · Advent 2026",
     title: "Weihnachtsfeier.",
     accent: "Miteinander.",
-    lead: "Ein Nachmittag für Austausch und Begegnung.",
-    aboutEyebrow: "Austausch · Netzwerken · Weiterdenken",
-    aboutTitle: "Wie wollen wir arbeiten?",
-    questions: [
-      "Was macht KI mit unserer Arbeit – und mit uns?",
-      "Wie arbeiten, wenn alles hinterfragt wird?",
-      "Mehr Zeit fürs Wesentliche: Austausch?",
-    ],
-    footer: "Esplanade 23 · 14.12.2026 · ab 16:00 Uhr",
-    signupEyebrow: "Anmeldung",
+    lead: "Wir haben ein neues Büro. Das möchten wir mit euch teilen. Es soll ein Ort sein, an dem Transformation ermöglicht wird – im Persönlichen, im Business, gemeinsam.",
+    tagline: "Netzwerken. Austauschen. Kekse. Glühwein. Ihr wisst Bescheid.",
+    when: "14.12.2026 · ab 16:00 · Esplanade 23",
+    calendar: "In den Kalender",
     signupTitle: "Bist du dabei?",
-    signupLead: "Sag kurz Bescheid.",
+    close: "Schließen",
     signup: {
       name: "Name",
       email: "E-Mail",
@@ -46,38 +39,18 @@ const copy = {
         full: "Die Anmeldung ist geschlossen. Melde dich bitte direkt bei uns.",
         unavailable: "Das hat gerade nicht geklappt. Bitte versuche es später noch einmal.",
       },
-    },
-    when: "Wann",
-    date: "Montag, 14. Dezember 2026",
-    time: "ab 16:00 Uhr",
-    where: "Wo",
-    inHouse: "im Haus",
-    save: "Merken",
-    calendar: "In den Kalender",
-    countdown: {
-      label: "Zeit bis zur Feier",
-      units: ["Tage", "Stunden", "Minuten", "Sekunden"],
-      running: "Es läuft. Komm rein.",
-      over: "Schön war’s. Bis zum nächsten Jahr.",
-    },
-  },
+    },  },
   en: {
     other: { href: "/weihnachtsfeier", label: "Deutsch", lang: "de" },
     eyebrow: "Invitation · Advent 2026",
     title: "Christmas party.",
     accent: "Together.",
-    lead: "An afternoon for conversation and new connections.",
-    aboutEyebrow: "Exchange · Networking · Thinking ahead",
-    aboutTitle: "How do we want to work?",
-    questions: [
-      "What is AI doing to our work – and to us?",
-      "How do we work when everything is in question?",
-      "More time for what matters: each other?",
-    ],
-    footer: "Esplanade 23 · 14 December 2026 · from 4 pm",
-    signupEyebrow: "Sign up",
+    lead: "We have a new office, and we want to share it with you. It is meant to be a place where transformation becomes possible – personally, in business, together.",
+    tagline: "Networking. Conversation. Cookies. Mulled wine. You know the drill.",
+    when: "14 December 2026 · from 4 pm · Esplanade 23",
+    calendar: "Add to calendar",
     signupTitle: "Will you join us?",
-    signupLead: "Just let us know.",
+    close: "Close",
     signup: {
       name: "Name",
       email: "Email",
@@ -96,99 +69,45 @@ const copy = {
         full: "Sign-up is closed. Please get in touch with us directly.",
         unavailable: "That did not work just now. Please try again later.",
       },
-    },
-    when: "When",
-    date: "Monday, 14 December 2026",
-    time: "from 4 pm",
-    where: "Where",
-    inHouse: "in the house",
-    save: "Save the date",
-    calendar: "Add to calendar",
-    countdown: {
-      label: "Time until the party",
-      units: ["Days", "Hours", "Minutes", "Seconds"],
-      running: "It’s on. Come in.",
-      over: "That was lovely. See you next year.",
-    },
-  },
+    },  },
 };
 
-/** Public microsite: no session check, and no links into the protected site. */
+/**
+ * Public microsite, one screen and no scrolling: the invitation fills the
+ * viewport, the sign-up form opens in a dialog. No links into the protected site.
+ */
 export function Invitation({ lang }: { lang: Lang }) {
   const t = copy[lang];
   return (
-    <>
-      <MotionDirector />
+    <div className="feier-one" lang={lang}>
       <header className="feier-header">
         <Mark />
         <a className="feier-lang" href={t.other.href} lang={t.other.lang} hrefLang={t.other.lang}>
           {t.other.label} <Arrow diagonal />
         </a>
       </header>
-      <main className="feier" lang={lang}>
-        <section className="feier-hero">
-          <Network />
-          <span className="eyebrow">{t.eyebrow}</span>
-          <h1>
-            <Line index={0}>{t.title}</Line>
-            <Line index={1}>
-              <em>{t.accent}</em>
-            </Line>
-          </h1>
-          <p>{t.lead}</p>
-          <Countdown start={feier.start} end={feier.end} text={t.countdown} />
-          <a className="feier-cta" href="#anmeldung">
-            {t.signup.submit} <Arrow />
-          </a>
-        </section>
-        <dl className="feier-facts" data-reveal>
-          <div>
-            <dt className="eyebrow">{t.when}</dt>
-            <dd>
-              <time dateTime="2026-12-14T16:00">{t.date}</time>
-            </dd>
-            <dd className="feier-sub">{t.time}</dd>
-          </div>
-          <div>
-            <dt className="eyebrow">{t.where}</dt>
-            <dd>{feier.place}</dd>
-            <dd className="feier-sub">{t.inHouse}</dd>
-          </div>
-          <div>
-            <dt className="eyebrow">{t.save}</dt>
-            <dd>
-              <a className="feier-cal" href="/weihnachtsfeier/termin.ics">
-                {t.calendar} <Arrow diagonal />
-              </a>
-            </dd>
-          </div>
-        </dl>
-        <section className="feier-about" data-reveal>
-          <span className="eyebrow">{t.aboutEyebrow}</span>
-          <h2>{t.aboutTitle}</h2>
-          <ol>
-            {t.questions.map((q, i) => (
-              <li key={q}>
-                <span>0{i + 1}</span>
-                {q}
-              </li>
-            ))}
-          </ol>
-        </section>
-        <section className="feier-signup" id="anmeldung" data-reveal>
-          <div>
-            <span className="eyebrow">{t.signupEyebrow}</span>
-            <h2>{t.signupTitle}</h2>
-            <p>{t.signupLead}</p>
-          </div>
+      <main className="feier-hero">
+        <Network />
+        <span className="eyebrow">{t.eyebrow}</span>
+        <h1>
+          <Line index={0}>{t.title}</Line>
+          <Line index={1}>
+            <em>{t.accent}</em>
+          </Line>
+        </h1>
+        <p className="feier-lead">{t.lead}</p>
+        <p className="feier-tagline">{t.tagline}</p>
+        <p className="feier-when">
+          <time dateTime={feier.start}>{t.when}</time>
+        </p>
+        <SignupDialog open={t.signup.submit} close={t.close} title={t.signupTitle}>
           <Signup lang={lang} text={t.signup} />
-        </section>
+        </SignupDialog>
+        <footer className="feier-foot">
+          <a href="/weihnachtsfeier/termin.ics">{t.calendar}</a>
+          <LegalLinks lang={lang} />
+        </footer>
       </main>
-      <footer className="feier-footer">
-        <Mark />
-        <span>{t.footer}</span>
-        <LegalLinks lang={lang} />
-      </footer>
-    </>
+    </div>
   );
 }
