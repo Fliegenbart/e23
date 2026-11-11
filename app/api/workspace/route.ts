@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { authenticated } from "@/lib/auth";
-import { db, getDetail, listItems } from "@/lib/workspace/db";
+import { db, ensureTasks, getDetail, listItems } from "@/lib/workspace/db";
 import { mutation } from "@/lib/workspace/validation";
 import { randomUUID } from "node:crypto";
 import { z } from "zod";
@@ -86,10 +86,11 @@ export async function POST(req: NextRequest) {
             409,
           );
     }
+    await ensureTasks();
     if (d.action === "task-create") {
       const id = randomUUID();
       const rows =
-        await sql`INSERT INTO e23_tasks(id,item_id,title,assignee,due) SELECT ${id}::uuid,id,${d.title},${d.assignee},${d.due}::date FROM e23_work_items WHERE id=${d.itemId} AND status='active' RETURNING id`;
+        await sql`INSERT INTO e23_tasks(id,item_id,title,assignee,due,description,priority,points,labels,checklist) SELECT ${id}::uuid,id,${d.title},${d.assignee},${d.due}::date,${d.description ?? ""},${d.priority ?? "normal"},${d.points ?? 0}::smallint,${d.labels ?? ""},${JSON.stringify(d.checklist ?? [])}::jsonb FROM e23_work_items WHERE id=${d.itemId} AND status='active' RETURNING id`;
       return rows.length
         ? json({ id }, 201)
         : json(
@@ -101,7 +102,20 @@ export async function POST(req: NextRequest) {
     }
     if (d.action === "task-update") {
       const rows =
-        await sql`UPDATE e23_tasks SET title=${d.title},status=${d.status},assignee=${d.assignee},due=${d.due},version=version+1 WHERE id=${d.id} AND version=${d.version} RETURNING id`;
+        await sql`UPDATE e23_tasks SET title=${d.title},status=${d.status},assignee=${d.assignee},due=${d.due},description=COALESCE(${d.description ?? null}::text,description),priority=COALESCE(${d.priority ?? null}::text,priority),points=COALESCE(${d.points ?? null}::smallint,points),labels=COALESCE(${d.labels ?? null}::text,labels),checklist=COALESCE(${d.checklist ? JSON.stringify(d.checklist) : null}::jsonb,checklist),position=COALESCE(${d.position ?? null}::float8,position),version=version+1 WHERE id=${d.id} AND version=${d.version} RETURNING id`;
+      return rows.length
+        ? json({ id: d.id })
+        : json(
+            {
+              error:
+                "Diese Aufgabe wurde inzwischen geändert. Bitte lade den aktuellen Stand.",
+            },
+            409,
+          );
+    }
+    if (d.action === "task-delete") {
+      const rows =
+        await sql`DELETE FROM e23_tasks WHERE id=${d.id} AND version=${d.version} RETURNING id`;
       return rows.length
         ? json({ id: d.id })
         : json(

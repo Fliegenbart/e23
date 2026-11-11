@@ -619,14 +619,102 @@
   color: #859079;
   margin-top: 3px;
 }
-.ws-task-meta {
+.ws-task[draggable="true"] {
+  cursor: grab;
+}
+.ws-task.dragging {
+  opacity: 0.4;
+}
+.ws-task.drop-before {
+  box-shadow: 0 -3px 0 var(--ws-accent);
+}
+.ws-column.drop {
+  outline: 2px dashed #b9c0ad;
+  outline-offset: -2px;
+}
+.ws-task-tags {
   display: flex;
-  justify-content: space-between;
-  gap: 7px;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-bottom: 10px;
+}
+.ws-task-tags > span {
+  font-size: 9px;
+  line-height: 1;
+  padding: 5px 7px;
+  border-radius: 99px;
+  background: #eceee5;
+  color: #55604b;
+  overflow-wrap: anywhere;
+}
+.ws-task-tags > .ws-priority.high {
+  background: #f7e4dc;
+  color: #8f341e;
+  font-weight: 500;
+}
+.ws-task-tags > .ws-priority.low {
+  background: none;
+  border: 1px solid #d5dacb;
+  padding: 4px 6px;
+}
+.ws-task-desc {
+  margin-top: 8px;
+  font-size: 11px;
+  line-height: 1.6;
+  color: #55604b;
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+  line-clamp: 4;
+  overflow: hidden;
+}
+.ws-task-checks {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 6px 7px;
+  margin-top: 12px;
   font-size: 10px;
   color: var(--ws-muted);
-  margin: 15px 0;
+}
+.ws-task-checks > i {
+  grid-column: 1 / -1;
+  height: 3px;
+  border-radius: 3px;
+  background: #e5e8dc;
+  overflow: hidden;
+}
+.ws-task-checks > i > b {
+  display: block;
+  height: 100%;
+  background: #7d9468;
+}
+.ws-task-meta {
+  display: flex;
+  align-items: center;
+  gap: 7px 12px;
+  font-size: 10px;
+  color: var(--ws-muted);
+  margin: 14px 0;
   flex-wrap: wrap;
+}
+.ws-task-meta > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+.ws-task-meta > .overdue {
+  color: #8f341e;
+  font-weight: 500;
+}
+.ws-task-meta > .ws-points {
+  margin-left: auto;
+  padding: 3px 7px;
+  border-radius: 99px;
+  background: #eceee5;
+  color: #55604b;
 }
 .ws-status-select {
   display: flex;
@@ -777,6 +865,60 @@
   padding: 28px;
   max-height: 90svh;
   box-shadow: 0 25px 80px #22251f33;
+}
+.ws-dialog.wide {
+  width: min(760px, calc(100vw - 32px));
+}
+.ws-checklist {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+.ws-checklist legend {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0;
+  margin-bottom: 9px;
+  font-size: 11px;
+  font-weight: 500;
+}
+.ws-checklist legend span {
+  font-weight: 400;
+  color: var(--ws-muted);
+}
+.ws-check-row {
+  display: grid;
+  grid-template-columns: 22px 1fr 38px;
+  align-items: center;
+  gap: 8px;
+}
+.ws-check-row input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  padding: 0;
+  accent-color: #65725a;
+}
+.ws-editor-form .ws-check-row input:not([type="checkbox"]) {
+  padding: 9px 11px;
+}
+.ws-check-add {
+  color: var(--ws-muted);
+}
+.ws-check-add > svg {
+  justify-self: center;
+}
+.ws-editor-form .ws-check-add input {
+  background: none;
+  border-style: dashed;
+}
+.ws-dialog-actions .ws-delete {
+  margin-right: auto;
+  color: #8f341e;
 }
 .ws-dialog::backdrop {
   background: #22251f75;
