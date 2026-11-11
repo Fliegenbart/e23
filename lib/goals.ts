@@ -75,5 +75,5 @@ export function ensureGoals() {
 
 export async function listGoals(): Promise<Goal[]> {
   await ensureGoals();
-  return (await db()`SELECT id, kind, to_char(due,'YYYY-MM-DD') AS due, body, owner, done, version FROM e23_goals ORDER BY due, created_at, id`) as Goal[];
+  return (await db()`SELECT id, kind, to_char(due,'YYYY-MM-DD') AS due, body, owner, done, version, to_char(created_at,'YYYY-MM-DD') AS created FROM e23_goals ORDER BY due, created_at, id`) as Goal[];
 }
