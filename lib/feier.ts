@@ -14,18 +14,19 @@ export const feier = {
  */
 export const legal = {
   /** Person or company responsible, e.g. "Muster GmbH". */
-  name: "",
-  street: "",
+  name: "David Wegener Marketing Consulting GmbH",
+  street: "Stockmeyerstraße 43",
   /** Postcode and city. */
-  city: "",
-  email: "",
+  city: "20457 Hamburg",
+  email: "mail@davidwegener.de",
   /** Optional from here on. */
   phone: "",
   /** For a company: who represents it, e.g. "Geschäftsführerin: …". */
-  represented: "",
+  represented: "Geschäftsführer: David Wegener",
   /** For a company: e.g. "Amtsgericht …, HRB …". */
   register: "",
   vatId: "",
+  taxNumber: "46/714/05892",
   /** When sign-ups are deleted, e.g. "2027-01-31". */
   deleteBy: "",
 };

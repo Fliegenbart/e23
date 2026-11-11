@@ -68,21 +68,38 @@ function deleteBy(lang: Lang) {
 
 function Impressum({ lang }: { lang: Lang }) {
   const de = lang === "de";
+  const tax = [
+    legal.register,
+    legal.vatId && `${de ? "Umsatzsteuer-ID" : "VAT ID"}: ${legal.vatId}`,
+    legal.taxNumber && `${de ? "Steuernummer" : "Tax number"}: ${legal.taxNumber}`,
+  ].filter(Boolean);
   return (
     <>
       <h1>{de ? "Impressum" : "Legal notice"}</h1>
       <h2>{de ? "Angaben gemäß § 5 DDG" : "Information according to § 5 DDG (Germany)"}</h2>
       <Address lang={lang} />
-      {legal.represented && <p>{legal.represented}</p>}
+      {legal.represented && (
+        <>
+          <h2>{de ? "Vertreten durch" : "Represented by"}</h2>
+          <p>
+            {de
+              ? legal.represented
+              : legal.represented.replace("Geschäftsführer", "Managing director")}
+          </p>
+        </>
+      )}
       <h2>{de ? "Kontakt" : "Contact"}</h2>
       <Contact lang={lang} />
-      {(legal.register || legal.vatId) && (
+      {tax.length > 0 && (
         <>
-          <h2>{de ? "Register und Umsatzsteuer" : "Register and VAT"}</h2>
+          <h2>{de ? "Registereintrag & Umsatzsteuer" : "Register and tax"}</h2>
           <p>
-            {legal.register}
-            {legal.register && legal.vatId && <br />}
-            {legal.vatId && `${de ? "Umsatzsteuer-ID" : "VAT ID"}: ${legal.vatId}`}
+            {tax.map((line, i) => (
+              <span key={line}>
+                {i > 0 && <br />}
+                {line}
+              </span>
+            ))}
           </p>
         </>
       )}
