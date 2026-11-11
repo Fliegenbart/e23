@@ -58,7 +58,7 @@ Der Dateiname ergibt die URL (`/blog/<slug>`, nur Kleinbuchstaben, Ziffern und B
 
 ## Weihnachtsfeier
 
-Öffentliche Microsite unter `/weihnachtsfeier` (englisch: `/weihnachtsfeier/en`) – bewusst **ohne Passwort** und ohne Links in den geschützten Bereich. Sie ist auch aus der internen Navigation nicht verlinkt. Datum, Ort und Kalendereintrag (`/weihnachtsfeier/termin.ics`) kommen aus `lib/feier.ts`, die Texte beider Sprachen aus `app/weihnachtsfeier/invitation.tsx`. Ein Ende der Feier ist nicht festgelegt; der Kalendereintrag blockt bis 22:00 Uhr. Im Hero treibt Schnee, dessen Flocken sich zu einem Netz verbinden (`network.tsx`, Canvas, respektiert `prefers-reduced-motion`).
+Öffentliche Microsite unter `/weihnachtsfeier` (englisch: `/weihnachtsfeier/en`) – bewusst **ohne Passwort** und ohne Links in den geschützten Bereich. Sie ist auch aus der internen Navigation nicht verlinkt. Datum, Ort und Kalendereintrag (`/weihnachtsfeier/termin.ics`) kommen aus `lib/feier.ts`, die Texte beider Sprachen aus `app/weihnachtsfeier/invitation.tsx`. Ein Ende der Feier ist nicht festgelegt; der Kalendereintrag blockt bis 22:00 Uhr. Die Einladung ist genau ein Bildschirm ohne Scrollen (nur bei sehr niedrigen Fenstern unter 520 px Höhe wird gescrollt); das Anmeldeformular öffnet sich in einem Dialog. Im Hintergrund treibt Schnee, dessen Flocken sich zu einem Netz verbinden (`network.tsx`, Canvas, respektiert `prefers-reduced-motion`).
 
 Eigene Adresse: `e23-weihnachtsfeier.vercel.app`. Dort zeigt `/` die Einladung und `/en` die englische Fassung; die geschützten Bereiche leiten auf dieser Adresse zurück zur Einladung (`next.config.ts`).
 
