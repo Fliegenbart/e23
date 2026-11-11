@@ -1,24 +1,8 @@
 import { Arrow, Mark } from "../marks";
+import { SiteHeader } from "../site-header";
 
 export function BlogHeader() {
-  return (
-    <header className="site-header blog-header">
-      <a href="/" aria-label="E23 – zum Manifest">
-        <Mark />
-      </a>
-      <nav className="manifest-nav" aria-label="Hauptnavigation">
-        <a className="header-link" href="/">
-          Das Manifest <Arrow diagonal />
-        </a>
-        <a className="header-link" href="/projekte">
-          Projekte & Ideen <Arrow diagonal />
-        </a>
-        <a className="header-link is-current" href="/blog" aria-current="page">
-          Blog <Arrow diagonal />
-        </a>
-      </nav>
-    </header>
-  );
+  return <SiteHeader current="/blog" />;
 }
 
 export function BlogFooter() {

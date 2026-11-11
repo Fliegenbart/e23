@@ -108,3 +108,40 @@ test("login ignores next targets outside the site", async () => {
   });
   assert.equal(r.headers.get("location").includes("example.com"), false);
 });
+test("timeline page and API require a session", async () => {
+  const page = await fetch(`${base}/zeitstrahl`, { redirect: "manual" });
+  assert.notEqual(page.status, 200);
+  assert.match(page.headers.get("location"), /next=zeitstrahl/);
+  const api = await fetch(`${base}/api/timeline`);
+  assert.equal(api.status, 401);
+  const write = await fetch(`${base}/api/timeline`, {
+    method: "POST",
+    headers: { Origin: base, "Content-Type": "application/json" },
+    body: JSON.stringify({ action: "create", title: "x" }),
+  });
+  assert.equal(write.status, 401);
+});
+test("timeline rejects invalid entries before touching the database", async () => {
+  const login = await post("/api/login", process.env.SITE_PASSWORD);
+  const cookie = login.headers.get("set-cookie").split(";")[0];
+  const send = (body, origin = base) =>
+    fetch(`${base}/api/timeline`, {
+      method: "POST",
+      headers: { Origin: origin, Cookie: cookie, "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    });
+  const valid = {
+    action: "create",
+    title: "Test",
+    lane: "kunden",
+    status: "idee",
+    starts: "2027-03-10",
+    ends: "",
+    owner: "",
+    note: "",
+  };
+  assert.equal((await send(valid, "https://example.com")).status, 403);
+  assert.equal((await send({ ...valid, ends: "2027-03-01" })).status, 400);
+  assert.equal((await send({ ...valid, lane: "unbekannt" })).status, 400);
+  assert.equal((await send({ ...valid, title: " " })).status, 400);
+});

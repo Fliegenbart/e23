@@ -123,6 +123,9 @@ export default async function Page({
           <a className="header-link" href="/projekte">
             Projekte & Ideen <Arrow diagonal />
           </a>
+          <a className="header-link" href="/zeitstrahl">
+            Zeitstrahl <Arrow diagonal />
+          </a>
           <a className="header-link" href="/blog">
             Blog <Arrow diagonal />
           </a>
