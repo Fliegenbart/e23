@@ -28,5 +28,5 @@ export const legal = {
   vatId: "",
   taxNumber: "46/714/05892",
   /** When sign-ups are deleted, e.g. "2027-01-31". */
-  deleteBy: "",
+  deleteBy: "2027-01-31",
 };
