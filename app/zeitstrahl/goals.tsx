@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useRef, useState } from "react";
+import { Fragment, useMemo, useRef, useState } from "react";
 import type { Goal } from "@/lib/goals-shared";
 
 const months = [
@@ -116,9 +116,11 @@ export function Goals({
         <h2 id="goal-title">Wo wir dann stehen wollen</h2>
         <p className="goal-text">
           {vision.body.split(" ").map((word, i) => (
-            <span key={i} style={{ animationDelay: `${0.15 + i * 0.035}s` }}>
-              {word}{" "}
-            </span>
+            <Fragment key={i}>
+              <span style={{ animationDelay: `${0.15 + i * 0.035}s` }}>
+                {word}
+              </span>{" "}
+            </Fragment>
           ))}
         </p>
         {vision.version === 1 && (
