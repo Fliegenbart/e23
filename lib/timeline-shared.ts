@@ -3,6 +3,7 @@ export const lanes = [
   { id: "kunden", label: "Kunden" },
   { id: "produkte", label: "Produkte" },
   { id: "formate", label: "Formate & Events" },
+  { id: "begleitung", label: "Begleitung" },
   { id: "intern", label: "Intern" },
 ] as const;
 export const statuses = [

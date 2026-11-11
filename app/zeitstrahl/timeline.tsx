@@ -8,8 +8,11 @@ import {
   type Lane,
   type Status,
 } from "@/lib/timeline-shared";
+import type { Goal } from "@/lib/goals-shared";
+import { Goals, monthLabel } from "./goals";
 
-const MONTHS = 18;
+const BASE_MONTHS = 18;
+const MAX_MONTHS = 30;
 const monthNames = [
   "Jan",
   "Feb",
@@ -59,6 +62,7 @@ const statusLabel = (s: Status) =>
 
 export function Timeline() {
   const [entries, setEntries] = useState<Entry[] | null>(null);
+  const [goals, setGoals] = useState<Goal[]>([]);
   const [error, setError] = useState("");
   const [draft, setDraft] = useState<Draft | null>(null);
   const [formError, setFormError] = useState("");
@@ -69,19 +73,25 @@ export function Timeline() {
     const now = new Date();
     return new Date(now.getFullYear(), now.getMonth(), 1);
   }, []);
+  // The calendar always reaches the target date, even if that is past 18 months.
+  const span = useMemo(() => {
+    const target = goals.find((g) => g.kind === "vision");
+    const needed = target ? monthIndex(origin, target.due) + 1 : 0;
+    return Math.min(MAX_MONTHS, Math.max(BASE_MONTHS, needed));
+  }, [goals, origin]);
   const months = useMemo(
     () =>
-      Array.from({ length: MONTHS }, (_, i) => {
+      Array.from({ length: span }, (_, i) => {
         const d = new Date(origin.getFullYear(), origin.getMonth() + i, 1);
         return { year: d.getFullYear(), month: d.getMonth() };
       }),
-    [origin],
+    [origin, span],
   );
   const today = useMemo(() => {
     const now = new Date();
     const days = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
-    return ((now.getDate() - 0.5) / days / MONTHS) * 100;
-  }, []);
+    return ((now.getDate() - 0.5) / days / span) * 100;
+  }, [span]);
 
   const load = useCallback(async () => {
     try {
@@ -94,6 +104,9 @@ export function Timeline() {
       if (!r.ok) throw new Error(body.error);
       setEntries(body.entries);
       setError("");
+      // The target picture is an addition: the calendar still works without it.
+      const g = await fetch("/api/goals", { cache: "no-store" });
+      if (g.ok) setGoals((await g.json()).goals);
     } catch (e) {
       setError(
         e instanceof Error && e.message
@@ -106,10 +119,10 @@ export function Timeline() {
   useEffect(() => {
     load();
     const timer = window.setInterval(() => {
-      if (!dialog.current?.open) load();
+      if (!document.querySelector("dialog[open]")) load();
     }, 20000);
     const focus = () => {
-      if (!dialog.current?.open) load();
+      if (!document.querySelector("dialog[open]")) load();
     };
     window.addEventListener("focus", focus);
     return () => {
@@ -174,21 +187,45 @@ export function Timeline() {
     send({ action: "delete", id: draft.id, version: draft.version });
   }
 
+  // Stage deadlines and the target date as flags on the calendar.
+  const marks = useMemo(() => {
+    const dates = new Map<string, boolean>();
+    for (const g of goals)
+      dates.set(g.due, dates.get(g.due) || g.kind === "vision");
+    let stage = 0;
+    return [...dates.entries()]
+      .sort(([a], [b]) => a.localeCompare(b))
+      .map(([due, final]) => {
+        if (!final) stage += 1;
+        const [y, m, d] = due.split("-").map(Number);
+        const days = new Date(y, m, 0).getDate();
+        const at = monthIndex(origin, due) + (d - 0.5) / days;
+        return {
+          due,
+          final,
+          left: (at / span) * 100,
+          label: final ? `Ziel · ${monthLabel(due)}` : `Etappe ${stage}`,
+          visible: at >= 0 && at <= span,
+        };
+      })
+      .filter((mark) => mark.visible);
+  }, [goals, origin, span]);
+
   const placed = useMemo(() => {
     const rows = new Map<Lane, { entry: Entry; from: number; to: number }[]>();
     for (const lane of lanes) rows.set(lane.id, []);
     for (const entry of entries ?? []) {
       const from = monthIndex(origin, entry.starts);
       const to = monthIndex(origin, entry.ends ?? entry.starts);
-      if (to < 0 || from >= MONTHS) continue;
+      if (to < 0 || from >= span) continue;
       rows.get(entry.lane)?.push({
         entry,
         from: Math.max(0, from),
-        to: Math.min(MONTHS - 1, to),
+        to: Math.min(span - 1, to),
       });
     }
     return rows;
-  }, [entries, origin]);
+  }, [entries, origin, span]);
 
   const byMonth = useMemo(
     () =>
@@ -239,6 +276,7 @@ export function Timeline() {
 
       {entries && (
         <>
+          <Goals goals={goals} reload={load} />
           <section className="tl-soon" aria-labelledby="tl-soon-title">
             <h2 id="tl-soon-title">Die nächsten 90 Tage</h2>
             {soon.length ? (
@@ -265,7 +303,7 @@ export function Timeline() {
           </section>
 
           <div className="tl-board" role="region" aria-label="Zeitstrahl, 18 Monate" tabIndex={0}>
-            <div className="tl-grid" style={{ "--months": MONTHS } as React.CSSProperties}>
+            <div className="tl-grid" style={{ "--months": span } as React.CSSProperties}>
               <div className="tl-corner" />
               <div className="tl-months">
                 {months.map((m, i) => (
@@ -284,6 +322,15 @@ export function Timeline() {
                 <span className="tl-today" style={{ left: `${today}%` }}>
                   <span>Heute</span>
                 </span>
+                {marks.map((mark) => (
+                  <span
+                    key={mark.due}
+                    className={`tl-mark${mark.final ? " is-final" : ""}`}
+                    style={{ left: `${mark.left}%` }}
+                  >
+                    <span>{mark.label}</span>
+                  </span>
+                ))}
               </div>
               {lanes.map((lane, row) => (
                 <div className={`tl-lane is-${lane.id}`} key={lane.id}>

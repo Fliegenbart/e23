@@ -2151,3 +2151,35 @@ html.lenis body {
     --oy: 13cqh;
   }
 }
+
+/* Chapter "Begleitung": quiet, warm, with the discs drifting back together. */
+.chapter-care {
+  background: #f1e4d6;
+}
+.chapter-care .chapter-heading {
+  position: sticky;
+  top: 90px;
+  align-self: start;
+}
+.chapter-care .chapter-number {
+  -webkit-text-stroke-color: var(--orange);
+  opacity: 0.3;
+}
+.overlap-care {
+  width: min(320px, 70%);
+  margin-top: 60px;
+  --t: clamp(0, calc((var(--p, 0.75) - 0.12) * 2.6), 1);
+}
+.manifest-nav {
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+@media (max-width: 680px) {
+  .chapter-care .chapter-heading {
+    position: static;
+  }
+  .overlap-care {
+    width: 180px;
+    margin-top: 36px;
+  }
+}

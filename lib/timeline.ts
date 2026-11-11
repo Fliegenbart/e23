@@ -50,7 +50,7 @@ export const timelineMutation = z.discriminatedUnion("action", [
 ]);
 
 const createTable = (sql: ReturnType<typeof db>) =>
-  sql`CREATE TABLE IF NOT EXISTS e23_timeline (id uuid PRIMARY KEY, title varchar(160) NOT NULL, lane text NOT NULL CHECK(lane IN ('kunden','produkte','formate','intern')), status text NOT NULL DEFAULT 'geplant' CHECK(status IN ('idee','geplant','fix','erledigt')), starts date NOT NULL, ends date, owner varchar(80) NOT NULL DEFAULT '', note text NOT NULL DEFAULT '', version integer NOT NULL DEFAULT 1, created_at timestamptz NOT NULL DEFAULT now(), updated_at timestamptz NOT NULL DEFAULT now(), CHECK(ends IS NULL OR ends >= starts))`;
+  sql`CREATE TABLE IF NOT EXISTS e23_timeline (id uuid PRIMARY KEY, title varchar(160) NOT NULL, lane text NOT NULL CONSTRAINT e23_timeline_lane_check CHECK(lane IN ('kunden','produkte','formate','begleitung','intern')), status text NOT NULL DEFAULT 'geplant' CHECK(status IN ('idee','geplant','fix','erledigt')), starts date NOT NULL, ends date, owner varchar(80) NOT NULL DEFAULT '', note text NOT NULL DEFAULT '', version integer NOT NULL DEFAULT 1, created_at timestamptz NOT NULL DEFAULT now(), updated_at timestamptz NOT NULL DEFAULT now(), CHECK(ends IS NULL OR ends >= starts))`;
 
 /** First entries, written once when the table is created – then editable like any other. */
 const firstEntries: [string, Lane, Status, string][] = [
@@ -60,23 +60,47 @@ const firstEntries: [string, Lane, Status, string][] = [
   ["Offenes Format: Leute zu uns einladen", "formate", "idee", "2027-01-28"],
 ];
 
+/** Added with the "Begleitung" lane; written once, for new and existing tables alike. */
+const laterEntries: [string, Lane, Status, string, string | null][] = [
+  ["Zwei weitere Büromieter finden", "intern", "geplant", "2026-11-16", "2027-02-26"],
+  [
+    "Pilotabend: Wer bin ich, wenn die KI meine Arbeit kann?",
+    "begleitung",
+    "idee",
+    "2027-02-18",
+    null,
+  ],
+];
+const insert = (
+  sql: ReturnType<typeof db>,
+  [title, lane, status, starts, ends]: [string, Lane, Status, string, string | null],
+) =>
+  sql`INSERT INTO e23_timeline(id,title,lane,status,starts,ends,note) VALUES(gen_random_uuid(),${title},${lane},${status},${starts},${ends},'Termin noch offen.')`;
+
 let ready: Promise<unknown> | null = null;
-/** Creates the table on first use, so no separate migration step is needed. */
+/** Creates or upgrades the table on first use, so no separate migration step is needed. */
 export function ensureTimeline() {
   ready ??= (async () => {
     const sql = db();
-    const [{ exists }] =
-      (await sql`SELECT to_regclass('e23_timeline') IS NOT NULL AS exists`) as {
-        exists: boolean;
-      }[];
-    if (exists) return;
-    await createTable(sql);
-    await sql.transaction(
-      firstEntries.map(
-        ([title, lane, status, starts]) =>
-          sql`INSERT INTO e23_timeline(id,title,lane,status,starts,note) VALUES(gen_random_uuid(),${title},${lane},${status},${starts},'Termin noch offen.')`,
-      ),
-    );
+    const [state] = (await sql`SELECT to_regclass('e23_timeline') IS NOT NULL AS exists, (SELECT pg_get_constraintdef(oid) FROM pg_constraint WHERE conname='e23_timeline_lane_check' AND conrelid=to_regclass('e23_timeline')) AS lanes`) as {
+      exists: boolean;
+      lanes: string | null;
+    }[];
+    if (!state.exists) {
+      await createTable(sql);
+      await sql.transaction(
+        [...firstEntries.map((e) => [...e, null] as const), ...laterEntries].map(
+          (e) => insert(sql, e as [string, Lane, Status, string, string | null]),
+        ),
+      );
+    } else if (!state.lanes?.includes("begleitung")) {
+      // Table from before the "Begleitung" lane: widen the check, add its entries.
+      await sql.transaction([
+        sql`ALTER TABLE e23_timeline DROP CONSTRAINT IF EXISTS e23_timeline_lane_check`,
+        sql`ALTER TABLE e23_timeline ADD CONSTRAINT e23_timeline_lane_check CHECK(lane IN ('kunden','produkte','formate','begleitung','intern'))`,
+        ...laterEntries.map((e) => insert(sql, e)),
+      ]);
+    }
   })().catch((error) => {
     ready = null;
     throw error;

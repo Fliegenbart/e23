@@ -5,6 +5,7 @@
   --produkte: var(--ink);
   --formate: #e9946f;
   --intern: #8fa287;
+  --begleitung: #c9a45c;
 }
 .tl-intro {
   position: relative;
@@ -198,6 +199,9 @@
 .tl-dot.is-formate {
   background: var(--formate);
 }
+.tl-dot.is-begleitung {
+  background: var(--begleitung);
+}
 .tl-dot.is-intern {
   background: var(--intern);
 }
@@ -280,7 +284,7 @@
 }
 .tl-now {
   grid-column: 2;
-  grid-row: 1 / span 5;
+  grid-row: 1 / span 6;
   position: relative;
   pointer-events: none;
   z-index: 2;
@@ -391,6 +395,9 @@
 .is-formate .tl-item {
   --c: var(--formate);
 }
+.is-begleitung .tl-item {
+  --c: var(--begleitung);
+}
 .is-intern .tl-item {
   --c: var(--intern);
 }
@@ -403,6 +410,7 @@
   color: var(--paper);
 }
 .is-formate .tl-item.is-fix,
+.is-begleitung .tl-item.is-fix,
 .is-intern .tl-item.is-fix {
   color: var(--ink);
 }
@@ -610,5 +618,297 @@
   .tl-add {
     width: 100%;
     justify-content: center;
+  }
+}
+
+/* ───────── Zielbild & Etappen ───────── */
+.goal {
+  margin: 0 calc(var(--gutter) * -1);
+  padding: clamp(40px, 6vw, 90px) var(--gutter);
+  background: var(--ink);
+  color: var(--paper);
+}
+.goal .eyebrow {
+  color: #f59574;
+}
+.goal-vision h2 {
+  margin: 18px 0 22px;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0;
+  opacity: 0.7;
+}
+.goal-text {
+  max-width: 22em;
+  font-family: var(--serif);
+  font-size: clamp(32px, 4.4vw, 68px);
+  line-height: 1.06;
+  letter-spacing: -0.015em;
+}
+.goal-hint {
+  max-width: 560px;
+  margin-top: 22px;
+  padding-left: 16px;
+  border-left: 2px solid var(--orange);
+  font-size: 14px;
+  line-height: 1.6;
+  opacity: 0.8;
+}
+.goal-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px 26px;
+  align-items: center;
+  margin-top: 34px;
+  font-size: 12px;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+}
+.goal-meta button {
+  padding: 11px 18px;
+  border: 1px solid currentColor;
+  border-radius: 999px;
+  background: none;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  transition:
+    background 0.25s,
+    color 0.25s;
+}
+.goal-meta button:hover {
+  background: var(--paper);
+  color: var(--ink);
+}
+.goal-bar {
+  height: 3px;
+  margin-top: 18px;
+  background: #ffffff22;
+}
+.goal-bar span {
+  display: block;
+  height: 100%;
+  background: var(--orange);
+  transition: width 0.6s var(--ease-out);
+}
+.goal-path {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(250px, 1fr);
+  gap: 0;
+  margin: 60px 0 0;
+  padding: 0 0 6px;
+  list-style: none;
+  overflow-x: auto;
+}
+.goal-stage {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 0 26px 0 0;
+}
+.goal-stage::before {
+  content: "";
+  position: absolute;
+  top: 19px;
+  left: 40px;
+  right: 0;
+  height: 1px;
+  background: #ffffff33;
+}
+.goal-finish::before {
+  display: none;
+}
+.goal-stage header {
+  display: grid;
+  gap: 16px;
+}
+.goal-node {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border: 1px solid #ffffff66;
+  border-radius: 50%;
+  background: var(--ink);
+  font-size: 14px;
+  font-weight: 700;
+}
+.goal-stage.is-complete .goal-node,
+.goal-finish .goal-node {
+  background: var(--orange);
+  border-color: var(--orange);
+}
+.goal-stage.is-late .goal-node {
+  border-color: #f59574;
+  color: #f59574;
+}
+.goal-stage h3 {
+  display: grid;
+  gap: 4px;
+  font-size: 24px;
+  letter-spacing: -0.03em;
+}
+.goal-stage h3 small {
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 1.6px;
+  text-transform: uppercase;
+  opacity: 0.6;
+}
+.goal-count {
+  font-size: 11px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  opacity: 0.6;
+}
+.goal-stage.is-late .goal-count {
+  color: #f59574;
+  opacity: 1;
+}
+.goal-stage ul {
+  display: grid;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.goal-stage ul li {
+  display: grid;
+  grid-template-columns: 20px 1fr;
+  gap: 12px;
+  align-items: start;
+  padding: 10px 0;
+  border-top: 1px solid #ffffff1f;
+}
+.goal-stage input[type="checkbox"] {
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  margin: 2px 0 0;
+  border: 1.5px solid #ffffff99;
+  border-radius: 6px;
+  background: none;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+}
+.goal-stage input[type="checkbox"]:checked {
+  background: var(--orange);
+  border-color: var(--orange);
+}
+.goal-stage input[type="checkbox"]:checked::after {
+  content: "✓";
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--paper);
+}
+.goal-stage input[type="checkbox"]:focus-visible {
+  outline: 2px solid var(--paper);
+  outline-offset: 3px;
+}
+.goal-stage ul button {
+  display: grid;
+  gap: 4px;
+  padding: 0;
+  border: 0;
+  background: none;
+  text-align: left;
+  font-size: 15px;
+  line-height: 1.45;
+}
+.goal-stage ul button:hover {
+  color: #f59574;
+}
+.goal-stage ul em {
+  font-size: 15px;
+  opacity: 0.65;
+}
+.goal-stage li.is-done button {
+  text-decoration: line-through;
+  opacity: 0.5;
+}
+.goal-finish p {
+  font-family: var(--serif);
+  font-size: 19px;
+  line-height: 1.35;
+  opacity: 0.85;
+}
+.goal-add {
+  width: fit-content;
+  padding: 0;
+  border: 0;
+  background: none;
+  font-size: 11px;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  opacity: 0.55;
+}
+.goal-add:hover {
+  opacity: 1;
+  color: #f59574;
+}
+.goal-dialog-hint {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: -8px;
+}
+.tl-mark {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 0;
+  border-left: 1.5px dashed var(--ink);
+  opacity: 0.55;
+}
+.tl-mark span {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--paper);
+  font-size: 10px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.tl-mark.is-final {
+  border-left-style: solid;
+  border-left-color: var(--orange);
+  opacity: 1;
+}
+.tl-mark.is-final span {
+  left: auto;
+  right: 6px;
+  background: var(--orange);
+}
+@media (max-width: 760px) {
+  .goal-path {
+    grid-auto-flow: row;
+    grid-auto-columns: auto;
+    gap: 34px;
+    margin-top: 44px;
+  }
+  .goal-stage {
+    padding: 0 0 0 56px;
+  }
+  .goal-stage::before {
+    top: 40px;
+    bottom: -34px;
+    left: 19px;
+    right: auto;
+    width: 1px;
+    height: auto;
+  }
+  .goal-node {
+    position: absolute;
+    left: 0;
+    top: 0;
   }
 }

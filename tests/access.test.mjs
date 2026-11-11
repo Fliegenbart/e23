@@ -145,3 +145,25 @@ test("timeline rejects invalid entries before touching the database", async () =
   assert.equal((await send({ ...valid, lane: "unbekannt" })).status, 400);
   assert.equal((await send({ ...valid, title: " " })).status, 400);
 });
+test("team page stays switched off until it is released", async () => {
+  const login = await post("/api/login", process.env.SITE_PASSWORD);
+  const cookie = login.headers.get("set-cookie").split(";")[0];
+  const r = await fetch(`${base}/wir`, { headers: { Cookie: cookie } });
+  assert.equal(r.status, 404);
+});
+test("goals API requires a session and validates input", async () => {
+  assert.equal((await fetch(`${base}/api/goals`)).status, 401);
+  const login = await post("/api/login", process.env.SITE_PASSWORD);
+  const cookie = login.headers.get("set-cookie").split(";")[0];
+  const send = (body, origin = base) =>
+    fetch(`${base}/api/goals`, {
+      method: "POST",
+      headers: { Origin: origin, Cookie: cookie, "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    });
+  const valid = { action: "create", due: "2027-06-30", body: "Test", owner: "" };
+  assert.equal((await send(valid, "https://example.com")).status, 403);
+  assert.equal((await send({ ...valid, body: " " })).status, 400);
+  assert.equal((await send({ ...valid, due: "2027-02-31" })).status, 400);
+  assert.equal((await send({ action: "toggle", id: "x", version: 1, done: true })).status, 400);
+});

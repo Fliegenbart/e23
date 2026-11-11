@@ -1,0 +1,141 @@
+/* ───────── Wer wir sind ───────── */
+.wir {
+  padding: 0 var(--gutter) 120px;
+}
+.wir-intro {
+  position: relative;
+  padding: 40px 0 80px;
+  overflow: clip;
+}
+.wir-intro .eyebrow {
+  color: var(--orange);
+}
+.wir-intro h1 {
+  position: relative;
+  z-index: 1;
+  margin: 26px 0 30px;
+  font-size: clamp(56px, 8.4vw, 140px);
+  font-weight: 800;
+  line-height: 0.98;
+  letter-spacing: -0.065em;
+}
+.wir-intro h1 em {
+  color: var(--orange);
+  font-weight: 400;
+  letter-spacing: -0.03em;
+}
+.wir-intro h1 .mask-line > span {
+  animation: rise 1.2s calc(0.2s + var(--l) * 0.12s) var(--ease-out) both;
+}
+.wir-intro p {
+  position: relative;
+  z-index: 1;
+  max-width: 640px;
+  font-family: var(--serif);
+  font-size: clamp(22px, 2vw, 30px);
+  line-height: 1.3;
+  color: var(--muted);
+}
+.wir-intro .overlap-tl {
+  position: absolute;
+  right: 2vw;
+  top: 30px;
+  width: clamp(160px, 22vw, 340px);
+  animation: orbit 80s linear infinite;
+}
+.wir-levels {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--line);
+}
+.wir-levels li {
+  display: grid;
+  grid-template-columns: 80px 1.2fr 1fr;
+  gap: 30px clamp(30px, 5vw, 90px);
+  padding: 54px 0;
+  border-bottom: 1px solid var(--line);
+}
+.wir-num {
+  font-family: var(--serif);
+  font-size: 44px;
+  line-height: 1;
+  color: var(--orange);
+}
+.wir-level .eyebrow {
+  color: var(--orange);
+}
+.wir-level h2 {
+  margin-top: 14px;
+  font-size: clamp(30px, 3.6vw, 56px);
+  font-weight: 700;
+  line-height: 1.04;
+  letter-spacing: -0.045em;
+}
+.wir-who {
+  display: grid;
+  gap: 6px;
+  align-content: start;
+  font-size: 16px;
+  line-height: 1.7;
+}
+.wir-who strong {
+  font-size: 22px;
+  letter-spacing: -0.02em;
+}
+.wir-who > span,
+.wir-who > a {
+  font-family: var(--serif);
+  font-size: 22px;
+  color: var(--muted);
+  width: fit-content;
+}
+.wir-who > a:hover {
+  color: var(--orange);
+}
+.wir-who p {
+  margin-top: 10px;
+  max-width: 460px;
+}
+.wir-stance {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 30px clamp(30px, 6vw, 110px);
+  margin-top: 90px;
+  padding: clamp(30px, 5vw, 70px);
+  background: var(--ink);
+  color: var(--paper);
+}
+.wir-stance h2 {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(32px, 3.6vw, 54px);
+  line-height: 1.05;
+}
+.wir-stance div {
+  display: grid;
+  gap: 20px;
+  font-size: 17px;
+  line-height: 1.7;
+}
+.wir-stance strong {
+  color: #f59574;
+  font-weight: 600;
+}
+@media (max-width: 760px) {
+  .wir-levels li {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    padding: 36px 0;
+  }
+  .wir-num {
+    font-size: 30px;
+  }
+  .wir-stance {
+    grid-template-columns: 1fr;
+    margin-top: 50px;
+  }
+  .wir-intro .overlap-tl {
+    display: none;
+  }
+}
