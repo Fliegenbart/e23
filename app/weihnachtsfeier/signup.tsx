@@ -10,6 +10,8 @@ export type SignupText = {
   submit: string;
   sending: string;
   privacy: string;
+  privacyLink: string;
+  privacyHref: string;
   doneTitle: string;
   done: string;
   errors: Record<"invalid" | "full" | "unavailable", string>;
@@ -85,7 +87,9 @@ export function Signup({ lang, text }: { lang: string; text: SignupText }) {
         <button type="submit" disabled={state === "sending"}>
           {state === "sending" ? text.sending : text.submit}
         </button>
-        <p>{text.privacy}</p>
+        <p>
+          {text.privacy} <a href={text.privacyHref}>{text.privacyLink}</a>
+        </p>
       </div>
       {error && (
         <p className="feier-form-wide feier-form-error" role="alert">

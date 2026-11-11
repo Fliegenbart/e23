@@ -416,3 +416,69 @@
     grid-template-columns: 1fr;
   }
 }
+.feier-footer {
+  justify-content: flex-start;
+}
+.feier-footer > :first-child {
+  margin-right: auto;
+}
+.feier-legal-links {
+  display: flex;
+  gap: 22px;
+}
+.feier-legal-links a,
+.feier-form-end a {
+  border-bottom: 1px solid currentColor;
+}
+.feier-legal-links a:hover,
+.feier-form-end a:hover {
+  color: #f59574;
+}
+.feier-legal {
+  max-width: 820px;
+  padding-bottom: 120px;
+}
+.feier-back {
+  font-size: 14px;
+  color: var(--muted);
+}
+.feier-back:hover {
+  color: var(--orange);
+}
+.feier-legal h1 {
+  margin: 30px 0 10px;
+  font-size: clamp(44px, 7vw, 100px);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.06em;
+}
+.feier-legal h2 {
+  margin: 50px 0 14px;
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(26px, 2.6vw, 36px);
+  line-height: 1.1;
+}
+.feier-legal p {
+  margin: 0 0 14px;
+  font-size: 17px;
+  line-height: 1.7;
+}
+.feier-legal p a {
+  border-bottom: 1px solid var(--orange);
+}
+.feier-missing {
+  padding: 2px 8px;
+  background: var(--orange);
+  color: var(--paper);
+  font-weight: 600;
+}
+@media (max-width: 760px) {
+  .feier-footer {
+    flex-wrap: wrap;
+  }
+  .feier-footer > span:not(.wordmark) {
+    order: 3;
+    flex-basis: 100%;
+  }
+}
