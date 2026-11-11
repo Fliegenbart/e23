@@ -1,0 +1,541 @@
+/* ───────── Weihnachtsfeier ───────── */
+.feier {
+  padding: 0 var(--gutter);
+}
+.feier-list {
+  padding-bottom: 120px;
+}
+.feier-network {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+.feier-header,
+.feier-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  padding: 24px var(--gutter) 38px;
+}
+.feier-footer {
+  padding: 34px var(--gutter);
+  border-top: 1px solid #3a3d36;
+  background: var(--ink);
+  color: var(--paper);
+  font-size: 13px;
+}
+.feier-lang {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  border-bottom: 1px solid currentColor;
+  padding-bottom: 3px;
+}
+.feier-lang:hover {
+  color: var(--orange);
+}
+.feier-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 22px;
+}
+.feier-form label {
+  display: grid;
+  gap: 8px;
+}
+.feier-form label span {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #c9c7bd;
+}
+.feier-form input,
+.feier-form select,
+.feier-form textarea {
+  width: 100%;
+  padding: 12px 0;
+  border: 0;
+  border-bottom: 1px solid #62655c;
+  border-radius: 0;
+  background: transparent;
+  color: var(--paper);
+  font: inherit;
+  font-size: 18px;
+  resize: vertical;
+}
+.feier-form select option {
+  color: var(--ink);
+}
+.feier-form input:focus-visible,
+.feier-form select:focus-visible,
+.feier-form textarea:focus-visible {
+  outline: none;
+  border-bottom-color: var(--orange);
+}
+.feier-form ::placeholder {
+  color: #8b8d84;
+}
+.feier-form-wide {
+  grid-column: 1 / -1;
+}
+.feier-form-trap {
+  position: absolute !important;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+.feier-form-end {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px 26px;
+}
+.feier-form button {
+  padding: 16px 30px;
+  border: 0;
+  background: var(--orange);
+  color: var(--paper);
+  font-weight: 600;
+}
+.feier-form button:hover {
+  background: var(--paper);
+  color: var(--ink);
+}
+.feier-form button:disabled {
+  opacity: 0.6;
+  cursor: progress;
+}
+.feier-form-end p {
+  flex: 1 1 200px;
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.5;
+  color: #c9c7bd;
+}
+.feier-form-error {
+  margin: 0;
+  color: #f59574;
+}
+.feier-done strong {
+  display: block;
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(28px, 3vw, 42px);
+  line-height: 1.1;
+  color: #f59574;
+}
+.feier-done p {
+  margin: 16px 0 0;
+  font-size: 17px;
+  line-height: 1.7;
+}
+.feier-list h1 {
+  margin: 20px 0;
+  font-size: clamp(44px, 6vw, 96px);
+  font-weight: 800;
+  letter-spacing: -0.06em;
+}
+.feier-list .eyebrow {
+  color: var(--orange);
+}
+.feier-table {
+  overflow-x: auto;
+  margin-top: 30px;
+}
+.feier-table table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 15px;
+}
+.feier-table th,
+.feier-table td {
+  padding: 14px 20px 14px 0;
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+}
+.feier-table th {
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.feier-table a:hover {
+  color: var(--orange);
+}
+.feier-list-lead {
+  max-width: 640px;
+  font-size: 17px;
+  line-height: 1.7;
+}
+.feier-list-lead a {
+  border-bottom: 1px solid var(--orange);
+}
+.feier-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px clamp(30px, 5vw, 80px);
+  margin: 40px 0 10px;
+}
+.feier-stats dd {
+  margin: 0;
+  font-family: var(--serif);
+  font-size: clamp(48px, 6vw, 88px);
+  line-height: 1;
+  color: var(--orange);
+}
+.feier-stats dt {
+  margin-top: 6px;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.feier-table input[type="checkbox"] {
+  width: 22px;
+  height: 22px;
+  accent-color: var(--orange);
+  cursor: pointer;
+}
+.feier-table tr.is-there td:nth-child(2) {
+  font-weight: 700;
+}
+.feier-list-error {
+  color: var(--orange);
+}
+@media (max-width: 760px) {
+  .feier-form {
+    grid-template-columns: 1fr;
+  }
+}
+.feier-footer {
+  justify-content: flex-start;
+}
+.feier-footer > :first-child {
+  margin-right: auto;
+}
+.feier-legal-links {
+  display: flex;
+  gap: 22px;
+}
+.feier-legal-links a,
+.feier-form-end a {
+  border-bottom: 1px solid currentColor;
+}
+.feier-legal-links a:hover,
+.feier-form-end a:hover {
+  color: #f59574;
+}
+.feier-legal {
+  max-width: 820px;
+  padding-bottom: 120px;
+}
+.feier-back {
+  font-size: 14px;
+  color: var(--muted);
+}
+.feier-back:hover {
+  color: var(--orange);
+}
+.feier-legal h1 {
+  margin: 30px 0 10px;
+  font-size: clamp(44px, 7vw, 100px);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.06em;
+}
+.feier-legal h2 {
+  margin: 50px 0 14px;
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(26px, 2.6vw, 36px);
+  line-height: 1.1;
+}
+.feier-legal p {
+  margin: 0 0 14px;
+  font-size: 17px;
+  line-height: 1.7;
+}
+.feier-legal p a {
+  border-bottom: 1px solid var(--orange);
+}
+.feier-missing {
+  padding: 2px 8px;
+  background: var(--orange);
+  color: var(--paper);
+  font-weight: 600;
+}
+@media (max-width: 760px) {
+  .feier-footer {
+    flex-wrap: wrap;
+  }
+  .feier-footer > span:not(.wordmark) {
+    order: 3;
+    flex-basis: 100%;
+  }
+}
+.feier-delete {
+  padding: 0 0 2px;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  background: none;
+  font-size: 13px;
+  color: var(--muted);
+}
+.feier-delete:hover {
+  border-bottom-color: var(--orange);
+  color: var(--orange);
+}
+
+/* ───────── One screen, no scrolling ───────── */
+:root:has(.feier-one) {
+  overflow: hidden;
+}
+.feier-one {
+  display: flex;
+  flex-direction: column;
+  height: 100dvh;
+  padding: 0 var(--gutter) var(--gutter);
+}
+.feier-one .feier-header {
+  flex: none;
+  padding: clamp(14px, 2.6vh, 24px) 0;
+}
+.feier-hero {
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 0;
+  overflow: clip;
+  padding: clamp(20px, 5vh, 70px) clamp(22px, 5vw, 80px) clamp(56px, 9vh, 90px);
+  background: var(--ink);
+  color: var(--paper);
+}
+.feier-hero > :not(.feier-network) {
+  position: relative;
+  z-index: 1;
+}
+.feier-hero .eyebrow {
+  color: #f59574;
+}
+.feier-hero h1 {
+  margin: clamp(10px, 2.4vh, 26px) 0 clamp(14px, 3vh, 34px);
+  font-size: clamp(34px, min(8.4vw, 15vh), 140px);
+  font-weight: 800;
+  line-height: 0.98;
+  letter-spacing: -0.065em;
+}
+.feier-hero h1 em {
+  color: var(--orange);
+  font-weight: 400;
+  letter-spacing: -0.03em;
+}
+.feier-hero h1 .mask-line > span {
+  animation: rise 1.2s calc(0.2s + var(--l) * 0.12s) var(--ease-out) both;
+}
+.feier-hero p {
+  margin: 0;
+}
+.feier-lead {
+  max-width: 760px;
+  font-family: var(--serif);
+  font-size: clamp(18px, min(2vw, 3.3vh), 30px);
+  line-height: 1.28;
+  color: #dcd9cf;
+}
+.feier-tagline {
+  margin-top: clamp(10px, 2vh, 20px) !important;
+  font-size: clamp(14px, min(1.3vw, 2.3vh), 19px);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+.feier-when {
+  margin-top: clamp(14px, 3vh, 34px) !important;
+  padding-top: clamp(10px, 2vh, 18px);
+  border-top: 1px solid rgb(243 240 232 / 0.3);
+  font-size: clamp(12px, min(1.1vw, 2vh), 15px);
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #f59574;
+}
+.feier-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 28px;
+  margin-top: clamp(14px, 3vh, 34px);
+}
+.feier-more {
+  padding: 0 0 3px;
+  border: 0;
+  border-bottom: 1px solid currentColor;
+  background: none;
+  font-weight: 600;
+}
+.feier-more:hover {
+  color: #f59574;
+}
+.feier-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  padding: clamp(11px, 1.9vh, 16px) 26px;
+  border: 0;
+  background: var(--orange);
+  color: var(--paper);
+  font-weight: 600;
+}
+.feier-cta:hover {
+  background: var(--paper);
+  color: var(--ink);
+}
+.feier-hero .feier-foot {
+  position: absolute;
+  left: clamp(22px, 5vw, 80px);
+  right: clamp(22px, 5vw, 80px);
+  bottom: clamp(14px, 2.6vh, 26px);
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  font-size: 13px;
+}
+.feier-foot a {
+  border-bottom: 1px solid currentColor;
+}
+.feier-foot a:hover {
+  color: #f59574;
+}
+.feier-dialog {
+  width: min(680px, calc(100vw - 32px));
+  max-height: calc(100dvh - 32px);
+  padding: 0;
+  border: 0;
+  background: var(--ink);
+  color: var(--paper);
+  overflow: auto;
+}
+.feier-dialog::backdrop {
+  background: rgb(20 22 18 / 0.7);
+}
+.feier-dialog > div {
+  position: relative;
+  padding: clamp(26px, 5vw, 54px);
+  border: 1px solid #3a3d36;
+}
+.feier-dialog h2 {
+  margin: 0 0 28px;
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(34px, 5vw, 54px);
+  line-height: 1.02;
+}
+.feier-dialog-close {
+  position: absolute;
+  top: 14px;
+  right: 16px;
+  width: 40px;
+  height: 40px;
+  border: 0;
+  background: none;
+  font-size: 30px;
+  line-height: 1;
+}
+.feier-dialog-close:hover {
+  color: var(--orange);
+}
+/* Too little room to fit everything: scrolling beats cut-off text. */
+@media (max-height: 520px) {
+  :root:has(.feier-one) {
+    overflow: auto;
+  }
+  .feier-one {
+    height: auto;
+    min-height: 100dvh;
+  }
+}
+
+/* ───────── Logo bar and "Wer ist wir?" ───────── */
+.feier-logos {
+  display: flex;
+  align-items: center;
+  gap: clamp(12px, 2.6vw, 40px);
+  min-width: 0;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.feier-logos li {
+  display: flex;
+}
+/* Optical sizes: the three marks differ a lot in shape. */
+.feier-logo-practical {
+  height: clamp(14px, min(2.5vh, 4vw), 26px);
+}
+.feier-logo-ins-wandeln-kommen {
+  height: clamp(40px, min(6.2vh, 9.6vw), 60px);
+}
+.feier-logo-tyrn-on {
+  height: clamp(9px, min(1.6vh, 2.6vw), 16px);
+}
+.feier-who > p {
+  margin: -12px 0 26px;
+  font-size: 17px;
+  color: #c9c7bd;
+}
+.feier-who ul {
+  display: grid;
+  gap: 0;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.feier-who li {
+  display: grid;
+  grid-template-columns: 150px 1fr;
+  align-items: center;
+  gap: 24px;
+  padding: 20px 0;
+  border-top: 1px solid #3a3d36;
+  font-size: 16px;
+  line-height: 1.5;
+}
+.feier-who img {
+  display: block;
+  /* The artwork is dark; on the dark dialog it is shown light. */
+  filter: brightness(0) invert(0.94);
+}
+.feier-who a:hover img {
+  opacity: 0.7;
+}
+.feier-who .feier-logo-practical {
+  height: 26px;
+}
+.feier-who .feier-logo-ins-wandeln-kommen {
+  height: 74px;
+}
+.feier-who .feier-logo-tyrn-on {
+  height: 17px;
+}
+@media (max-width: 520px) {
+  .feier-who li {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+}
+.feier-header .feier-lang {
+  flex: none;
+}
+.feier-logos img {
+  display: block;
+  width: auto;
+}

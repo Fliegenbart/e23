@@ -55,3 +55,15 @@ Ein Absatz, der komplett fett ist, wird als großer Kernsatz gesetzt.
 ```
 
 Der Dateiname ergibt die URL (`/blog/<slug>`, nur Kleinbuchstaben, Ziffern und Bindestriche). Neue Beiträge erscheinen nach dem nächsten Deployment.
+
+## Weihnachtsfeier
+
+Öffentliche Microsite unter `/weihnachtsfeier` (englisch: `/weihnachtsfeier/en`) – bewusst **ohne Passwort** und ohne Links in den geschützten Bereich. Sie ist auch aus der internen Navigation nicht verlinkt. Datum, Ort und Kalendereintrag (`/weihnachtsfeier/termin.ics`) kommen aus `lib/feier.ts`, die Texte beider Sprachen aus `app/weihnachtsfeier/invitation.tsx`. Ein Ende der Feier ist nicht festgelegt; der Kalendereintrag blockt bis 22:00 Uhr. Die Einladung ist genau ein Bildschirm ohne Scrollen (nur bei sehr niedrigen Fenstern unter 520 px Höhe wird gescrollt); das Anmeldeformular öffnet sich in einem Dialog. Im Hintergrund treibt Schnee, dessen Flocken sich zu einem Netz verbinden (`network.tsx`, Canvas, respektiert `prefers-reduced-motion`).
+
+Eigene Adresse: `e23-weihnachtsfeier.vercel.app`. Dort zeigt `/` die Einladung und `/en` die englische Fassung; die geschützten Bereiche leiten auf dieser Adresse zurück zur Einladung (`next.config.ts`).
+
+Anmeldung: Das Formular auf der Einladung schreibt über `POST /api/anmeldung` in die Tabelle `e23_feier_anmeldungen` (dieselbe Neon-Datenbank wie der Arbeitsbereich, `DATABASE_URL`). Die Tabelle wird beim ersten Zugriff angelegt. Pro E-Mail-Adresse gibt es einen Eintrag; wer sich erneut anmeldet, aktualisiert ihn. Schutz gegen Missbrauch: Honeypot-Feld, Längen- und Formatprüfung, höchstens 400 Einträge. Die Liste der Anmeldungen steht passwortgeschützt unter `/weihnachtsfeier/anmeldungen` und ist in der internen Navigation als „Weihnachtsfeier“ verlinkt. Dort lässt sich pro Anmeldung abhaken, wer wirklich da war (`PATCH /api/anmeldung`), und einzelne Anmeldungen nach Rückfrage endgültig löschen (`DELETE /api/anmeldung`); beides nur mit Sitzung.
+
+Impressum und Datenschutzhinweis der Einladung liegen unter `/weihnachtsfeier/impressum` und `/weihnachtsfeier/datenschutz` (englisch unter `/weihnachtsfeier/en/…`), verlinkt im Fuß der Einladung und am Formular. Anbieter, Anschrift, Kontakt und Löschfrist stehen in `legal` in `lib/feier.ts`; eine leere Pflichtangabe wird auf der Seite als „Angabe fehlt“ markiert. Die Texte sind ein Entwurf und keine Rechtsberatung.
+
+Oben auf der Einladung steht die Logoleiste der drei Firmen im Büro (practical, Ins Wandeln kommen, TYRN.ON). Die Logos liegen als SVG in `public/feier/` und stammen von den Websites der Firmen; Namen, Links und die Kurzbeschreibungen für den Dialog „Wer ist wir?“ stehen in `app/weihnachtsfeier/logos.tsx`.

@@ -1,10 +1,36 @@
 import type { NextConfig } from "next";
+/** The invitation's own address: there, "/" is the Weihnachtsfeier and nothing else. */
+const feierHost = [{ type: "host" as const, value: "e23-weihnachtsfeier.vercel.app" }];
 const config: NextConfig = {
   poweredByHeader: false,
   // Blog posts are read from disk at request time.
   outputFileTracingIncludes: {
     "/blog": ["./content/blog/**/*"],
     "/blog/*": ["./content/blog/**/*"],
+  },
+  async rewrites() {
+    return {
+      beforeFiles: [
+        { source: "/", has: feierHost, destination: "/weihnachtsfeier" },
+        { source: "/en", has: feierHost, destination: "/weihnachtsfeier/en" },
+      ],
+      afterFiles: [],
+      fallback: [],
+    };
+  },
+  async redirects() {
+    return [
+      "/blog/:path*",
+      "/projekte",
+      "/zeitstrahl",
+      "/wir",
+      "/weihnachtsfeier/anmeldungen",
+    ].map((source) => ({
+      source,
+      has: feierHost,
+      destination: "/",
+      permanent: false,
+    }));
   },
   async headers() {
     return [
