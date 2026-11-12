@@ -67,3 +67,5 @@ Anmeldung: Das Formular auf der Einladung schreibt über `POST /api/anmeldung` i
 Impressum und Datenschutzhinweis der Einladung liegen unter `/weihnachtsfeier/impressum` und `/weihnachtsfeier/datenschutz` (englisch unter `/weihnachtsfeier/en/…`), verlinkt im Fuß der Einladung und am Formular. Anbieter, Anschrift, Kontakt und Löschfrist stehen in `legal` in `lib/feier.ts`; eine leere Pflichtangabe wird auf der Seite als „Angabe fehlt“ markiert. Die Texte sind ein Entwurf und keine Rechtsberatung.
 
 Oben auf der Einladung steht die Logoleiste der drei Firmen im Büro (practical, Ins Wandeln kommen, TYRN.ON). Die Logos liegen als SVG in `public/feier/` und stammen von den Websites der Firmen; Namen, Links und die Kurzbeschreibungen für den Dialog „Wer ist wir?“ stehen in `app/weihnachtsfeier/logos.tsx`.
+
+Nach erfolgreicher Anmeldung bietet die Bestätigung den Kalendereintrag direkt zum Herunterladen an (`/weihnachtsfeier/termin.ics`, öffnet sich in Apple Kalender, Outlook und Google Kalender).

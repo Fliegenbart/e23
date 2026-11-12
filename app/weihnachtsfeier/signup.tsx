@@ -14,6 +14,8 @@ export type SignupText = {
   privacyHref: string;
   doneTitle: string;
   done: string;
+  calendar: string;
+  calendarHint: string;
   errors: Record<"invalid" | "full" | "unavailable", string>;
 };
 
@@ -54,6 +56,10 @@ export function Signup({ lang, text }: { lang: string; text: SignupText }) {
       <div className="feier-done" role="status">
         <strong>{text.doneTitle}</strong>
         <p>{text.done}</p>
+        <a className="feier-cta" href="/weihnachtsfeier/termin.ics" download="e23-weihnachtsfeier.ics">
+          {text.calendar} <span aria-hidden="true">↓</span>
+        </a>
+        <small>{text.calendarHint}</small>
       </div>
     );
 

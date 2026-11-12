@@ -2,6 +2,9 @@
 export const feier = {
   title: "E23 Weihnachtsfeier",
   place: "Esplanade 23",
+  /** Shown as the note of the calendar entry. */
+  note: "Netzwerken. Austauschen. Kekse. Glühwein.",
+  url: "https://e23-weihnachtsfeier.vercel.app",
   /** 14.12.2026, 16:00 Uhr in Berlin (CET, UTC+1). */
   start: "2026-12-14T15:00:00Z",
   /** No end was announced; the calendar entry blocks the evening. */

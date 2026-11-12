@@ -36,7 +36,9 @@ const copy = {
       privacyLink: "Datenschutz",
       privacyHref: "/weihnachtsfeier/datenschutz",
       doneTitle: "Danke, du bist angemeldet.",
-      done: "Wir freuen uns auf dich.",
+      done: "Wir freuen uns auf dich. Trag dir den Termin gleich ein:",
+      calendar: "Kalendereintrag herunterladen",
+      calendarHint: "Die Datei öffnet sich auf Mac und PC im Kalender – Apple Kalender, Outlook oder Google Kalender.",
       errors: {
         invalid: "Bitte prüfe deine Angaben.",
         full: "Die Anmeldung ist geschlossen. Melde dich bitte direkt bei uns.",
@@ -68,7 +70,9 @@ const copy = {
       privacyLink: "Privacy",
       privacyHref: "/weihnachtsfeier/en/datenschutz",
       doneTitle: "Thank you, you are signed up.",
-      done: "We look forward to seeing you.",
+      done: "We look forward to seeing you. Save the date right away:",
+      calendar: "Download calendar entry",
+      calendarHint: "The file opens in your calendar on Mac and PC – Apple Calendar, Outlook or Google Calendar.",
       errors: {
         invalid: "Please check your details.",
         full: "Sign-up is closed. Please get in touch with us directly.",
