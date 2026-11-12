@@ -34,10 +34,19 @@ import {
 } from "lucide-react";
 import type { WorkItem, Detail, Task, TaskStatus } from "@/lib/workspace/types";
 
+type Suggestion = {
+  title: string;
+  summary: string;
+  together: string;
+  steps: string[];
+  questions: string[];
+};
+
 type Filter = "all" | "project" | "idea" | "completed" | "archived";
 type Editor =
   | { type: "item"; item?: WorkItem; kind?: "idea" | "project" }
-  | { type: "task"; task?: Task };
+  | { type: "task"; task?: Task }
+  | { type: "suggest" };
 const states: Record<TaskStatus, string> = {
   todo: "Offen",
   doing: "In Arbeit",
@@ -123,6 +132,9 @@ export default function Workspace() {
   const [editor, setEditor] = useState<Editor | null>(null);
   const [formError, setFormError] = useState("");
   const [author, setAuthor] = useState("");
+  const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
+  const [thinking, setThinking] = useState(false);
+  const [adopted, setAdopted] = useState<number[]>([]);
   const sequence = useRef(0);
   const load = useCallback(
     async (quiet = false) => {
@@ -189,11 +201,58 @@ export default function Workspace() {
   const open = (id: string) => router.push("/projekte?projekt=" + id);
   const showEditor = (value: Editor) => {
     setFormError("");
+    if (value.type === "suggest") {
+      setSuggestions([]);
+      setAdopted([]);
+    }
     setEditor(value);
   };
+  async function suggest(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    if (thinking) return;
+    setFormError("");
+    setThinking(true);
+    try {
+      const result = await api("/api/ideas", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(values(event.currentTarget)),
+      });
+      setSuggestions(result.ideas);
+      setAdopted([]);
+    } catch (e) {
+      setFormError((e as Error).message);
+    } finally {
+      setThinking(false);
+    }
+  }
+  async function adopt(idea: Suggestion, index: number) {
+    if (busy) return;
+    setFormError("");
+    try {
+      await mutate({
+        action: "create",
+        kind: "idea",
+        title: idea.title,
+        description: [
+          idea.summary,
+          "Gemeinsam: " + idea.together,
+          "Offene Fragen:\n" + idea.questions.map((q) => "– " + q).join("\n"),
+          "(Vorschlag der KI, noch nicht geprüft.)",
+        ].join("\n\n"),
+        owner: "",
+        due: "",
+        tasks: idea.steps,
+      });
+      setAdopted((list) => [...list, index]);
+      setNotice("Idee übernommen.");
+    } catch (e) {
+      setFormError((e as Error).message);
+    }
+  }
   async function saveEditor(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    if (!editor || busy) return;
+    if (!editor || editor.type === "suggest" || busy) return;
     setFormError("");
     const fields = values(event.currentTarget);
     try {
@@ -380,12 +439,22 @@ export default function Workspace() {
                   </h1>
                   <p>Ideen teilen. Gemeinsam anfangen. Dinge weiterbringen.</p>
                 </div>
-                <button
-                  className="ws-primary"
-                  onClick={() => showEditor({ type: "item", kind: "project" })}
-                >
-                  <Plus size={18} /> Neues Projekt
-                </button>
+                <div className="ws-intro-actions">
+                  <button
+                    className="ws-secondary"
+                    onClick={() => showEditor({ type: "suggest" })}
+                  >
+                    <Sparkles size={18} /> Ideen vorschlagen
+                  </button>
+                  <button
+                    className="ws-primary"
+                    onClick={() =>
+                      showEditor({ type: "item", kind: "project" })
+                    }
+                  >
+                    <Plus size={18} /> Neues Projekt
+                  </button>
+                </div>
               </section>
               <div className="ws-overview">
                 <div>
@@ -852,7 +921,90 @@ export default function Workspace() {
           {notice}
         </div>
       )}
-      {editor && (
+      {editor?.type === "suggest" && (
+        <EditorDialog
+          title="Ideen vorschlagen lassen"
+          close={() => {
+            if (!busy && !thinking) setEditor(null);
+          }}
+        >
+          <form className="ws-editor-form" onSubmit={suggest}>
+            {formError && (
+              <div className="ws-form-error" role="alert">
+                {formError}
+              </div>
+            )}
+            <label>
+              Thema
+              <input
+                name="topic"
+                required
+                minLength={3}
+                maxLength={200}
+                autoFocus
+                placeholder="Wozu sucht ihr Ideen?"
+              />
+            </label>
+            <label>
+              Hintergrund (optional)
+              <textarea
+                name="context"
+                maxLength={1500}
+                rows={3}
+                placeholder="Wer ist dabei? Was gibt es schon? Was soll es nicht sein?"
+              />
+            </label>
+            <div className="ws-dialog-actions">
+              <span className="ws-suggest-hint">
+                Vorschläge einer KI. Prüft sie im Gespräch.
+              </span>
+              <button type="submit" className="ws-primary" disabled={thinking}>
+                <Sparkles size={16} />
+                {thinking
+                  ? "Wird überlegt …"
+                  : suggestions.length
+                    ? "Neue Vorschläge"
+                    : "Vorschlagen"}
+              </button>
+            </div>
+          </form>
+          {suggestions.length > 0 && (
+            <ul className="ws-suggestions" aria-label="Vorschläge">
+              {suggestions.map((idea, index) => (
+                <li key={index}>
+                  <h3>{idea.title}</h3>
+                  <p>{idea.summary}</p>
+                  <p>
+                    <strong>Gemeinsam:</strong> {idea.together}
+                  </p>
+                  <ol>
+                    {idea.steps.map((step, i) => (
+                      <li key={i}>{step}</li>
+                    ))}
+                  </ol>
+                  <button
+                    type="button"
+                    className="ws-secondary"
+                    disabled={busy || adopted.includes(index)}
+                    onClick={() => void adopt(idea, index)}
+                  >
+                    {adopted.includes(index) ? (
+                      <>
+                        <Check size={16} /> Übernommen
+                      </>
+                    ) : (
+                      <>
+                        <Plus size={16} /> Als Idee übernehmen
+                      </>
+                    )}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )}
+        </EditorDialog>
+      )}
+      {editor && editor.type !== "suggest" && (
         <EditorDialog
           title={
             editor.type === "item"

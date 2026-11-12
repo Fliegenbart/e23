@@ -230,6 +230,59 @@
 .ws-secondary:hover {
   background: #e9ecdf;
 }
+.ws-intro-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.ws-intro-actions button,
+.ws-suggestions button,
+.ws-dialog-actions .ws-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.ws-suggest-hint {
+  margin-right: auto;
+  align-self: center;
+  font-size: 11px;
+  color: var(--ws-muted);
+  line-height: 1.5;
+}
+.ws-suggestions {
+  list-style: none;
+  margin: 24px 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.ws-suggestions > li {
+  border: 1px solid var(--ws-border);
+  border-radius: 6px;
+  background: #fbfaf6;
+  padding: 18px;
+}
+.ws-suggestions h3 {
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -0.3px;
+  margin: 0 0 8px;
+}
+.ws-suggestions p,
+.ws-suggestions ol {
+  font-size: 12.5px;
+  line-height: 1.65;
+  margin: 0 0 10px;
+  overflow-wrap: anywhere;
+}
+.ws-suggestions ol {
+  padding-left: 18px;
+  color: #4a5245;
+}
+.ws-suggestions button:disabled {
+  opacity: 0.6;
+}
 .ws-overview {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1.2fr;
@@ -1007,7 +1060,7 @@
     font-size: 50px;
     letter-spacing: -2.8px;
   }
-  .ws-intro > .ws-primary {
+  .ws-intro-actions {
     margin-top: 22px;
   }
   .ws-intro p {

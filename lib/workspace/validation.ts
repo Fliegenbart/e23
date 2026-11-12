@@ -25,7 +25,11 @@ const fields = {
   due: date,
 };
 export const mutation = z.discriminatedUnion("action", [
-  z.object({ action: z.literal("create"), ...fields }),
+  z.object({
+    action: z.literal("create"),
+    ...fields,
+    tasks: z.array(title).max(7).default([]),
+  }),
   z.object({
     action: z.literal("update"),
     id: z.uuid(),

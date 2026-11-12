@@ -39,6 +39,10 @@ Data lives in Neon Postgres (resource `e23-projekte`, Frankfurt, free plan), acc
 
 Provision an empty database once with `node scripts/setup-workspace.mjs`. The script creates tables/indexes without seeding content. For integration verification, run `TEST_BASE_URL=http://127.0.0.1:3010 node --test tests/*.test.mjs` against a running production build. The workspace test creates its own record and deletes only that UUID in a finally block. It checks auth, origin restrictions, validation, persistence, task progress, comments, stale-write conflicts and archive/restore.
 
+### Ideenvorschläge
+
+„Ideen vorschlagen“ in `/projekte` schickt ein Thema an OpenAI (`POST /api/ideas`, nur mit gültiger Sitzung) und zeigt vier Vorschläge. Gespeichert wird nichts, bis jemand einen Vorschlag übernimmt: dann entsteht eine Idee, deren erste Schritte als Aufgaben angelegt werden. Die Logik stammt aus `Fliegenbart/ideengenerator`, ohne Scoring und ohne vom Modell erfundene Quellen. Benötigt `OPENAI_API_KEY` als sensible Vercel-Variable; `OPENAI_MODEL` ist optional (Standard `gpt-4o-mini`). Ohne Schlüssel meldet der Dialog, dass die Funktion nicht eingerichtet ist. Thema und Hintergrundtext verlassen dabei die Seite Richtung OpenAI.
+
 ## Blog
 
 Interner Blog unter `/blog`, geschützt wie der Rest der Seite. Jeder Beitrag ist eine Markdown-Datei in `content/blog/<slug>.md`:
