@@ -539,3 +539,13 @@
   display: block;
   width: auto;
 }
+.feier-done .feier-cta {
+  margin-top: 24px;
+}
+.feier-done small {
+  display: block;
+  margin-top: 14px;
+  font-size: 13px;
+  line-height: 1.5;
+  color: #c9c7bd;
+}
