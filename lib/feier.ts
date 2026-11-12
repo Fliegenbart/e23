@@ -1,6 +1,6 @@
 /** Weihnachtsfeier 2026: one place for the date, so page and calendar file agree. */
 export const feier = {
-  title: "E23 Weihnachtsfeier",
+  title: "Weihnachtsfeier Esplanade 23",
   place: "Esplanade 23",
   /** Shown as the note of the calendar entry. */
   note: "Netzwerken. Austauschen. Kekse. Glühwein.",
