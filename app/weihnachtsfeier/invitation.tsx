@@ -17,7 +17,8 @@ const copy = {
     title: "Weihnachtsfeier.",
     accent: "Miteinander.",
     lead: "Neues Büro. Offene Tür. Platz für euch. Hier vernetzen sich Menschen, die Wandel lieber machen als bereden – persönlich, im Business, gemeinsam.",
-    creed: "Unsere Überzeugung: Wir nutzen KI nicht, um einander weniger zu brauchen. Sondern um miteinander mehr möglich zu machen.",
+    creedTitle: "Unsere Überzeugung.",
+    creed: "Wir nutzen KI nicht, um einander weniger zu brauchen. Sondern um miteinander mehr möglich zu machen.",
     tagline: "Netzwerken. Austauschen. Kekse. Glühwein. Ihr wisst Bescheid.",
     when: "14.12.2026 · ab 16:00 · Esplanade 23",
     calendar: "In den Kalender",
@@ -52,7 +53,8 @@ const copy = {
     title: "Christmas party.",
     accent: "Together.",
     lead: "New office. Open door. Room for you. This is where people connect who would rather make change than talk about it – personally, in business, together.",
-    creed: "Our conviction: we don’t use AI to need each other less. We use it to make more possible together.",
+    creedTitle: "Our conviction.",
+    creed: "We don’t use AI to need each other less. We use it to make more possible together.",
     tagline: "Networking. Conversation. Cookies. Mulled wine. You know the drill.",
     when: "14 December 2026 · from 4 pm · Esplanade 23",
     calendar: "Add to calendar",
@@ -98,7 +100,7 @@ export function Invitation({ lang }: { lang: Lang }) {
         </a>
       </header>
       <main className="feier-hero">
-        <Network />
+        <Network accent="0, 255, 161" />
         <span className="eyebrow">{t.eyebrow}</span>
         <h1>
           <Line index={0}>{t.title}</Line>
@@ -106,9 +108,7 @@ export function Invitation({ lang }: { lang: Lang }) {
             <em>{t.accent}</em>
           </Line>
         </h1>
-        <p className="feier-lead">
-          {t.lead} <span>{t.creed}</span>
-        </p>
+        <p className="feier-lead">{t.lead}</p>
         <p className="feier-tagline">{t.tagline}</p>
         <p className="feier-when">
           <time dateTime={feier.start}>{t.when}</time>
@@ -121,6 +121,10 @@ export function Invitation({ lang }: { lang: Lang }) {
             <Who lang={lang} intro={t.whoIntro} />
           </Dialog>
         </div>
+        <aside className="feier-creed">
+          <strong>{t.creedTitle}</strong>
+          {t.creed}
+        </aside>
         <footer className="feier-foot">
           <a href="/weihnachtsfeier/termin.ics">{t.calendar}</a>
           <LegalLinks lang={lang} />
