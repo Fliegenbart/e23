@@ -16,12 +16,13 @@ const copy = {
     eyebrow: "Einladung · Advent 2026",
     title: "Weihnachtsfeier.",
     accent: "Miteinander.",
-    lead: "Wir haben ein neues Büro. Das möchten wir mit euch teilen. Es soll ein Ort sein, an dem Transformation ermöglicht wird – im Persönlichen, im Business, gemeinsam.",
+    lead: "Wir haben ein neues Büro. Das möchten wir mit euch teilen. Es soll ein Ort sein, an dem Transformation gelingt – im Persönlichen, im Business, gemeinsam.",
+    creed: "Unsere Überzeugung: Wir nutzen KI nicht, um einander weniger zu brauchen. Sondern um miteinander mehr möglich zu machen.",
     tagline: "Netzwerken. Austauschen. Kekse. Glühwein. Ihr wisst Bescheid.",
     when: "14.12.2026 · ab 16:00 · Esplanade 23",
     calendar: "In den Kalender",
     who: "Wer ist wir?",
-    whoIntro: "Drei Firmen, ein Büro an der Esplanade 23.",
+    whoIntro: "Drei Firmen, ein Büro. Zusammen decken wir ab, was Unternehmen im KI-Wandel brauchen: Kundenerlebnis, Führung, Technik.",
     signupTitle: "Bist du dabei?",
     close: "Schließen",
     signup: {
@@ -50,12 +51,13 @@ const copy = {
     eyebrow: "Invitation · Advent 2026",
     title: "Christmas party.",
     accent: "Together.",
-    lead: "We have a new office, and we want to share it with you. It is meant to be a place where transformation becomes possible – personally, in business, together.",
+    lead: "We have a new office, and we want to share it with you. It is meant to be a place where transformation works – personally, in business, together.",
+    creed: "Our conviction: we don’t use AI to need each other less. We use it to make more possible together.",
     tagline: "Networking. Conversation. Cookies. Mulled wine. You know the drill.",
     when: "14 December 2026 · from 4 pm · Esplanade 23",
     calendar: "Add to calendar",
     who: "Who is “we”?",
-    whoIntro: "Three companies, one office at Esplanade 23.",
+    whoIntro: "Three companies, one office. Together we cover what companies need in the AI transition: customer experience, leadership, technology.",
     signupTitle: "Will you join us?",
     close: "Close",
     signup: {
@@ -104,7 +106,9 @@ export function Invitation({ lang }: { lang: Lang }) {
             <em>{t.accent}</em>
           </Line>
         </h1>
-        <p className="feier-lead">{t.lead}</p>
+        <p className="feier-lead">
+          {t.lead} <span>{t.creed}</span>
+        </p>
         <p className="feier-tagline">{t.tagline}</p>
         <p className="feier-when">
           <time dateTime={feier.start}>{t.when}</time>

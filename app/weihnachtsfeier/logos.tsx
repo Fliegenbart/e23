@@ -4,22 +4,25 @@ export const companies = [
     name: "practical",
     logo: "/feier/practical.svg",
     href: "https://practical.one",
-    de: "Design-Beratung an der Schnittstelle von UX-Design und künstlicher Intelligenz.",
-    en: "A design consultancy at the intersection of UX design and artificial intelligence.",
+    area: { de: "Kunde", en: "Customer" },
+    de: "Digitale Kundenerlebnisse, neu gebaut für das KI-Zeitalter.",
+    en: "Digital customer experience, rebuilt for the AI era.",
   },
   {
     name: "Ins Wandeln kommen",
     logo: "/feier/inswandeln.svg",
     href: "https://inswandeln.com",
-    de: "Hilft Führungs-Teams, die Lücke zu schließen zwischen Gesagt und Getan.",
-    en: "Helps leadership teams close the gap between what is said and what is done.",
+    area: { de: "Organisation", en: "Organisation" },
+    de: "Bringt Führungsteams vom Gesagten zum Getanen.",
+    en: "Gets leadership teams from saying to doing.",
   },
   {
     name: "TYRN.ON",
     logo: "/feier/tyrnon.svg",
     href: "https://tyrnon.com",
-    de: "Entwickelt intelligente Systeme und KI-Technologie für Unternehmen – und setzt sie in der Praxis um.",
-    en: "Builds intelligent systems and AI technology for companies – and puts them into practice.",
+    area: { de: "Technik", en: "Technology" },
+    de: "KI-Systeme für Unternehmen – entwickelt und in die Praxis gebracht.",
+    en: "AI systems for companies – built and put into practice.",
   },
 ] as const;
 
@@ -38,7 +41,7 @@ export function Logos() {
   );
 }
 
-/** "Wer ist wir?": one line per company, in its own words. */
+/** "Wer ist wir?": what each company covers, in one line. */
 export function Who({ lang, intro }: { lang: "de" | "en"; intro: string }) {
   return (
     <div className="feier-who">
@@ -53,7 +56,10 @@ export function Who({ lang, intro }: { lang: "de" | "en"; intro: string }) {
                 alt={company.name}
               />
             </a>
-            <span>{company[lang]}</span>
+            <span>
+              <b>{company.area[lang]}</b>
+              {company[lang]}
+            </span>
           </li>
         ))}
       </ul>
