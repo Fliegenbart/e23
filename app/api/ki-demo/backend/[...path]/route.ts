@@ -41,10 +41,14 @@ async function forward(
     const origin = request.headers.get("origin");
     if (!origin || new URL(origin).host !== request.headers.get("host"))
       return failure(403, "Unzulaessige Herkunft.");
-    if (Number(request.headers.get("content-length") ?? 0) > 16384)
+    // Document uploads carry a file; everything else is a small JSON body.
+    const limit = /^v1\/admin\/[a-f0-9-]+\/documents$/.test(path)
+      ? 4_300_000
+      : 16384;
+    if (Number(request.headers.get("content-length") ?? 0) > limit)
       return failure(413, "Anfrage zu gross.");
     body = await request.arrayBuffer();
-    if (body.byteLength > 16384) return failure(413, "Anfrage zu gross.");
+    if (body.byteLength > limit) return failure(413, "Anfrage zu gross.");
   }
   const headers = new Headers();
   for (const name of ["authorization", "content-type", "accept"]) {

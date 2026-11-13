@@ -4,7 +4,7 @@ import { notFound, redirect } from "next/navigation";
 import DemoFrame from "./demo-frame";
 import "./demo.css";
 export const dynamic = "force-dynamic";
-export const metadata = { title: "KI-Demolabor | E23" };
+export const metadata = { title: "KI-Demo | E23" };
 export default async function DemoPage() {
   const config = getDemoConfig();
   if (!config) notFound();

@@ -100,7 +100,7 @@ export default function DemoFrame() {
     };
   }, [version]);
   return (
-    <section className="demo-frame-container" aria-label="KI-Demolabor">
+    <section className="demo-frame-container" aria-label="KI-Demo">
       {error ? (
         <div className="demo-feedback" role="alert">
           <h1>Demo nicht verbunden</h1>
@@ -112,7 +112,7 @@ export default function DemoFrame() {
       ) : (
         !ready && (
           <p className="demo-feedback" role="status">
-            Demolabor wird verbunden …
+            KI-Demo wird verbunden …
           </p>
         )
       )}
@@ -120,7 +120,7 @@ export default function DemoFrame() {
         key={version}
         ref={frame}
         src={consolePath}
-        title="E23 KI-Demolabor"
+        title="E23 KI-Demo"
         sandbox="allow-scripts allow-same-origin allow-forms"
         referrerPolicy="no-referrer"
         className="demo-frame"
