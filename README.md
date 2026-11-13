@@ -69,3 +69,5 @@ Impressum und Datenschutzhinweis der Einladung liegen unter `/weihnachtsfeier/im
 Oben auf der Einladung steht die Logoleiste der drei Firmen im Büro (practical, Ins Wandeln kommen, TYRN.ON). Die Logos liegen als SVG in `public/feier/` und stammen von den Websites der Firmen; Namen, Links und die Kurzbeschreibungen für den Dialog „Wer ist wir?“ stehen in `app/weihnachtsfeier/logos.tsx`.
 
 Nach erfolgreicher Anmeldung bietet die Bestätigung den Kalendereintrag direkt zum Herunterladen an (`/weihnachtsfeier/termin.ics`, öffnet sich in Apple Kalender, Outlook und Google Kalender).
+
+Die Einladung lehnt sich optisch an „Ins Wandeln kommen“ an: Neongrün (`#00ffa1`) auf Fast-Schwarz und Weiß, breite fette Überschriften, eine gekippte grüne Box und ein runder Umriss-Button. Die Schriften sind freie Stellvertreter (Archivo in der breiten Variante, Sora; beide OFL, selbst gehostet unter `public/fonts/`). Der Stil gilt nur für die Einladung (`.feier-one` in `feier.css`), nicht für den internen Bereich.

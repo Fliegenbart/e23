@@ -620,3 +620,256 @@
     font-size: 12px;
   }
 }
+
+/* ───────── Look borrowed from Ins Wandeln kommen ─────────
+   Neon green on near-black and white, wide heavy headlines, a tilted green
+   box and a pill button. Fonts are free stand-ins (Archivo, Sora). */
+@font-face {
+  font-family: "Archivo";
+  src: url("/fonts/archivo-latin-standard-normal.woff2") format("woff2");
+  font-weight: 100 900;
+  font-stretch: 62% 125%;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Sora";
+  src: url("/fonts/sora-latin-wght-normal.woff2") format("woff2");
+  font-weight: 100 800;
+  font-display: swap;
+}
+.feier-one {
+  --green: #00ffa1;
+  --dark: #222222;
+  --wide: "Archivo", "Arial Black", sans-serif;
+  background: #fff;
+  color: var(--dark);
+  font-family: "Sora", Arial, sans-serif;
+}
+.feier-one .feier-lang:hover {
+  color: var(--dark);
+  background: var(--green);
+}
+.feier-one .feier-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-content: center;
+  justify-items: start;
+  column-gap: clamp(24px, 4vw, 70px);
+  background: var(--dark);
+  color: #fff;
+}
+.feier-one .feier-hero > .eyebrow,
+.feier-one .feier-hero > h1 {
+  grid-column: 1 / -1;
+}
+.feier-one .feier-hero > .feier-lead,
+.feier-one .feier-hero > .feier-tagline,
+.feier-one .feier-hero > .feier-when,
+.feier-one .feier-hero > .feier-actions {
+  grid-column: 1;
+}
+.feier-one .feier-hero .eyebrow {
+  color: var(--green);
+  font-family: var(--wide);
+  font-stretch: 125%;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+}
+.feier-one .feier-hero h1 {
+  font-family: var(--wide);
+  font-stretch: 125%;
+  font-weight: 900;
+  font-size: clamp(27px, min(7vw, 13vh), 132px);
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+}
+.feier-one .feier-hero h1 em {
+  font-family: inherit;
+  font-style: normal;
+  font-weight: 900;
+  letter-spacing: inherit;
+  color: var(--green);
+}
+.feier-one .feier-lead {
+  max-width: 720px;
+  font-family: inherit;
+  font-size: clamp(15px, min(1.45vw, 2.5vh), 21px);
+  line-height: 1.5;
+  color: #fff;
+}
+.feier-one .feier-tagline {
+  font-family: var(--wide);
+  font-stretch: 112%;
+  font-weight: 800;
+}
+.feier-one .feier-when {
+  border-top-color: rgb(255 255 255 / 0.3);
+  font-family: var(--wide);
+  font-stretch: 125%;
+  font-weight: 700;
+  color: var(--green);
+}
+.feier-creed {
+  grid-column: 2;
+  grid-row: 3 / span 4;
+  align-self: center;
+  width: clamp(240px, 27vw, 400px);
+  padding: clamp(18px, 2vw, 30px);
+  background: var(--green);
+  color: var(--dark);
+  font-size: clamp(14px, min(1.25vw, 2.2vh), 18px);
+  line-height: 1.45;
+  transform: rotate(2.4deg) skewX(-2deg);
+}
+.feier-creed strong {
+  display: block;
+  margin-bottom: 0.5em;
+  font-family: var(--wide);
+  font-stretch: 125%;
+  font-weight: 900;
+  font-size: 1.05em;
+  line-height: 1.15;
+}
+.feier-one .feier-cta {
+  padding: clamp(10px, 1.7vh, 14px) 30px;
+  border: 3px solid var(--green);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--green);
+  font-family: var(--wide);
+  font-stretch: 125%;
+  font-weight: 900;
+  font-size: 14px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+.feier-one .feier-cta:hover {
+  background: var(--green);
+  color: var(--dark);
+}
+.feier-one .feier-more:hover,
+.feier-one .feier-foot a:hover,
+.feier-one .feier-form-end a:hover {
+  color: var(--green);
+}
+.feier-one .feier-dialog {
+  background: var(--dark);
+  color: #fff;
+  font-family: "Sora", Arial, sans-serif;
+}
+.feier-one .feier-dialog > div {
+  border: 3px solid var(--green);
+}
+.feier-one .feier-dialog h2 {
+  font-family: var(--wide);
+  font-stretch: 125%;
+  font-weight: 900;
+  font-size: clamp(26px, 4vw, 44px);
+  letter-spacing: -0.02em;
+}
+.feier-one .feier-dialog-close:hover,
+.feier-one .feier-who b,
+.feier-one .feier-form-error {
+  color: var(--green);
+}
+.feier-one .feier-who b {
+  font-family: var(--wide);
+  font-stretch: 125%;
+  font-weight: 900;
+  font-size: 15px;
+  letter-spacing: 0;
+  text-transform: none;
+}
+.feier-one .feier-who > p,
+.feier-one .feier-form label span,
+.feier-one .feier-form-end p,
+.feier-one .feier-done small {
+  color: #d8d8d8;
+}
+.feier-one .feier-who img {
+  filter: brightness(0) invert(1);
+}
+.feier-one .feier-form input:focus-visible,
+.feier-one .feier-form select:focus-visible,
+.feier-one .feier-form textarea:focus-visible {
+  border-bottom-color: var(--green);
+}
+.feier-one .feier-form button {
+  border: 3px solid var(--green);
+  border-radius: 999px;
+  background: var(--green);
+  color: var(--dark);
+  font-family: var(--wide);
+  font-stretch: 125%;
+  font-weight: 900;
+  font-size: 14px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+.feier-one .feier-form button:hover {
+  background: transparent;
+  color: var(--green);
+}
+.feier-one .feier-done strong {
+  font-family: var(--wide);
+  font-stretch: 125%;
+  font-weight: 900;
+  font-size: clamp(22px, 2.6vw, 32px);
+  color: var(--green);
+}
+/* Narrow screens: one column, the green box moves under the buttons. */
+@media (max-width: 900px) {
+  .feier-one .feier-hero {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .feier-creed {
+    grid-column: 1;
+    grid-row: auto;
+    width: auto;
+    max-width: 420px;
+    margin-top: clamp(14px, 2.6vh, 28px);
+    padding: 12px 16px;
+    font-size: 13px;
+    line-height: 1.4;
+    transform: rotate(-1.4deg) skewX(-1.5deg);
+  }
+}
+@media (max-width: 900px) {
+  .feier-one .feier-cta {
+    padding: 9px 18px;
+    font-size: 12px;
+    letter-spacing: 0.14em;
+  }
+  .feier-one .feier-when {
+    font-size: 11px;
+    letter-spacing: 0.06em;
+  }
+  .feier-one .feier-hero .eyebrow {
+    letter-spacing: 0.14em;
+  }
+}
+/* Small phones: everything a notch tighter so the box still fits. */
+@media (max-height: 720px) and (max-width: 760px) {
+  .feier-one .feier-hero h1 {
+    font-size: 26px;
+  }
+  .feier-one .feier-lead {
+    font-size: 13px;
+    line-height: 1.35;
+  }
+  .feier-one .feier-tagline {
+    font-size: 12px;
+  }
+  .feier-one .feier-when {
+    font-size: 10px;
+  }
+  .feier-creed {
+    margin-top: 12px;
+    padding: 9px 12px;
+    font-size: 11.5px;
+    line-height: 1.3;
+  }
+  .feier-creed strong {
+    margin-bottom: 0.25em;
+  }
+}
