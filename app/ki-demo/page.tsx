@@ -18,7 +18,7 @@ export default async function DemoPage() {
           <button>Abmelden</button>
         </form>
       </nav>
-      <DemoFrame origin={config.origin} />
+      <DemoFrame />
     </main>
   );
 }

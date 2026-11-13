@@ -1,11 +1,14 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
-export default function DemoFrame({ origin }: { origin: string }) {
+/** The console is served through E23's own proxy path, so it shares this origin. */
+const consolePath = "/api/ki-demo/backend/embed";
+export default function DemoFrame() {
   const frame = useRef<HTMLIFrameElement>(null);
   const [version, setVersion] = useState(0);
   const [error, setError] = useState("");
   const [ready, setReady] = useState(false);
   useEffect(() => {
+    const origin = window.location.origin;
     let nonce = "";
     let active = true;
     const pending = new Set<AbortController>();
@@ -95,7 +98,7 @@ export default function DemoFrame({ origin }: { origin: string }) {
       for (const item of pending) item.abort();
       window.removeEventListener("message", receive);
     };
-  }, [origin, version]);
+  }, [version]);
   return (
     <section className="demo-frame-container" aria-label="KI-Demolabor">
       {error ? (
@@ -116,7 +119,7 @@ export default function DemoFrame({ origin }: { origin: string }) {
       <iframe
         key={version}
         ref={frame}
-        src={`${origin}/embed`}
+        src={consolePath}
         title="E23 KI-Demolabor"
         sandbox="allow-scripts allow-same-origin allow-forms"
         referrerPolicy="no-referrer"

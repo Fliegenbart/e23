@@ -10,18 +10,21 @@ function safeOrigin(value: string | undefined) {
     return null;
   }
 }
+/**
+ * The demo backend is only ever reached from this server (see the proxy route);
+ * browsers stay on the E23 address. Fails closed unless fully configured.
+ */
 export function getDemoConfig() {
   if (process.env.CHAT_DEMO_ENABLED !== "true") return null;
   const origin = safeOrigin(process.env.CHAT_DEMO_ORIGIN);
-  const parentOrigin = safeOrigin(process.env.CHAT_DEMO_E23_ORIGIN);
+  const proxySecret = process.env.CHAT_DEMO_PROXY_SECRET ?? "";
   const epoch = Number(process.env.CHAT_DEMO_AUTH_EPOCH ?? 1);
   if (
     !origin ||
-    !parentOrigin ||
-    origin === parentOrigin ||
+    !/^[a-f0-9]{64}$/.test(proxySecret) ||
     !Number.isSafeInteger(epoch) ||
     epoch < 1
   )
     return null;
-  return { origin, parentOrigin, epoch };
+  return { origin, proxySecret, epoch };
 }

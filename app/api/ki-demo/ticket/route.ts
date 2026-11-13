@@ -17,7 +17,8 @@ export async function POST(request: NextRequest) {
   const config = getDemoConfig();
   if (!config) return failure(404, "Die Demo ist nicht aktiviert.");
   if (!(await authenticated())) return failure(401, "Bitte in E23 anmelden.");
-  if (request.headers.get("origin") !== config.parentOrigin)
+  const origin = request.headers.get("origin");
+  if (!origin || new URL(origin).host !== request.headers.get("host"))
     return failure(403, "Unzulaessige Herkunft.");
   if (
     request.headers.get("content-type")?.split(";")[0].trim() !==

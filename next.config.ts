@@ -1,5 +1,4 @@
 import type { NextConfig } from "next";
-import { getDemoConfig } from "./lib/chat-demo/config";
 /** The invitation's own address: there, "/" is the Weihnachtsfeier and nothing else. */
 const feierHost = [{ type: "host" as const, value: "e23-weihnachtsfeier.vercel.app" }];
 const config: NextConfig = {
@@ -45,7 +44,19 @@ const config: NextConfig = {
           { key: "Referrer-Policy", value: "same-origin" },
           {
             key: "Content-Security-Policy",
-            value: `default-src 'self'; script-src 'self' 'unsafe-inline' ${process.env.NODE_ENV === "development" ? "'unsafe-eval'" : ""}; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; ${getDemoConfig() ? `frame-src ${getDemoConfig()!.origin}; ` : ""}frame-ancestors 'none'; base-uri 'self'; form-action 'self'`,
+            value: `default-src 'self'; script-src 'self' 'unsafe-inline' ${process.env.NODE_ENV === "development" ? "'unsafe-eval'" : ""}; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'`,
+          },
+        ],
+      },
+      {
+        // The demo console is framed by /ki-demo only, on this same address.
+        source: "/api/ki-demo/backend/:path*",
+        headers: [
+          { key: "X-Frame-Options", value: "SAMEORIGIN" },
+          {
+            key: "Content-Security-Policy",
+            value:
+              "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; base-uri 'none'; form-action 'none'; frame-ancestors 'self'",
           },
         ],
       },
