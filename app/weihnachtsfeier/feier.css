@@ -637,7 +637,8 @@
   font-weight: 100 800;
   font-display: swap;
 }
-.feier-one {
+.feier-one,
+.feier-page {
   --green: #00ffa1;
   --dark: #222222;
   --wide: "Archivo", "Arial Black", sans-serif;
@@ -872,4 +873,75 @@
   .feier-creed strong {
     margin-bottom: 0.25em;
   }
+}
+
+/* Impressum and Datenschutz in the same look. */
+.feier-page {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+.feier-page .feier-legal {
+  flex: 1;
+  width: 100%;
+}
+.feier-page .feier-lang:hover {
+  color: var(--dark);
+  background: var(--green);
+}
+.feier-page .feier-back {
+  font-family: var(--wide);
+  font-stretch: 125%;
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--dark);
+  border-bottom: 3px solid var(--green);
+  padding-bottom: 3px;
+}
+.feier-page .feier-back:hover {
+  background: var(--green);
+  color: var(--dark);
+}
+.feier-page .feier-legal h1 {
+  margin: 34px 0 6px;
+  font-family: var(--wide);
+  font-stretch: 125%;
+  font-weight: 900;
+  font-size: clamp(34px, 6.4vw, 92px);
+  letter-spacing: -0.03em;
+}
+.feier-page .feier-legal h2 {
+  margin: 46px 0 12px;
+  font-family: var(--wide);
+  font-stretch: 125%;
+  font-weight: 900;
+  font-size: clamp(18px, 1.9vw, 25px);
+  line-height: 1.15;
+}
+.feier-page .feier-legal p {
+  font-size: 16px;
+  line-height: 1.75;
+}
+.feier-page .feier-legal p a {
+  border-bottom: 3px solid var(--green);
+}
+.feier-page .feier-legal p a:hover {
+  background: var(--green);
+}
+.feier-page .feier-missing {
+  background: var(--green);
+  color: var(--dark);
+}
+.feier-page .feier-footer {
+  border-top: 0;
+  background: var(--dark);
+  color: #fff;
+}
+.feier-page .feier-footer .feier-logos img {
+  filter: brightness(0) invert(1);
+}
+.feier-page .feier-legal-links a:hover {
+  color: var(--green);
 }

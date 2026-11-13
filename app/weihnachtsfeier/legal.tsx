@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import { legal } from "@/lib/feier";
-import { Arrow, Mark } from "../marks";
+import { Arrow } from "../marks";
 import type { Lang } from "./invitation";
 import { Logos } from "./logos";
 import "./feier.css";
@@ -246,7 +246,7 @@ function Datenschutz({ lang }: { lang: Lang }) {
 export function Legal({ lang, kind }: { lang: Lang; kind: Kind }) {
   const other = lang === "de" ? "en" : "de";
   return (
-    <>
+    <div className="feier-page">
       <header className="feier-header">
         <a href={base[lang]} aria-label={lang === "de" ? "Zur Einladung" : "To the invitation"}>
           <Logos />
@@ -262,9 +262,9 @@ export function Legal({ lang, kind }: { lang: Lang; kind: Kind }) {
         {kind === "impressum" ? <Impressum lang={lang} /> : <Datenschutz lang={lang} />}
       </main>
       <footer className="feier-footer">
-        <Mark />
+        <Logos />
         <LegalLinks lang={lang} />
       </footer>
-    </>
+    </div>
   );
 }

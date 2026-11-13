@@ -70,4 +70,4 @@ Oben auf der Einladung steht die Logoleiste der drei Firmen im Büro (practical,
 
 Nach erfolgreicher Anmeldung bietet die Bestätigung den Kalendereintrag direkt zum Herunterladen an (`/weihnachtsfeier/termin.ics`, öffnet sich in Apple Kalender, Outlook und Google Kalender).
 
-Die Einladung lehnt sich optisch an „Ins Wandeln kommen“ an: Neongrün (`#00ffa1`) auf Fast-Schwarz und Weiß, breite fette Überschriften, eine gekippte grüne Box und ein runder Umriss-Button. Die Schriften sind freie Stellvertreter (Archivo in der breiten Variante, Sora; beide OFL, selbst gehostet unter `public/fonts/`). Der Stil gilt nur für die Einladung (`.feier-one` in `feier.css`), nicht für den internen Bereich.
+Die Einladung lehnt sich optisch an „Ins Wandeln kommen“ an: Neongrün (`#00ffa1`) auf Fast-Schwarz und Weiß, breite fette Überschriften, eine gekippte grüne Box und ein runder Umriss-Button. Die Schriften sind freie Stellvertreter (Archivo in der breiten Variante, Sora; beide OFL, selbst gehostet unter `public/fonts/`). Der Stil gilt für die Einladung und ihre Rechtsseiten (`.feier-one` und `.feier-page` in `feier.css`), nicht für den internen Bereich.
