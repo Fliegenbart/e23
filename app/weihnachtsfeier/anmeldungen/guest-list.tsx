@@ -69,12 +69,8 @@ export function GuestList({ initial }: { initial: Guest[] }) {
     <>
       <dl className="feier-stats">
         <div>
-          <dd>{rows.length}</dd>
-          <dt>{rows.length === 1 ? "Anmeldung" : "Anmeldungen"}</dt>
-        </div>
-        <div>
           <dd>{people}</dd>
-          <dt>{people === 1 ? "Person angemeldet" : "Personen angemeldet"}</dt>
+          <dt>{people === 1 ? "Gast" : "Gäste"}</dt>
         </div>
         <div>
           <dd>{came.length}</dd>
