@@ -6,7 +6,6 @@ import {
   useRef,
   useState,
   type FormEvent,
-  type ReactNode,
 } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import {
@@ -34,7 +33,10 @@ import {
   ListChecks,
   Trash2,
   GripVertical,
+  Contact,
 } from "lucide-react";
+import { api, dateInput, dateLabel, EditorDialog, values } from "./shared";
+import Contacts from "./contacts";
 import type {
   WorkItem,
   Detail,
@@ -71,73 +73,8 @@ const overdue = (task: Task) =>
   !!task.due &&
   task.status !== "done" &&
   task.due.slice(0, 10) < new Date().toISOString().slice(0, 10);
-const dateLabel = (date: string | null) =>
-  date
-    ? new Intl.DateTimeFormat("de-DE", {
-        day: "2-digit",
-        month: "short",
-      }).format(new Date(date.slice(0, 10) + "T12:00:00"))
-    : "";
-const dateInput = (date: string | null) => date?.slice(0, 10) || "";
 const progress = (item: WorkItem) =>
   item.task_count ? Math.round((item.done_count / item.task_count) * 100) : 0;
-const values = (form: HTMLFormElement) =>
-  Object.fromEntries(new FormData(form).entries());
-async function api(url: string, options?: RequestInit) {
-  const response = await fetch(url, { ...options, cache: "no-store" });
-  const body = await response.json();
-  if (!response.ok) {
-    if (response.status === 401)
-      throw new Error(
-        "Deine Sitzung ist abgelaufen. Bitte melde dich auf der Startseite erneut an.",
-      );
-    throw new Error(body.error || "Das hat leider nicht funktioniert.");
-  }
-  return body;
-}
-function EditorDialog({
-  title,
-  children,
-  close,
-  wide,
-}: {
-  title: string;
-  children: ReactNode;
-  close: () => void;
-  wide?: boolean;
-}) {
-  const ref = useRef<HTMLDialogElement>(null);
-  useEffect(() => {
-    const d = ref.current;
-    d?.showModal();
-    return () => d?.close();
-  }, []);
-  return (
-    <dialog
-      className={wide ? "ws-dialog wide" : "ws-dialog"}
-      ref={ref}
-      onCancel={(event) => {
-        event.preventDefault();
-        close();
-      }}
-      aria-labelledby="editor-title"
-    >
-      <div className="ws-dialog-head">
-        <h2 id="editor-title">{title}</h2>
-        <button
-          type="button"
-          className="ws-icon"
-          aria-label="Schließen"
-          onClick={close}
-        >
-          <X size={21} />
-        </button>
-      </div>
-      {children}
-    </dialog>
-  );
-}
-
 /** Detail fields of one task; the checklist travels as JSON in a hidden input. */
 function TaskFields({ task }: { task?: Task }) {
   const [checklist, setChecklist] = useState<ChecklistItem[]>(
@@ -305,7 +242,8 @@ function TaskFields({ task }: { task?: Task }) {
 export default function Workspace() {
   const router = useRouter();
   const params = useSearchParams();
-  const selected = params.get("projekt");
+  const contactsView = params.get("ansicht") === "kontakte";
+  const selected = contactsView ? null : params.get("projekt");
   const [items, setItems] = useState<WorkItem[]>([]);
   const [detail, setDetail] = useState<Detail | null>(null);
   const [loading, setLoading] = useState(true);
@@ -558,11 +496,13 @@ export default function Workspace() {
             ).map(([key, label, Icon]) => (
               <button
                 key={key}
-                className={filter === key && !selected ? "selected" : ""}
-                aria-pressed={filter === key && !selected}
+                className={
+                  filter === key && !selected && !contactsView ? "selected" : ""
+                }
+                aria-pressed={filter === key && !selected && !contactsView}
                 onClick={() => {
                   setFilter(key);
-                  if (selected) router.push("/projekte");
+                  if (selected || contactsView) router.push("/projekte");
                 }}
               >
                 <Icon size={18} />
@@ -580,6 +520,14 @@ export default function Workspace() {
                 </span>
               </button>
             ))}
+            <button
+              className={contactsView ? "ws-filter-contacts selected" : "ws-filter-contacts"}
+              aria-pressed={contactsView}
+              onClick={() => router.push("/projekte?ansicht=kontakte")}
+            >
+              <Contact size={18} />
+              Leads & Kontakte
+            </button>
           </div>
           <a
             className="ws-drive"
@@ -622,7 +570,12 @@ export default function Workspace() {
               <a href="/?next=projekte">Zur Anmeldung</a>
             </div>
           )}
-          {!selected ? (
+          {contactsView ? (
+            <Contacts
+              projects={items.filter((i) => i.status === "active")}
+              notify={setNotice}
+            />
+          ) : !selected ? (
             <>
               <section className="ws-intro">
                 <div>
