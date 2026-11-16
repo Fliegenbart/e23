@@ -16,12 +16,14 @@ const copy = {
     eyebrow: "Einladung · Advent 2026",
     title: "Weihnachtsfeier.",
     accent: "Miteinander.",
-    lead: "Wir haben ein neues Büro. Das möchten wir mit euch teilen. Es soll ein Ort sein, an dem Transformation ermöglicht wird – im Persönlichen, im Business, gemeinsam.",
+    lead: "Neues Büro. Offene Tür. Platz für euch. Hier vernetzen sich Menschen, die Wandel lieber machen als bereden – persönlich, im Business, gemeinsam.",
+    creedTitle: "Unsere Überzeugung.",
+    creed: "Wir nutzen KI nicht, um einander weniger zu brauchen. Sondern um miteinander mehr möglich zu machen.",
     tagline: "Netzwerken. Austauschen. Kekse. Glühwein. Ihr wisst Bescheid.",
     when: "14.12.2026 · ab 16:00 · Esplanade 23",
     calendar: "In den Kalender",
     who: "Wer ist wir?",
-    whoIntro: "Drei Firmen, ein Büro an der Esplanade 23.",
+    whoIntro: "Drei Firmen. Ein Büro. Ein Netzwerk. Wir bringen zusammen, wer zusammen weiterkommt – und liefern, was Unternehmen im KI-Wandel brauchen.",
     signupTitle: "Bist du dabei?",
     close: "Schließen",
     signup: {
@@ -36,7 +38,9 @@ const copy = {
       privacyLink: "Datenschutz",
       privacyHref: "/weihnachtsfeier/datenschutz",
       doneTitle: "Danke, du bist angemeldet.",
-      done: "Wir freuen uns auf dich.",
+      done: "Wir freuen uns auf dich. Trag dir den Termin gleich ein:",
+      calendar: "Kalendereintrag herunterladen",
+      calendarHint: "Die Datei öffnet sich auf Mac und PC im Kalender – Apple Kalender, Outlook oder Google Kalender.",
       errors: {
         invalid: "Bitte prüfe deine Angaben.",
         full: "Die Anmeldung ist geschlossen. Melde dich bitte direkt bei uns.",
@@ -48,12 +52,14 @@ const copy = {
     eyebrow: "Invitation · Advent 2026",
     title: "Christmas party.",
     accent: "Together.",
-    lead: "We have a new office, and we want to share it with you. It is meant to be a place where transformation becomes possible – personally, in business, together.",
+    lead: "New office. Open door. Room for you. This is where people connect who would rather make change than talk about it – personally, in business, together.",
+    creedTitle: "Our conviction.",
+    creed: "We don’t use AI to need each other less. We use it to make more possible together.",
     tagline: "Networking. Conversation. Cookies. Mulled wine. You know the drill.",
     when: "14 December 2026 · from 4 pm · Esplanade 23",
     calendar: "Add to calendar",
     who: "Who is “we”?",
-    whoIntro: "Three companies, one office at Esplanade 23.",
+    whoIntro: "Three companies. One office. One network. We bring together people who get further together – and deliver what companies need in the AI transition.",
     signupTitle: "Will you join us?",
     close: "Close",
     signup: {
@@ -68,7 +74,9 @@ const copy = {
       privacyLink: "Privacy",
       privacyHref: "/weihnachtsfeier/en/datenschutz",
       doneTitle: "Thank you, you are signed up.",
-      done: "We look forward to seeing you.",
+      done: "We look forward to seeing you. Save the date right away:",
+      calendar: "Download calendar entry",
+      calendarHint: "The file opens in your calendar on Mac and PC – Apple Calendar, Outlook or Google Calendar.",
       errors: {
         invalid: "Please check your details.",
         full: "Sign-up is closed. Please get in touch with us directly.",
@@ -92,7 +100,7 @@ export function Invitation({ lang }: { lang: Lang }) {
         </a>
       </header>
       <main className="feier-hero">
-        <Network />
+        <Network accent="0, 255, 161" />
         <span className="eyebrow">{t.eyebrow}</span>
         <h1>
           <Line index={0}>{t.title}</Line>
@@ -113,6 +121,10 @@ export function Invitation({ lang }: { lang: Lang }) {
             <Who lang={lang} intro={t.whoIntro} />
           </Dialog>
         </div>
+        <aside className="feier-creed">
+          <strong>{t.creedTitle}</strong>
+          {t.creed}
+        </aside>
         <footer className="feier-foot">
           <a href="/weihnachtsfeier/termin.ics">{t.calendar}</a>
           <LegalLinks lang={lang} />

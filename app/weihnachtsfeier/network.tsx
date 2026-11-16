@@ -7,7 +7,7 @@ type Dot = { x: number; y: number; vx: number; vy: number; r: number; hot: boole
  * Snow that networks: flakes drift down, and whenever two come close a line
  * forms between them. The pointer is one more participant in the exchange.
  */
-export function Network() {
+export function Network({ accent = "237, 89, 47" }: { accent?: string }) {
   const ref = useRef<HTMLCanvasElement>(null);
   useEffect(() => {
     const canvas = ref.current;
@@ -52,7 +52,7 @@ export function Network() {
           if (d > reach) continue;
           const hot = all[a].hot || all[b].hot;
           ctx.strokeStyle = hot
-            ? `rgba(237, 89, 47, ${(1 - d / reach) * 0.75})`
+            ? `rgba(${accent}, ${(1 - d / reach) * 0.75})`
             : `rgba(243, 240, 232, ${(1 - d / reach) * 0.28})`;
           ctx.lineWidth = 1;
           ctx.beginPath();
@@ -62,7 +62,7 @@ export function Network() {
         }
       }
       for (const dot of dots) {
-        ctx.fillStyle = dot.hot ? "#ed592f" : "rgba(243, 240, 232, 0.8)";
+        ctx.fillStyle = dot.hot ? `rgb(${accent})` : "rgba(255, 255, 255, 0.8)";
         ctx.beginPath();
         ctx.arc(dot.x, dot.y, dot.r, 0, Math.PI * 2);
         ctx.fill();
@@ -107,6 +107,6 @@ export function Network() {
       host?.removeEventListener("pointermove", move);
       host?.removeEventListener("pointerleave", leave);
     };
-  }, []);
+  }, [accent]);
   return <canvas ref={ref} className="feier-network" aria-hidden="true" />;
 }

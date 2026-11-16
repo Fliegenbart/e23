@@ -1,4 +1,5 @@
 import { authenticated } from "@/lib/auth";
+import { getDemoConfig } from "@/lib/chat-demo/config";
 import manifest from "@/lib/manifest.json";
 import { ReadingTools } from "./reading-tools";
 import { Arrow, Mark } from "./marks";
@@ -141,6 +142,11 @@ export default async function Page({
           <a className="header-link" href="/weihnachtsfeier/anmeldungen">
             Weihnachtsfeier <Arrow diagonal />
           </a>
+          {getDemoConfig() && (
+            <a className="header-link" href="/ki-demo">
+              KI-Demo <Arrow diagonal />
+            </a>
+          )}
         </nav>
       </header>
       <main>
