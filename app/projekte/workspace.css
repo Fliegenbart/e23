@@ -1260,3 +1260,171 @@
     scroll-behavior: auto !important;
   }
 }
+
+/* Leads & Kontakte */
+.ws-filters .ws-filter-contacts {
+  margin-top: 12px;
+  position: relative;
+}
+.ws-filters .ws-filter-contacts::before {
+  content: "";
+  position: absolute;
+  inset: -7px 13px auto;
+  border-top: 1px solid var(--ws-border);
+}
+.ws-chips {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 7px;
+}
+.ws-chips button,
+.ws-chip-select select {
+  border: 1px solid #cbd0c1;
+  background: none;
+  border-radius: 99px;
+  padding: 8px 13px;
+  font-size: 11px;
+  color: #333d2f;
+  min-height: 34px;
+}
+.ws-chips button span {
+  font-size: 10px;
+  color: var(--ws-muted);
+}
+.ws-chips button.selected {
+  background: #282f26;
+  border-color: #282f26;
+  color: #fff;
+}
+.ws-chips button.selected span {
+  color: #cfd6c6;
+}
+.ws-chip-select select {
+  cursor: pointer;
+}
+.ws-contacts {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.ws-contact {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.7fr) minmax(0, 1.4fr) minmax(0, 0.8fr);
+  gap: 22px;
+  align-items: start;
+  background: #fdfdf9;
+  border: 1px solid var(--ws-border);
+  border-radius: 6px;
+  padding: 18px 22px;
+  font-size: 11px;
+  line-height: 1.6;
+  color: var(--ws-muted);
+}
+.ws-contact > div {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  overflow-wrap: anywhere;
+}
+.ws-contact span,
+.ws-contact a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.ws-contact a:hover {
+  color: #262c24;
+  text-decoration: underline;
+}
+.ws-contact-name {
+  border: 0;
+  background: none;
+  padding: 0;
+  text-align: left;
+  font-size: 14px !important;
+  font-weight: 600;
+  color: #262c24;
+}
+.ws-contact-name:hover {
+  text-decoration: underline;
+}
+.ws-contact-links {
+  flex-wrap: wrap;
+  gap: 4px 14px !important;
+}
+.ws-stage {
+  padding: 5px 10px;
+  border-radius: 99px;
+  background: #eceee5;
+  color: #55604b;
+  font-size: 10px;
+  font-weight: 500;
+  line-height: 1.2;
+}
+.ws-stage.kontaktiert,
+.ws-stage.gespraech {
+  background: #f1e8db;
+  color: #6d5327;
+}
+.ws-stage.angebot {
+  background: #f7e4dc;
+  color: #8f341e;
+}
+.ws-stage.gewonnen {
+  background: #dfead6;
+  color: #3c5a2c;
+}
+.ws-stage.ruhend,
+.ws-stage.kontakt {
+  background: none;
+  border: 1px solid #d5dacb;
+}
+.ws-contact-next strong {
+  font-size: 12px;
+  font-weight: 500;
+  color: #262c24;
+}
+.ws-contact-next .overdue {
+  color: #8f341e;
+  font-weight: 500;
+}
+.ws-contact-next p {
+  white-space: pre-line;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  overflow: hidden;
+}
+@media (max-width: 1200px) {
+  .ws-contact {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+}
+@media (max-width: 600px) {
+  .ws-contact {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 14px;
+    padding: 16px;
+  }
+  .ws-contact-overview {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+.ws-contact-overview > div:last-child {
+  border-right: 0;
+}
+@media (max-width: 900px) {
+  .ws-filters .ws-filter-contacts {
+    margin-top: 0;
+  }
+  .ws-filters .ws-filter-contacts::before {
+    display: none;
+  }
+}

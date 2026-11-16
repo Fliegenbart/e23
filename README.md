@@ -39,6 +39,8 @@ Data lives in Neon Postgres (resource `e23-projekte`, Frankfurt, free plan), acc
 
 Tasks carry a description, checklist, priority, effort points, labels and a sort position; an existing `e23_tasks` table gets these columns added automatically on first use (`ensureTasks` in `lib/workspace/db.ts`, additive only).
 
+Leads and contacts live in `e23_contacts` (`/projekte?ansicht=kontakte`, API `/api/contacts`); the table is created on first use. It holds personal data of third parties, so keep it to what the work needs.
+
 Provision an empty database once with `node scripts/setup-workspace.mjs`. The script creates tables/indexes without seeding content. For integration verification, run `TEST_BASE_URL=http://127.0.0.1:3010 node --test tests/*.test.mjs` against a running production build. The workspace test creates its own record and deletes only that UUID in a finally block. It checks auth, origin restrictions, validation, persistence, task progress, comments, stale-write conflicts and archive/restore.
 
 ## Blog
