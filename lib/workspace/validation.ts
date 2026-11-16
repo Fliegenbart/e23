@@ -24,6 +24,26 @@ const fields = {
   owner: person,
   due: date,
 };
+/** Optional on purpose: a field that is not sent keeps its stored value. */
+const taskDetails = {
+  description: z.string().trim().max(8000).optional(),
+  priority: z.enum(["low", "normal", "high"]).optional(),
+  points: z.number().int().min(0).max(100).optional(),
+  labels: z.string().trim().max(200).optional(),
+  checklist: z
+    .array(
+      z.object({
+        text: z
+          .string()
+          .trim()
+          .min(1, "Ein Teilschritt braucht einen Text.")
+          .max(200, "Ein Teilschritt darf höchstens 200 Zeichen haben."),
+        done: z.boolean(),
+      }),
+    )
+    .max(40, "Höchstens 40 Teilschritte pro Aufgabe.")
+    .optional(),
+};
 export const mutation = z.discriminatedUnion("action", [
   z.object({ action: z.literal("create"), ...fields }),
   z.object({
@@ -39,6 +59,7 @@ export const mutation = z.discriminatedUnion("action", [
     title,
     assignee: person,
     due: date,
+    ...taskDetails,
   }),
   z.object({
     action: z.literal("task-update"),
@@ -48,6 +69,13 @@ export const mutation = z.discriminatedUnion("action", [
     assignee: person,
     due: date,
     status: z.enum(["todo", "doing", "done"]),
+    position: z.number().min(-1e12).max(1e12).optional(),
+    ...taskDetails,
+  }),
+  z.object({
+    action: z.literal("task-delete"),
+    id: z.uuid(),
+    version: z.number().int().positive(),
   }),
   z.object({
     action: z.literal("comment"),

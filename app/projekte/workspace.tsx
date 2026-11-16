@@ -31,8 +31,18 @@ import {
   Check,
   Sparkles,
   FolderOpen,
+  ListChecks,
+  Trash2,
+  GripVertical,
 } from "lucide-react";
-import type { WorkItem, Detail, Task, TaskStatus } from "@/lib/workspace/types";
+import type {
+  WorkItem,
+  Detail,
+  Task,
+  TaskStatus,
+  TaskPriority,
+  ChecklistItem,
+} from "@/lib/workspace/types";
 
 type Filter = "all" | "project" | "idea" | "completed" | "archived";
 type Editor =
@@ -43,6 +53,24 @@ const states: Record<TaskStatus, string> = {
   doing: "In Arbeit",
   done: "Erledigt",
 };
+const priorities: Record<TaskPriority, string> = {
+  high: "Hoch",
+  normal: "Normal",
+  low: "Niedrig",
+};
+const pointSteps = [0, 1, 2, 3, 5, 8, 13];
+const labelList = (labels: string) => [
+  ...new Set(
+    (labels || "")
+      .split(",")
+      .map((l) => l.trim())
+      .filter(Boolean),
+  ),
+];
+const overdue = (task: Task) =>
+  !!task.due &&
+  task.status !== "done" &&
+  task.due.slice(0, 10) < new Date().toISOString().slice(0, 10);
 const dateLabel = (date: string | null) =>
   date
     ? new Intl.DateTimeFormat("de-DE", {
@@ -71,10 +99,12 @@ function EditorDialog({
   title,
   children,
   close,
+  wide,
 }: {
   title: string;
   children: ReactNode;
   close: () => void;
+  wide?: boolean;
 }) {
   const ref = useRef<HTMLDialogElement>(null);
   useEffect(() => {
@@ -84,7 +114,7 @@ function EditorDialog({
   }, []);
   return (
     <dialog
-      className="ws-dialog"
+      className={wide ? "ws-dialog wide" : "ws-dialog"}
       ref={ref}
       onCancel={(event) => {
         event.preventDefault();
@@ -108,6 +138,170 @@ function EditorDialog({
   );
 }
 
+/** Detail fields of one task; the checklist travels as JSON in a hidden input. */
+function TaskFields({ task }: { task?: Task }) {
+  const [checklist, setChecklist] = useState<ChecklistItem[]>(
+    task?.checklist ?? [],
+  );
+  const [draft, setDraft] = useState("");
+  const add = () => {
+    const text = draft.trim();
+    if (!text || checklist.length >= 40) return;
+    setChecklist([...checklist, { text, done: false }]);
+    setDraft("");
+  };
+  const done = checklist.filter((c) => c.done).length;
+  return (
+    <>
+      <label>
+        Beschreibung
+        <textarea
+          name="description"
+          defaultValue={task?.description}
+          maxLength={8000}
+          rows={7}
+          placeholder="Worum geht es? Was ist das Ziel, was gehört dazu, was nicht? Links, Kontext, offene Fragen …"
+        />
+      </label>
+      <fieldset className="ws-checklist">
+        <legend>
+          Teilschritte
+          {checklist.length > 0 && (
+            <span>
+              {done} von {checklist.length} erledigt
+            </span>
+          )}
+        </legend>
+        <input
+          type="hidden"
+          name="checklist"
+          value={JSON.stringify(checklist.filter((c) => c.text.trim()))}
+        />
+        {checklist.map((entry, i) => (
+          <div className="ws-check-row" key={i}>
+            <input
+              type="checkbox"
+              checked={entry.done}
+              aria-label={`Erledigt: ${entry.text}`}
+              onChange={(e) =>
+                setChecklist(
+                  checklist.map((c, j) =>
+                    j === i ? { ...c, done: e.target.checked } : c,
+                  ),
+                )
+              }
+            />
+            <input
+              value={entry.text}
+              maxLength={200}
+              aria-label={`Teilschritt ${i + 1}`}
+              onChange={(e) =>
+                setChecklist(
+                  checklist.map((c, j) =>
+                    j === i ? { ...c, text: e.target.value } : c,
+                  ),
+                )
+              }
+              onKeyDown={(e) => {
+                if (e.key === "Enter") e.preventDefault();
+              }}
+            />
+            <button
+              type="button"
+              className="ws-icon"
+              aria-label={`Teilschritt entfernen: ${entry.text}`}
+              onClick={() => setChecklist(checklist.filter((_, j) => j !== i))}
+            >
+              <X size={15} />
+            </button>
+          </div>
+        ))}
+        <div className="ws-check-row ws-check-add">
+          <Plus size={15} aria-hidden="true" />
+          <input
+            value={draft}
+            maxLength={200}
+            aria-label="Neuer Teilschritt"
+            placeholder="Teilschritt hinzufügen und Enter drücken"
+            onChange={(e) => setDraft(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                e.preventDefault();
+                add();
+              }
+            }}
+            onBlur={add}
+          />
+        </div>
+      </fieldset>
+      <div className="ws-form-row">
+        <label>
+          Zuständig
+          <input
+            name="assignee"
+            defaultValue={task?.assignee}
+            maxLength={80}
+            placeholder="Name oder Team"
+          />
+        </label>
+        <label>
+          Termin
+          <input
+            name="due"
+            type="date"
+            defaultValue={dateInput(task?.due || null)}
+          />
+        </label>
+      </div>
+      <div className="ws-form-row">
+        <label>
+          Priorität
+          <select name="priority" defaultValue={task?.priority || "normal"}>
+            {Object.entries(priorities).map(([k, v]) => (
+              <option value={k} key={k}>
+                {v}
+              </option>
+            ))}
+          </select>
+        </label>
+        <label>
+          Aufwand (Punkte)
+          <select name="points" defaultValue={String(task?.points ?? 0)}>
+            {pointSteps.map((p) => (
+              <option value={p} key={p}>
+                {p || "Nicht geschätzt"}
+              </option>
+            ))}
+          </select>
+        </label>
+      </div>
+      <div className="ws-form-row">
+        <label>
+          Labels
+          <input
+            name="labels"
+            defaultValue={task?.labels}
+            maxLength={200}
+            placeholder="z. B. Inhalt, Technik, Kunde"
+          />
+        </label>
+        {task && (
+          <label>
+            Status
+            <select name="status" defaultValue={task.status}>
+              {Object.entries(states).map(([k, v]) => (
+                <option value={k} key={k}>
+                  {v}
+                </option>
+              ))}
+            </select>
+          </label>
+        )}
+      </div>
+    </>
+  );
+}
+
 export default function Workspace() {
   const router = useRouter();
   const params = useSearchParams();
@@ -123,6 +317,11 @@ export default function Workspace() {
   const [editor, setEditor] = useState<Editor | null>(null);
   const [formError, setFormError] = useState("");
   const [author, setAuthor] = useState("");
+  const [dragId, setDragId] = useState<string | null>(null);
+  const [over, setOver] = useState<{
+    status: TaskStatus;
+    before: string | null;
+  } | null>(null);
   const sequence = useRef(0);
   const load = useCallback(
     async (quiet = false) => {
@@ -211,6 +410,8 @@ export default function Workspace() {
         const old = editor.task;
         await mutate({
           ...fields,
+          points: Number(fields.points) || 0,
+          checklist: JSON.parse(String(fields.checklist || "[]")),
           action: old ? "task-update" : "task-create",
           ...(old
             ? { id: old.id, version: old.version }
@@ -223,7 +424,20 @@ export default function Workspace() {
       setFormError((e as Error).message);
     }
   }
-  async function taskStatus(task: Task, status: TaskStatus) {
+  /** Changes status and/or place; shown at once, then confirmed by the server. */
+  async function moveTask(task: Task, status: TaskStatus, position?: number) {
+    setDetail((d) =>
+      d && {
+        ...d,
+        tasks: d.tasks
+          .map((t) =>
+            t.id === task.id
+              ? { ...t, status, position: position ?? t.position }
+              : t,
+          )
+          .sort((a, b) => a.position - b.position),
+      },
+    );
     try {
       await mutate({
         action: "task-update",
@@ -233,10 +447,50 @@ export default function Workspace() {
         assignee: task.assignee,
         due: dateInput(task.due),
         status,
+        ...(position === undefined ? {} : { position }),
       });
-      setNotice("Aufgabenstatus aktualisiert.");
+      if (status !== task.status) setNotice("Aufgabenstatus aktualisiert.");
     } catch (e) {
       setError((e as Error).message);
+      void load(true);
+    }
+  }
+  function dropTask(status: TaskStatus) {
+    const task = detail?.tasks.find((t) => t.id === dragId);
+    const before = over?.status === status ? over.before : null;
+    setDragId(null);
+    setOver(null);
+    if (!task || !detail || busy) return;
+    const column = detail.tasks.filter(
+      (t) => t.status === status && t.id !== task.id,
+    );
+    const at = before ? column.findIndex((t) => t.id === before) : -1;
+    const index = at < 0 ? column.length : at;
+    const prev = column[index - 1];
+    const next = column[index];
+    const own = detail.tasks.filter((t) => t.status === status);
+    const place = own.findIndex((t) => t.id === task.id);
+    if (task.status === status && own[place + 1]?.id === next?.id) return;
+    const position =
+      prev && next
+        ? (prev.position + next.position) / 2
+        : prev
+          ? prev.position + 1
+          : next
+            ? next.position - 1
+            : Date.now() / 1000;
+    void moveTask(task, status, position);
+  }
+  async function deleteTask(task: Task) {
+    if (busy || !window.confirm(`Aufgabe „${task.title}“ wirklich löschen?`))
+      return;
+    setFormError("");
+    try {
+      await mutate({ action: "task-delete", id: task.id, version: task.version });
+      setEditor(null);
+      setNotice("Aufgabe gelöscht.");
+    } catch (e) {
+      setFormError((e as Error).message);
     }
   }
   async function comment(event: FormEvent<HTMLFormElement>) {
@@ -659,6 +913,13 @@ export default function Workspace() {
                     <p>
                       {current.item.done_count} von {current.item.task_count}{" "}
                       Aufgaben erledigt · {progress(current.item)}%
+                      {current.tasks.some((t) => t.points > 0) &&
+                        ` · ${current.tasks
+                          .filter((t) => t.status === "done")
+                          .reduce(
+                            (sum, t) => sum + t.points,
+                            0,
+                          )} von ${current.tasks.reduce((sum, t) => sum + t.points, 0)} Punkten`}
                     </p>
                   </div>
                   <button
@@ -681,7 +942,21 @@ export default function Workspace() {
                 </div>
                 <div className="ws-board">
                   {(["todo", "doing", "done"] as const).map((status) => (
-                    <section key={status} className={`ws-column ${status}`}>
+                    <section
+                      key={status}
+                      className={`ws-column ${status}${dragId && over?.status === status ? " drop" : ""}`}
+                      onDragOver={(e) => {
+                        if (!dragId) return;
+                        e.preventDefault();
+                        e.dataTransfer.dropEffect = "move";
+                        if (over?.status !== status)
+                          setOver({ status, before: null });
+                      }}
+                      onDrop={(e) => {
+                        e.preventDefault();
+                        dropTask(status);
+                      }}
+                    >
                       <h3>
                         {status === "done" ? (
                           <CircleCheck size={16} />
@@ -701,50 +976,142 @@ export default function Workspace() {
                       <div className="ws-task-list">
                         {current.tasks
                           .filter((t) => t.status === status)
-                          .map((task) => (
-                            <article className="ws-task" key={task.id}>
-                              <button
-                                className="ws-task-title"
-                                onClick={() =>
-                                  showEditor({ type: "task", task })
-                                }
-                                aria-label={`Aufgabe bearbeiten: ${task.title}`}
+                          .map((task, index, column) => {
+                            const labels = labelList(task.labels);
+                            const list = task.checklist ?? [];
+                            const checked = list.filter((c) => c.done).length;
+                            return (
+                              <article
+                                className={`ws-task${task.id === dragId ? " dragging" : ""}${dragId && over?.before === task.id ? " drop-before" : ""}`}
+                                key={task.id}
+                                draggable={!busy}
+                                onDragStart={(e) => {
+                                  e.dataTransfer.setData("text/plain", task.id);
+                                  e.dataTransfer.effectAllowed = "move";
+                                  setDragId(task.id);
+                                }}
+                                onDragEnd={() => {
+                                  setDragId(null);
+                                  setOver(null);
+                                }}
+                                onDragOver={(e) => {
+                                  if (!dragId) return;
+                                  e.preventDefault();
+                                  e.stopPropagation();
+                                  const box =
+                                    e.currentTarget.getBoundingClientRect();
+                                  const before =
+                                    e.clientY < box.top + box.height / 2
+                                      ? task.id
+                                      : (column[index + 1]?.id ?? null);
+                                  if (
+                                    over?.status !== status ||
+                                    over.before !== before
+                                  )
+                                    setOver({ status, before });
+                                }}
                               >
-                                {task.title}
-                                <Pencil size={13} />
-                              </button>
-                              <div className="ws-task-meta">
-                                <span>
-                                  {task.assignee || "Noch nicht vergeben"}
-                                </span>
-                                {task.due && <span>{dateLabel(task.due)}</span>}
-                              </div>
-                              <label className="ws-status-select">
-                                <span className="sr-only">
-                                  Status für {task.title}
-                                </span>
-                                <select
-                                  disabled={busy}
-                                  value={task.status}
-                                  onChange={(e) =>
-                                    void taskStatus(
-                                      task,
-                                      e.target.value as TaskStatus,
-                                    )
+                                {(task.priority !== "normal" ||
+                                  labels.length > 0) && (
+                                  <div className="ws-task-tags">
+                                    {task.priority !== "normal" && (
+                                      <span
+                                        className={`ws-priority ${task.priority}`}
+                                      >
+                                        {task.priority === "high"
+                                          ? "Hohe Priorität"
+                                          : "Niedrige Priorität"}
+                                      </span>
+                                    )}
+                                    {labels.map((label) => (
+                                      <span key={label}>{label}</span>
+                                    ))}
+                                  </div>
+                                )}
+                                <button
+                                  className="ws-task-title"
+                                  onClick={() =>
+                                    showEditor({ type: "task", task })
                                   }
+                                  aria-label={`Aufgabe öffnen: ${task.title}`}
                                 >
-                                  {Object.entries(states).map(
-                                    ([key, label]) => (
-                                      <option key={key} value={key}>
-                                        {label}
-                                      </option>
-                                    ),
+                                  {task.title}
+                                  <GripVertical size={14} aria-hidden="true" />
+                                </button>
+                                {task.description && (
+                                  <p className="ws-task-desc">
+                                    {task.description}
+                                  </p>
+                                )}
+                                {list.length > 0 && (
+                                  <div className="ws-task-checks">
+                                    <ListChecks size={13} aria-hidden="true" />
+                                    <span>
+                                      {checked} von {list.length} Teilschritten
+                                    </span>
+                                    <i aria-hidden="true">
+                                      <b
+                                        style={{
+                                          width:
+                                            (checked / list.length) * 100 + "%",
+                                        }}
+                                      />
+                                    </i>
+                                  </div>
+                                )}
+                                <div className="ws-task-meta">
+                                  <span>
+                                    <UserRound size={12} aria-hidden="true" />
+                                    {task.assignee || "Noch nicht vergeben"}
+                                  </span>
+                                  {task.due && (
+                                    <span
+                                      className={overdue(task) ? "overdue" : ""}
+                                    >
+                                      <CalendarDays
+                                        size={12}
+                                        aria-hidden="true"
+                                      />
+                                      {dateLabel(task.due)}
+                                      {overdue(task) && " · überfällig"}
+                                    </span>
                                   )}
-                                </select>
-                                <ArrowRight size={13} />
-                              </label>
-                            </article>
-                          ))}
+                                  {task.points > 0 && (
+                                    <span
+                                      className="ws-points"
+                                      title="Geschätzter Aufwand in Punkten"
+                                    >
+                                      {task.points} P
+                                    </span>
+                                  )}
+                                </div>
+                                <label className="ws-status-select">
+                                  <span className="sr-only">
+                                    Status für {task.title}
+                                  </span>
+                                  <select
+                                    disabled={busy}
+                                    value={task.status}
+                                    onChange={(e) =>
+                                      void moveTask(
+                                        task,
+                                        e.target.value as TaskStatus,
+                                      )
+                                    }
+                                  >
+                                    {Object.entries(states).map(
+                                      ([key, label]) => (
+                                        <option key={key} value={key}>
+                                          {label}
+                                        </option>
+                                      ),
+                                    )}
+                                  </select>
+                                  <ArrowRight size={13} />
+                                </label>
+                              </article>
+                            );
+                          })}
                         {!current.tasks.some((t) => t.status === status) && (
                           <p className="ws-column-empty">
                             {status === "todo"
@@ -868,6 +1235,7 @@ export default function Workspace() {
           close={() => {
             if (!busy) setEditor(null);
           }}
+          wide={editor.type === "task"}
         >
           <form className="ws-editor-form" onSubmit={saveEditor}>
             {formError && (
@@ -951,41 +1319,21 @@ export default function Workspace() {
                 </div>
               </>
             ) : (
-              <>
-                <div className="ws-form-row">
-                  <label>
-                    Zuständig
-                    <input
-                      name="assignee"
-                      defaultValue={editor.task?.assignee}
-                      maxLength={80}
-                      placeholder="Name oder Team"
-                    />
-                  </label>
-                  <label>
-                    Termin
-                    <input
-                      name="due"
-                      type="date"
-                      defaultValue={dateInput(editor.task?.due || null)}
-                    />
-                  </label>
-                </div>
-                {editor.task && (
-                  <label>
-                    Status
-                    <select name="status" defaultValue={editor.task.status}>
-                      {Object.entries(states).map(([k, v]) => (
-                        <option value={k} key={k}>
-                          {v}
-                        </option>
-                      ))}
-                    </select>
-                  </label>
-                )}
-              </>
+              <TaskFields task={editor.task} />
             )}
             <div className="ws-dialog-actions">
+              {editor.type === "task" && editor.task && (
+                <button
+                  type="button"
+                  className="ws-text-button ws-delete"
+                  disabled={busy}
+                  onClick={() =>
+                    editor.task && void deleteTask(editor.task)
+                  }
+                >
+                  <Trash2 size={15} /> Löschen
+                </button>
+              )}
               <button
                 type="button"
                 className="ws-secondary"
