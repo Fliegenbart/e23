@@ -62,8 +62,11 @@ export function Goals({
   const journey = useMemo(() => {
     if (!vision) return null;
     const t = (d: string) => new Date(`${d}T12:00:00Z`).getTime();
-    const start = Math.min(t(vision.created ?? today), t(today));
-    const end = Math.max(t(vision.due), start + 864e5);
+    // The curve has to span every date on it: if a step sits after the target
+    // (or before the start), stretch the window so nothing piles up at an edge.
+    const dues = goals.map((g) => t(g.due));
+    const start = Math.min(t(vision.created ?? today), t(today), ...dues);
+    const end = Math.max(t(vision.due), start + 864e5, ...dues);
     const at = (d: string) =>
       Math.min(1, Math.max(0, (t(d) - start) / (end - start)));
     // x runs 4..96, y is a slow wave around the middle (both in percent).
@@ -239,7 +242,10 @@ export function Goals({
           </span>
           <span
             className="goal-destination"
-            style={{ left: `${journey.point(1).x}%`, top: `${journey.point(1).y}%` }}
+            style={{
+              left: `${journey.point(journey.at(vision.due)).x}%`,
+              top: `${journey.point(journey.at(vision.due)).y}%`,
+            }}
             aria-hidden="true"
           >
             <i />
