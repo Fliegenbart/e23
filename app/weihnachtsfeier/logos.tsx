@@ -5,6 +5,7 @@ export const companies = [
     logo: "/feier/practical.svg",
     href: "https://practical.one",
     area: { de: "Kunde.", en: "Customer." },
+    person: { name: "Stefan Walz", photo: "/feier/team/stefan.webp" },
     de: "Digitale Kundenerlebnisse. Neu gebaut fürs KI-Zeitalter.",
     en: "Digital customer experience. Rebuilt for the AI era.",
   },
@@ -13,6 +14,7 @@ export const companies = [
     logo: "/feier/inswandeln.svg",
     href: "https://inswandeln.com",
     area: { de: "Führung.", en: "Leadership." },
+    person: { name: "Daniel Terner", photo: "/feier/team/daniel.webp" },
     de: "Vom Gesagten zum Getanen. Zackzack.",
     en: "From saying to doing. Chop-chop.",
   },
@@ -21,12 +23,18 @@ export const companies = [
     logo: "/feier/tyrnon.svg",
     href: "https://tyrnon.com",
     area: { de: "Technik.", en: "Technology." },
+    person: { name: "David Wegener", photo: null as string | null },
     de: "KI, die läuft. Nicht nur im Pilot.",
     en: "AI that runs. Not just in the pilot.",
   },
 ] as const;
 
 const slug = (name: string) => name.toLowerCase().replace(/[^a-z]+/g, "-");
+const initials = (name: string) =>
+  name
+    .split(" ")
+    .map((part) => part[0])
+    .join("");
 
 /** The logo bar at the top of the invitation. */
 export function Logos() {
@@ -41,7 +49,7 @@ export function Logos() {
   );
 }
 
-/** "Wer ist wir?": what each company covers, in one line. */
+/** "Wer ist wir?": who is behind each company and what it covers. */
 export function Who({ lang, intro }: { lang: "de" | "en"; intro: string }) {
   return (
     <div className="feier-who">
@@ -59,6 +67,14 @@ export function Who({ lang, intro }: { lang: "de" | "en"; intro: string }) {
             <span>
               <b>{company.area[lang]}</b>
               {company[lang]}
+              <span className="feier-person">
+                {company.person.photo ? (
+                  <img className="feier-face" src={company.person.photo} alt="" width={44} height={44} />
+                ) : (
+                  <i aria-hidden="true">{initials(company.person.name)}</i>
+                )}
+                {company.person.name}
+              </span>
             </span>
           </li>
         ))}
