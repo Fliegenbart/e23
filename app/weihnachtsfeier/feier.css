@@ -561,6 +561,35 @@
   text-transform: uppercase;
   color: #f59574;
 }
+/* The person behind each company: a round portrait (or initials) and the name. */
+.feier-who .feier-person {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--paper);
+}
+.feier-who .feier-person .feier-face,
+.feier-who .feier-person i {
+  flex: none;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+}
+.feier-who .feier-person .feier-face {
+  object-fit: cover;
+  filter: grayscale(1) contrast(1.05);
+}
+.feier-who .feier-person i {
+  display: grid;
+  place-items: center;
+  background: #3a3d36;
+  font-size: 13px;
+  font-style: normal;
+  letter-spacing: 0.06em;
+}
 /* Low windows (small laptops): tighter type so everything still fits. */
 @media (max-height: 920px) and (min-width: 761px) {
   .feier-hero {
