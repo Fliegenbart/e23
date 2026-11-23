@@ -23,7 +23,7 @@ export const companies = [
     logo: "/feier/tyrnon.svg",
     href: "https://tyrnon.com",
     area: { de: "Technik.", en: "Technology." },
-    person: { name: "David Wegener", photo: null as string | null },
+    person: { name: "David Wegener", photo: "/feier/team/david.webp" as string | null },
     de: "KI, die läuft. Nicht nur im Pilot.",
     en: "AI that runs. Not just in the pilot.",
   },
