@@ -1,7 +1,11 @@
 "use client";
 import { useState } from "react";
 
-type Status = "angemeldet" | "sicher" | "vielleicht";
+type Status = "angemeldet" | "sicher" | "vielleicht" | "abgesagt";
+type Answer = "zugesagt" | "unsicher" | "abgesagt";
+/** Sign-ups from the page and guests added by hand both count as "zugesagt". */
+const answerOf = (status: Status): Answer =>
+  status === "vielleicht" ? "unsicher" : status === "abgesagt" ? "abgesagt" : "zugesagt";
 export type Guest = {
   id: string;
   name: string;
@@ -27,7 +31,7 @@ const filters = [
   { id: "angemeldet", label: "Angemeldet" },
   { id: "hand", label: "Von Hand" },
 ] as const;
-const empty = { name: "", guests: 1, status: "sicher" as Status, note: "" };
+const empty = { name: "", guests: 1, answer: "zugesagt" as Answer, note: "" };
 
 async function send(method: string, body: object) {
   const response = await fetch("/api/anmeldung", {
@@ -63,12 +67,27 @@ export function GuestList({ initial }: { initial: Guest[] }) {
     setError("Das Häkchen wurde nicht gespeichert. Bitte versuche es erneut.");
   }
 
-  async function restatus(row: Guest, status: Status) {
-    patch(row.id, { status });
+  async function move(row: Guest, answer: Answer) {
+    // Shown at once; the server says whether "zugesagt" is angemeldet or sicher.
+    patch(row.id, {
+      status:
+        answer === "unsicher"
+          ? "vielleicht"
+          : answer === "abgesagt"
+            ? "abgesagt"
+            : row.email
+              ? "angemeldet"
+              : "sicher",
+    });
     setError("");
     try {
-      const response = await send("PATCH", { id: row.id, status });
-      if (response.ok || response.status === 401) return;
+      const response = await send("PATCH", { id: row.id, answer });
+      if (response.ok) {
+        const saved = (await response.json()) as { status: Status };
+        patch(row.id, { status: saved.status });
+        return;
+      }
+      if (response.status === 401) return;
     } catch {}
     patch(row.id, { status: row.status });
     setError("Der Status wurde nicht gespeichert. Bitte versuche es erneut.");
@@ -97,13 +116,18 @@ export function GuestList({ initial }: { initial: Guest[] }) {
     try {
       const response = await send("PUT", { ...draft, name, note: draft.note.trim() });
       if (response.ok) {
-        const saved = (await response.json()) as { id: string; created_at: string };
+        const saved = (await response.json()) as {
+          id: string;
+          status: Status;
+          created_at: string;
+        };
         setRows((list) => [
           ...list,
           {
-            ...draft,
             name,
+            guests: draft.guests,
             note: draft.note.trim(),
+            status: saved.status,
             id: saved.id,
             email: null,
             attended: false,
@@ -120,36 +144,39 @@ export function GuestList({ initial }: { initial: Guest[] }) {
     setError("Der Gast wurde nicht gespeichert. Bitte versuche es erneut.");
   }
 
-  const count = (status: Status) =>
-    rows.reduce((sum, row) => sum + (row.status === status ? row.guests : 0), 0);
-  const signed = count("angemeldet");
-  const sure = count("sicher");
-  const maybe = count("vielleicht");
+  const count = (answer: Answer) =>
+    rows.reduce(
+      (sum, row) => sum + (answerOf(row.status) === answer ? row.guests : 0),
+      0,
+    );
+  const yes = count("zugesagt");
+  const maybe = count("unsicher");
+  const no = count("abgesagt");
   const came = rows.filter((row) => row.attended);
   const shown = rows.filter((row) =>
     filter === "alle"
       ? true
       : filter === "angemeldet"
-        ? row.status === "angemeldet"
-        : row.status !== "angemeldet",
+        ? row.email !== null
+        : row.email === null,
   );
   return (
     <>
       <dl className="feier-stats">
         <div>
-          <dd>{signed}</dd>
-          <dt>angemeldet</dt>
-        </div>
-        <div>
-          <dd>{sure}</dd>
-          <dt>sicher zugesagt</dt>
+          <dd>{yes}</dd>
+          <dt>zugesagt</dt>
         </div>
         <div>
           <dd>{maybe}</dd>
-          <dt>vielleicht</dt>
+          <dt>unsicher</dt>
         </div>
         <div>
-          <dd>{signed + sure + maybe}</dd>
+          <dd>{no}</dd>
+          <dt>abgesagt</dt>
+        </div>
+        <div>
+          <dd>{yes + maybe}</dd>
           <dt>insgesamt möglich</dt>
         </div>
         <div>
@@ -185,13 +212,13 @@ export function GuestList({ initial }: { initial: Guest[] }) {
         <label>
           <span>Kommt</span>
           <select
-            value={draft.status}
+            value={draft.answer}
             onChange={(event) =>
-              setDraft({ ...draft, status: event.target.value as Status })
+              setDraft({ ...draft, answer: event.target.value as Answer })
             }
           >
-            <option value="sicher">sicher</option>
-            <option value="vielleicht">vielleicht</option>
+            <option value="zugesagt">zugesagt</option>
+            <option value="unsicher">unsicher</option>
           </select>
         </label>
         <label className="feier-add-note">
@@ -246,7 +273,14 @@ export function GuestList({ initial }: { initial: Guest[] }) {
             </thead>
             <tbody>
               {shown.map((row) => (
-                <tr key={row.id} className={row.attended ? "is-there" : undefined}>
+                <tr
+                  key={row.id}
+                  className={
+                    [row.attended && "is-there", row.status === "abgesagt" && "is-off"]
+                      .filter(Boolean)
+                      .join(" ") || undefined
+                  }
+                >
                   <td>
                     <input
                       type="checkbox"
@@ -257,21 +291,16 @@ export function GuestList({ initial }: { initial: Guest[] }) {
                   </td>
                   <td>{row.name}</td>
                   <td>
-                    {row.status === "angemeldet" ? (
-                      "angemeldet"
-                    ) : (
-                      <select
-                        className={`feier-status is-${row.status}`}
-                        value={row.status}
-                        onChange={(event) =>
-                          restatus(row, event.target.value as Status)
-                        }
-                        aria-label={`Status von ${row.name}`}
-                      >
-                        <option value="sicher">sicher</option>
-                        <option value="vielleicht">vielleicht</option>
-                      </select>
-                    )}
+                    <select
+                      className={`feier-status is-${answerOf(row.status)}`}
+                      value={answerOf(row.status)}
+                      onChange={(event) => move(row, event.target.value as Answer)}
+                      aria-label={`Status von ${row.name}`}
+                    >
+                      <option value="zugesagt">zugesagt</option>
+                      <option value="unsicher">unsicher</option>
+                      <option value="abgesagt">abgesagt</option>
+                    </select>
                   </td>
                   <td>
                     {row.email ? (

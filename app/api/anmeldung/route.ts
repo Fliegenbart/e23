@@ -4,10 +4,11 @@ import { authenticated } from "@/lib/auth";
 import {
   addManual,
   deleteAnmeldung,
-  manualStatuses,
+  answers,
+  manualAnswers,
   saveAnmeldung,
   setAttended,
-  setStatus,
+  setAnswer,
 } from "@/lib/feier-db";
 
 export const dynamic = "force-dynamic";
@@ -72,10 +73,10 @@ export async function POST(req: NextRequest) {
 
 const change = z.union([
   z.object({ id: z.uuid(), attended: z.boolean() }),
-  z.object({ id: z.uuid(), status: z.enum(manualStatuses) }),
+  z.object({ id: z.uuid(), answer: z.enum(answers) }),
 ]);
 
-/** Internal: mark who actually came, or change "vielleicht" to "sicher". Needs the site session. */
+/** Internal: mark who actually came, or move an entry to zugesagt, unsicher or abgesagt. Needs the site session. */
 export async function PATCH(req: NextRequest) {
   if (!(await authenticated())) return json({ error: "unauthorized" }, 401);
   const { body, refusal } = await read(req);
@@ -83,11 +84,12 @@ export async function PATCH(req: NextRequest) {
   const parsed = change.safeParse(body);
   if (!parsed.success) return json({ error: "invalid" }, 400);
   try {
-    const done =
-      "attended" in parsed.data
-        ? await setAttended(parsed.data.id, parsed.data.attended)
-        : await setStatus(parsed.data.id, parsed.data.status);
-    return done ? json({ ok: true }) : json({ error: "missing" }, 404);
+    if ("attended" in parsed.data)
+      return (await setAttended(parsed.data.id, parsed.data.attended))
+        ? json({ ok: true })
+        : json({ error: "missing" }, 404);
+    const status = await setAnswer(parsed.data.id, parsed.data.answer);
+    return status ? json({ ok: true, status }) : json({ error: "missing" }, 404);
   } catch (error) {
     return failure(error);
   }
@@ -97,7 +99,7 @@ const manual = z.object({
   name: z.string().trim().min(1).max(80),
   guests: z.number().int().min(1).max(5),
   note: z.string().trim().max(500),
-  status: z.enum(manualStatuses),
+  answer: z.enum(manualAnswers),
 });
 
 /** Internal: add a guest by hand who has not signed up. Needs the site session. */
@@ -110,7 +112,7 @@ export async function PUT(req: NextRequest) {
   try {
     const row = await addManual(parsed.data);
     return row
-      ? json({ ok: true, id: row.id, created_at: row.created_at })
+      ? json({ ok: true, id: row.id, status: row.status, created_at: row.created_at })
       : json({ error: "full" }, 409);
   } catch (error) {
     return failure(error);

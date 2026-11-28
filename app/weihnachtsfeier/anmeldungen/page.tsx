@@ -36,8 +36,9 @@ export default async function AnmeldungenPage() {
         <h1>Anmeldungen</h1>
         <p className="feier-list-lead">
           Wer sich für die Weihnachtsfeier angemeldet hat – und wer euch
-          persönlich zugesagt hat. Am Abend ein Häkchen setzen, wer wirklich da
-          war.{" "}
+          persönlich zugesagt hat. Der Status lässt sich je Eintrag auf zugesagt,
+          unsicher oder abgesagt stellen. Am Abend ein Häkchen setzen, wer
+          wirklich da war.{" "}
           <a href="/weihnachtsfeier">Zur Einladung</a>
         </p>
         {rows === null ? (
