@@ -1,7 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { authenticated } from "@/lib/auth";
-import { deleteAnmeldung, saveAnmeldung, setAttended } from "@/lib/feier-db";
+import {
+  addManual,
+  deleteAnmeldung,
+  manualStatuses,
+  saveAnmeldung,
+  setAttended,
+  setStatus,
+} from "@/lib/feier-db";
 
 export const dynamic = "force-dynamic";
 
@@ -63,19 +70,48 @@ export async function POST(req: NextRequest) {
   }
 }
 
-const attendance = z.object({ id: z.uuid(), attended: z.boolean() });
+const change = z.union([
+  z.object({ id: z.uuid(), attended: z.boolean() }),
+  z.object({ id: z.uuid(), status: z.enum(manualStatuses) }),
+]);
 
-/** Internal: mark who actually came. Needs the site session. */
+/** Internal: mark who actually came, or change "vielleicht" to "sicher". Needs the site session. */
 export async function PATCH(req: NextRequest) {
   if (!(await authenticated())) return json({ error: "unauthorized" }, 401);
   const { body, refusal } = await read(req);
   if (refusal) return refusal;
-  const parsed = attendance.safeParse(body);
+  const parsed = change.safeParse(body);
   if (!parsed.success) return json({ error: "invalid" }, 400);
   try {
-    return (await setAttended(parsed.data.id, parsed.data.attended))
-      ? json({ ok: true })
-      : json({ error: "missing" }, 404);
+    const done =
+      "attended" in parsed.data
+        ? await setAttended(parsed.data.id, parsed.data.attended)
+        : await setStatus(parsed.data.id, parsed.data.status);
+    return done ? json({ ok: true }) : json({ error: "missing" }, 404);
+  } catch (error) {
+    return failure(error);
+  }
+}
+
+const manual = z.object({
+  name: z.string().trim().min(1).max(80),
+  guests: z.number().int().min(1).max(5),
+  note: z.string().trim().max(500),
+  status: z.enum(manualStatuses),
+});
+
+/** Internal: add a guest by hand who has not signed up. Needs the site session. */
+export async function PUT(req: NextRequest) {
+  if (!(await authenticated())) return json({ error: "unauthorized" }, 401);
+  const { body, refusal } = await read(req);
+  if (refusal) return refusal;
+  const parsed = manual.safeParse(body);
+  if (!parsed.success) return json({ error: "invalid" }, 400);
+  try {
+    const row = await addManual(parsed.data);
+    return row
+      ? json({ ok: true, id: row.id, created_at: row.created_at })
+      : json({ error: "full" }, 409);
   } catch (error) {
     return failure(error);
   }

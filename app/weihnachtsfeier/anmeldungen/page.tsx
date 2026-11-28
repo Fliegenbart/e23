@@ -35,14 +35,13 @@ export default async function AnmeldungenPage() {
         <span className="eyebrow">Weihnachtsfeier · 14.12.2026</span>
         <h1>Anmeldungen</h1>
         <p className="feier-list-lead">
-          Wer sich für die Weihnachtsfeier angemeldet hat. Am Abend ein Häkchen
-          setzen, wer wirklich da war.{" "}
+          Wer sich für die Weihnachtsfeier angemeldet hat – und wer euch
+          persönlich zugesagt hat. Am Abend ein Häkchen setzen, wer wirklich da
+          war.{" "}
           <a href="/weihnachtsfeier">Zur Einladung</a>
         </p>
         {rows === null ? (
           <p>Die Anmeldungen sind gerade nicht erreichbar.</p>
-        ) : rows.length === 0 ? (
-          <p>Noch keine Anmeldungen.</p>
         ) : (
           <GuestList
             initial={rows.map((row) => ({
@@ -51,6 +50,7 @@ export default async function AnmeldungenPage() {
               email: row.email,
               guests: row.guests,
               note: row.note,
+              status: row.status,
               attended: row.attended,
               when: when.format(new Date(row.created_at)),
             }))}
