@@ -280,8 +280,16 @@
   padding: 4px 6px;
   font-size: 14px;
 }
-.feier-status.is-vielleicht {
+.feier-status.is-unsicher {
   border-style: dashed;
+  color: var(--muted);
+}
+.feier-status.is-abgesagt {
+  border-color: var(--orange);
+  color: var(--orange);
+}
+.feier-table tr.is-off td:nth-child(2) {
+  text-decoration: line-through;
   color: var(--muted);
 }
 @media (max-width: 760px) {
